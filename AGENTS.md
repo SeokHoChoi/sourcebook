@@ -25,4 +25,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Runtime responses should keep the CSP and security header baseline unless there is a documented reason to change it
 - `async` Server Components should be covered with Playwright E2E, not Vitest unit tests
 - Sync components, hooks, and utilities should be tested with Vitest + React Testing Library
+- Commit messages use Conventional Commits with Korean subjects
+- Preferred format: `<type>: <한국어 요약>` (example: `fix: E2E 아티팩트 복원 경로 안정화`)
 - Before reporting completion, run `pnpm lint:strict`, `pnpm format:check`, `pnpm type-check`, `pnpm test`, `pnpm test:coverage`, `pnpm build`, and `pnpm test:e2e`

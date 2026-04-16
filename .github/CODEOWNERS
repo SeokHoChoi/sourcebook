@@ -1,0 +1,25 @@
+# 기본 소유자
+* @SeokHoChoi
+
+# 저장소 운영 및 자동화
+/.github/ @SeokHoChoi
+/AGENTS.md @SeokHoChoi
+/CLAUDE.md @SeokHoChoi
+/README.md @SeokHoChoi
+/SECURITY.md @SeokHoChoi
+
+# 애플리케이션 코드
+/src/ @SeokHoChoi
+/tests/ @SeokHoChoi
+/public/ @SeokHoChoi
+
+# 패키지 및 런타임 설정
+/package.json @SeokHoChoi
+/pnpm-lock.yaml @SeokHoChoi
+/tsconfig.json @SeokHoChoi
+/next.config.ts @SeokHoChoi
+/eslint.config.mjs @SeokHoChoi
+/prettier.config.mjs @SeokHoChoi
+/playwright.config.ts @SeokHoChoi
+/vitest.config.ts @SeokHoChoi
+/commitlint.config.ts @SeokHoChoi

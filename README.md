@@ -52,6 +52,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Run `pnpm build` before `pnpm test:e2e` when you are not reusing a CI build artifact.
 
+## Commit Convention
+
+- Husky runs `commitlint` on every commit via `.husky/commit-msg`.
+- Commit messages follow Conventional Commits.
+- The commit `type` stays in the standard enum: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `revert`, `ci`.
+- The commit `subject` must include Korean.
+- Recommended format: `<type>: <한국어 요약>`
+- Valid example: `fix: E2E 아티팩트 복원 경로 안정화`
+- Invalid example: `fix: harden e2e artifact restore`
+
 ## Testing Strategy
 
 - Sync components, hooks, and utilities: Vitest + React Testing Library
