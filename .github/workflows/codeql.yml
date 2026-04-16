@@ -1,0 +1,40 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '17 3 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    if: github.event.repository.private == false || vars.ENABLE_GITHUB_CODE_SECURITY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript-typescript, actions]
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - uses: github/codeql-action/init@7fc6561ed893d15cec696e062df840b21db27eb0 # v4.35.2
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended
+
+      - uses: github/codeql-action/analyze@7fc6561ed893d15cec696e062df840b21db27eb0 # v4.35.2
+        with:
+          category: /language:${{ matrix.language }}

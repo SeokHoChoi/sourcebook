@@ -2,11 +2,30 @@
   "name": "sourcebook",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22.0.0 <25",
+    "pnpm": ">=10.28.0 <11"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:strict": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "next typegen && tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "validate": "pnpm lint:strict && pnpm format:check && pnpm type-check && pnpm test",
+    "prepare": "husky"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
