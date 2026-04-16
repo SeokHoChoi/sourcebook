@@ -182,7 +182,25 @@ jobs:
         uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
         with:
           name: next-build
-          path: .
+          path: .artifacts/next-build
+
+      - name: Restore production build artifact
+        shell: bash
+        run: |
+          rm -rf .next
+          mkdir -p .next
+
+          if [ -f .artifacts/next-build/BUILD_ID ]; then
+            cp -R .artifacts/next-build/. .next/
+          elif [ -f .artifacts/next-build/.next/BUILD_ID ]; then
+            cp -R .artifacts/next-build/.next/. .next/
+          else
+            echo 'Downloaded artifact does not contain a Next.js production build.'
+            find .artifacts/next-build -maxdepth 3 -print
+            exit 1
+          fi
+
+          test -f .next/BUILD_ID
 
       - name: Install Playwright browser
         run: pnpm exec playwright install chromium --with-deps
@@ -192,12 +210,15 @@ jobs:
         env:
           CI: true
 
-      - name: Upload Playwright report
+      - name: Upload Playwright artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        if: failure()
+        if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: playwright-artifacts
+          if-no-files-found: ignore
+          path: |
+            playwright-report/
+            test-results/
           retention-days: 7
 
   node-compat:
