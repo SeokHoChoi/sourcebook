@@ -5,3 +5,4 @@ dist
 coverage
 playwright-report
 test-results
+library/**/pages/**/source.md

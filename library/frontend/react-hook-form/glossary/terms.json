@@ -1,0 +1,157 @@
+{
+  "trackSlug": "react-hook-form",
+  "terms": [
+    {
+      "id": "custom-hook",
+      "term": "custom hook",
+      "korean": "커스텀 훅",
+      "explanation": "React 훅 로직을 재사용 가능한 함수로 추상화한 형태.",
+      "pageRefs": [
+        {
+          "pageSlug": "useform",
+          "segmentIds": ["useform-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "optional-argument",
+      "term": "optional argument",
+      "korean": "선택 인자",
+      "explanation": "함수 호출 시 생략 가능한 인자.",
+      "pageRefs": [
+        {
+          "pageSlug": "useform",
+          "segmentIds": ["useform-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "validation-rules",
+      "term": "validation rules",
+      "korean": "검증 규칙",
+      "explanation": "입력값 유효성을 판단하는 조건 세트.",
+      "pageRefs": [
+        {
+          "pageSlug": "gs-apply-validation",
+          "segmentIds": ["gs-apply-validation-seg-003"]
+        },
+        {
+          "pageSlug": "register",
+          "segmentIds": ["register-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "ref",
+      "term": "ref",
+      "korean": "참조",
+      "explanation": "DOM 요소를 직접 연결하기 위한 참조값.",
+      "pageRefs": [
+        {
+          "pageSlug": "register",
+          "segmentIds": ["register-seg-001", "register-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "unique-name",
+      "term": "unique name",
+      "korean": "고유 이름",
+      "explanation": "등록 키 충돌을 피하기 위해 필드마다 달라야 하는 식별자.",
+      "pageRefs": [
+        {
+          "pageSlug": "gs-register-fields",
+          "segmentIds": ["gs-register-fields-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "html-standard-validation",
+      "term": "existing HTML standard",
+      "korean": "기존 HTML 표준",
+      "explanation": "브라우저가 기본적으로 제공하는 폼 검증 규칙 집합.",
+      "pageRefs": [
+        {
+          "pageSlug": "gs-apply-validation",
+          "segmentIds": ["gs-apply-validation-seg-002"]
+        },
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": ["get-started-full-seg-013"]
+        }
+      ]
+    },
+    {
+      "id": "ready-to-roll",
+      "term": "ready to roll",
+      "korean": "바로 시작 가능",
+      "explanation": "설치 직후 바로 실행 가능함을 나타내는 관용 표현.",
+      "pageRefs": [
+        {
+          "pageSlug": "gs-installation-example",
+          "segmentIds": ["gs-installation-example-seg-002"]
+        },
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": ["get-started-full-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "uncontrolled-components",
+      "term": "uncontrolled components",
+      "korean": "비제어 컴포넌트",
+      "explanation": "입력값을 React state가 매 타이핑마다 통제하지 않고 DOM이 기본 상태를 가지는 입력 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": ["get-started-full-seg-016"]
+        }
+      ]
+    },
+    {
+      "id": "controller-component",
+      "term": "Controller",
+      "korean": "컨트롤러 컴포넌트",
+      "explanation": "외부 controlled input을 RHF 필드 모델과 연결하는 공식 래퍼 컴포넌트.",
+      "pageRefs": [
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": [
+            "get-started-full-seg-016",
+            "get-started-full-seg-018",
+            "get-started-full-seg-023"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "schema-validation",
+      "term": "schema-based validation",
+      "korean": "스키마 기반 검증",
+      "explanation": "필드별 옵션 대신 스키마 객체를 기준으로 전체 입력값을 검증하는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": [
+            "get-started-full-seg-025",
+            "get-started-full-seg-026",
+            "get-started-full-seg-028"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "subscription-model",
+      "term": "subscription model",
+      "korean": "구독 모델",
+      "explanation": "필요한 상태 변화에만 선택적으로 반응하도록 설계한 상태 추적 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "get-started-full",
+          "segmentIds": ["get-started-full-seg-034"]
+        }
+      ]
+    }
+  ]
+}

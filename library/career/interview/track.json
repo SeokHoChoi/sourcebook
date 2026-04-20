@@ -1,0 +1,11 @@
+{
+  "categorySlug": "career",
+  "trackSlug": "interview",
+  "title": "면접 준비",
+  "status": "planned",
+  "phase": "예정",
+  "description": "면접 준비를 위한 예정 트랙.",
+  "scope": "시스템 설계, 행동 질문, 기술 면접 리허설용 예정 트랙.",
+  "intakeFlow": [],
+  "pages": []
+}

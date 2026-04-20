@@ -1,6 +1,56 @@
 # Sourcebook
 
-Production-grade Next.js 16 starter with TypeScript, Tailwind CSS v4, shadcn/ui, Vitest, Playwright, ESLint, Prettier, Husky, lint-staged, and Commitlint.
+Local-first learning repository for official technical documentation.
+
+This workspace stores official source text verbatim, then layers Korean direct-reading notes, selective vocabulary glosses, dev notes, recall questions, speaking prompts, and learner memory on top as separate Git-tracked files.
+
+The app is read-only for learning flow. Codex updates repository files for intake, overlays, glossary entries, learner events, and review queue changes.
+
+## Current Scope
+
+- Multi-category catalog:
+  - `frontend/react-hook-form` (active)
+  - `frontend/react` (planned)
+  - `frontend/next` (planned)
+  - `career/resume` (planned)
+  - `career/interview` (planned)
+- React Hook Form curriculum is tracked in:
+  - `library/frontend/react-hook-form/references/curriculum.md`
+- RHF roadmap now includes onboarding sections + core API + support API + reference pages
+- Sample pages currently completed:
+  - `Get Started - Installation + Example`
+  - `Get Started - Register fields`
+  - `Get Started - Apply validation`
+  - `useForm`
+  - `register`
+
+## Content Layout
+
+```text
+library/
+  catalog.json                           # category -> track map
+  <category>/<track>/
+    track.json                           # track metadata + page list
+    pages/<page-slug>/
+      source.md                          # official raw source (verbatim only)
+      structure.json                     # section/paragraph/sentence segment metadata
+      overlay.ko.json                    # Korean overlays by segment
+    glossary/terms.json                  # track-level terminology
+    learner/events.ndjson                # append-only learner events
+    learner/patterns.json                # repeated confusion patterns
+    review/queue.json                    # spaced review queue
+```
+
+## Formatting Contract
+
+- `source.md` keeps the copied official source verbatim, including menu, ads, footer, and surrounding chrome.
+- The reading UI must format preserved raw source into readable blocks instead of dumping it as one raw `pre`.
+- `structure.json` should select only learning-worthy segments. Full-page docs should follow official top-level menu boundaries when available.
+- Prose cards should keep the English sentence visible first, then place Korean direct-reading support immediately below it.
+- Slash chunking is a support layer, not the primary text. Avoid over-segmented card stacks that break sentence and paragraph coherence.
+- Code should default to an editor-like block with readable highlighting and line-adjacent annotations tied to the relevant identifier or flow.
+- Avoid duplicating the same code explanation in a separate `코드 읽기` panel if it can be shown directly on or near the code.
+- `devNote`, `trickySentenceExplanation`, and glossary items should stay selective and low-noise.
 
 ## Requirements
 
@@ -17,6 +67,12 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+Manual intake for a queued page:
+
+```bash
+pnpm intake:scaffold -- frontend react-hook-form formstate
+```
 
 ## Environment Strategy
 
