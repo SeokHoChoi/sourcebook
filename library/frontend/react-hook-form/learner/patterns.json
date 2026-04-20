@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-04-17",
+  "patterns": [
+    {
+      "label": "반환 형태 개념 혼동",
+      "count": 2,
+      "pageSlugs": ["register", "useform"],
+      "representativeQuestion": "useForm이 반환하는 객체는 설정값 모음인가, 아니면 실제 동작 메서드 묶음인가?"
+    },
+    {
+      "label": "시그니처 해석 마찰",
+      "count": 1,
+      "pageSlugs": ["useform"],
+      "representativeQuestion": "선택 인자(optional argument)가 실제로 어떤 의미인지 바로 연결하지 못했다."
+    },
+    {
+      "label": "필드 식별자 충돌 위험",
+      "count": 1,
+      "pageSlugs": ["gs-register-fields"],
+      "representativeQuestion": "왜 field name이 unique여야 하는지 감으로만 이해했고, 내부 동작과 연결이 안 됐다."
+    },
+    {
+      "label": "표준 호환성 해석 부족",
+      "count": 1,
+      "pageSlugs": ["gs-apply-validation"],
+      "representativeQuestion": "aligning with the existing HTML standard를 번역은 했는데 개발 맥락으로 연결이 약했다."
+    },
+    {
+      "label": "관용 표현 해석 약점",
+      "count": 1,
+      "pageSlugs": ["gs-installation-example"],
+      "representativeQuestion": "ready to roll을 단순 준비 완료로만 읽고, 문맥상 도입 장벽 메시지를 놓쳤다."
+    },
+    {
+      "label": "수집 구조 개념 혼동",
+      "count": 1,
+      "pageSlugs": ["get-started-full"],
+      "representativeQuestion": "Get Started 전체를 복붙했는데 왜 메뉴, 광고, 푸터까지 전부 직독직해 카드로 만들지 않는지 헷갈렸다."
+    }
+  ]
+}

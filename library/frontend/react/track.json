@@ -1,0 +1,13 @@
+{
+  "categorySlug": "frontend",
+  "trackSlug": "react",
+  "title": "React 기본기",
+  "status": "planned",
+  "phase": "예정",
+  "description": "React 핵심 공식문서를 위한 예정 트랙.",
+  "scope": "React 기본기, 훅, 렌더링 모델 학습용 예정 트랙.",
+  "homepageUrl": "https://react.dev/",
+  "documentationRepoUrl": "https://github.com/reactjs/react.dev",
+  "intakeFlow": [],
+  "pages": []
+}

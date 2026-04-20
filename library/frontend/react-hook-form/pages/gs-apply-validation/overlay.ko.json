@@ -1,0 +1,61 @@
+{
+  "pageSlug": "gs-apply-validation",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "gs-apply-validation-seg-002",
+      "directTranslation": "React Hook Form은 기존 HTML 폼 검증 표준에 맞춰서 폼 검증을 쉽게 만든다.",
+      "trickySentenceExplanation": "aligning with는 RHF가 독자 규칙만 강요하는 게 아니라 웹 기본 규칙과 호환된다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "aligning with",
+          "korean": "정렬/호환",
+          "explanation": "기존 규칙이나 표준과 어긋나지 않게 맞추는 의미."
+        },
+        {
+          "term": "existing HTML standard",
+          "korean": "기존 HTML 표준",
+          "explanation": "브라우저가 이미 이해하는 기본 폼 검증 규칙."
+        }
+      ],
+      "devNote": "HTML 규칙을 그대로 쓰기 때문에 required, minLength 같은 속성이 RHF 문맥에서도 자연스럽게 이어진다.",
+      "recallQuestion": "RHF 검증 설계에서 HTML 표준과의 관계는 무엇인가?",
+      "speakingTransferPrompt": "RHF 검증이 왜 진입 장벽이 낮은지 표준 호환 관점으로 설명해보자."
+    },
+    {
+      "segmentId": "gs-apply-validation-seg-003",
+      "directTranslation": "지원되는 검증 규칙은 required, min, max, minLength, maxLength, pattern, validate다.",
+      "trickySentenceExplanation": "validate는 내장 규칙 외에 사용자 정의 함수를 붙이는 확장 포인트다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "validation rules supported",
+          "korean": "지원 검증 규칙",
+          "explanation": "라이브러리가 기본 제공하는 검증 키 목록."
+        },
+        {
+          "term": "pattern",
+          "korean": "패턴 검증",
+          "explanation": "정규식 기반 문자열 검증."
+        }
+      ],
+      "devNote": "필수 규칙 목록은 온보딩에서 외워두면 이후 register 옵션 해석 속도가 빨라진다.",
+      "recallQuestion": "지원 규칙 중 숫자 범위 검증에 해당하는 항목은 무엇인가?",
+      "speakingTransferPrompt": "지원 규칙 3개를 골라 실제 입력 예시와 함께 설명해보자."
+    },
+    {
+      "segmentId": "gs-apply-validation-seg-004",
+      "directTranslation": "각 규칙의 자세한 내용은 register 섹션에서 더 확인할 수 있다.",
+      "trickySentenceExplanation": "이 문장은 학습 순서를 안내하는 cross-reference 문장이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "read more detail",
+          "korean": "상세 참고",
+          "explanation": "현재 문서는 요약이고 상세는 링크된 섹션에서 다룬다는 신호."
+        }
+      ],
+      "devNote": "온보딩에서 상세를 다 보지 말고 register API 페이지에서 깊게 읽는 방식이 효율적이다.",
+      "recallQuestion": "검증 규칙 상세를 보려면 다음으로 어디를 읽어야 하는가?",
+      "speakingTransferPrompt": "문서 cross-reference를 따라 읽는 전략을 동료에게 설명해보자."
+    }
+  ]
+}

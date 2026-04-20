@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: DEFAULT_APP_NAME,
     template: `%s | ${DEFAULT_APP_NAME}`,
   },
-  description: 'Official-docs-first learning and reference workspace for Sourcebook.',
+  description: '공식 문서 원문과 학습 오버레이를 함께 쌓는 로컬 우선 학습 저장소.',
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="ko" className="h-full antialiased">
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

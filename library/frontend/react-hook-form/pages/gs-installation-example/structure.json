@@ -1,0 +1,52 @@
+{
+  "pageSlug": "gs-installation-example",
+  "pageTitle": "Get Started - Installation + Example",
+  "lastStructuredAt": "2026-04-17",
+  "segments": [
+    {
+      "id": "gs-installation-example-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "gs-installation-example-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 3
+      }
+    },
+    {
+      "id": "gs-installation-example-seg-003",
+      "order": 3,
+      "kind": "code",
+      "source": {
+        "startLine": 5,
+        "endLine": 5
+      }
+    },
+    {
+      "id": "gs-installation-example-seg-004",
+      "order": 4,
+      "kind": "heading",
+      "source": {
+        "startLine": 7,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "gs-installation-example-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 9,
+        "endLine": 9
+      }
+    }
+  ]
+}

@@ -1,0 +1,636 @@
+{
+  "categorySlug": "frontend",
+  "trackSlug": "react-hook-form",
+  "title": "React Hook Form",
+  "status": "active",
+  "phase": "1차 범위",
+  "description": "React Hook Form 공식문서를 학습 순서에 맞춰 읽고, 영어 직독직해 오버레이를 누적하는 트랙.",
+  "scope": "Get Started 온보딩 섹션 -> 핵심 API -> 확장 API -> 참조 문서 순서로 진행한다.",
+  "homepageUrl": "https://react-hook-form.com/",
+  "documentationRepoUrl": "https://github.com/react-hook-form/documentation",
+  "curriculumRef": "references/curriculum.md",
+  "studyGuide": {
+    "slug": "study",
+    "title": "RHF 실전 학습 가이드",
+    "description": "공식 문서의 개념, 실전 패턴, 아키텍처 판단, 근거 자료를 하나로 묶은 별도 스터디 섹션.",
+    "file": "references/study-guide.md",
+    "updatedAt": "2026-04-20",
+    "verificationNotes": [
+      "stable 버전 표기는 npm latest dist-tag 기준 7.72.1로 유지하고, GitHub Releases latest 7.73.0과의 불일치도 문서에 명시했다.",
+      "v8 beta 변화와 실무 혼동 지점은 GitHub Releases와 Discussions를 함께 교차검토했다.",
+      "학습 설계는 retrieval practice, self-explanation, worked example 기반으로 재구성했다."
+    ]
+  },
+  "intakeFlow": [
+    "공식 커리큘럼(references/curriculum.md)에서 다음 학습 단위를 선택한다.",
+    "pnpm intake:scaffold -- frontend react-hook-form <page-slug>를 실행한다.",
+    "공식 문서 원문을 pages/<page-slug>/source.md에 발췌 또는 전체 단위로 그대로 저장한다.",
+    "pages/<page-slug>/structure.json에 문단과 세그먼트 범위를 나눈다.",
+    "pages/<page-slug>/overlay.ko.json에 직독직해와 설명을 채운다.",
+    "공식문서 질문 로그를 learner/events.ndjson에 append-only로 누적한다.",
+    "learner/patterns.json과 review/queue.json을 갱신한다."
+  ],
+  "pages": [
+    {
+      "slug": "gs-installation-example",
+      "title": "Get Started - Installation + Example",
+      "readOrder": 1,
+      "status": "sample",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "section",
+      "sectionAnchor": "Installation",
+      "canonicalUrl": "https://react-hook-form.com/get-started#installation",
+      "sourceRepoPath": "src/content/get-started.mdx#Installation",
+      "files": {
+        "source": "pages/gs-installation-example/source.md",
+        "structure": "pages/gs-installation-example/structure.json",
+        "overlay": "pages/gs-installation-example/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "gs-register-fields",
+      "title": "Get Started - Register fields",
+      "readOrder": 2,
+      "status": "sample",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "section",
+      "sectionAnchor": "Registerfields",
+      "canonicalUrl": "https://react-hook-form.com/get-started#registerfields",
+      "sourceRepoPath": "src/content/get-started.mdx#Registerfields",
+      "files": {
+        "source": "pages/gs-register-fields/source.md",
+        "structure": "pages/gs-register-fields/structure.json",
+        "overlay": "pages/gs-register-fields/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "gs-apply-validation",
+      "title": "Get Started - Apply validation",
+      "readOrder": 3,
+      "status": "sample",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "section",
+      "sectionAnchor": "Applyvalidation",
+      "canonicalUrl": "https://react-hook-form.com/get-started#applyvalidation",
+      "sourceRepoPath": "src/content/get-started.mdx#Applyvalidation",
+      "files": {
+        "source": "pages/gs-apply-validation/source.md",
+        "structure": "pages/gs-apply-validation/structure.json",
+        "overlay": "pages/gs-apply-validation/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "gs-integrating-controlled-inputs",
+      "title": "Get Started - Integrating Controlled Inputs",
+      "readOrder": 4,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "section",
+      "sectionAnchor": "IntegratingControlledInputs",
+      "canonicalUrl": "https://react-hook-form.com/get-started#integratingcontrolledinputs",
+      "sourceRepoPath": "src/content/get-started.mdx#IntegratingControlledInputs",
+      "files": {
+        "source": "pages/gs-integrating-controlled-inputs/source.md",
+        "structure": "pages/gs-integrating-controlled-inputs/structure.json",
+        "overlay": "pages/gs-integrating-controlled-inputs/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "gs-schema-validation",
+      "title": "Get Started - Schema Validation",
+      "readOrder": 5,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "section",
+      "sectionAnchor": "SchemaValidation",
+      "canonicalUrl": "https://react-hook-form.com/get-started#schemavalidation",
+      "sourceRepoPath": "src/content/get-started.mdx#SchemaValidation",
+      "files": {
+        "source": "pages/gs-schema-validation/source.md",
+        "structure": "pages/gs-schema-validation/structure.json",
+        "overlay": "pages/gs-schema-validation/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "useform",
+      "title": "useForm",
+      "readOrder": 6,
+      "status": "sample",
+      "captureMode": "excerpt",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform",
+      "sourceRepoPath": "src/content/docs/useform.mdx",
+      "files": {
+        "source": "pages/useform/source.md",
+        "structure": "pages/useform/structure.json",
+        "overlay": "pages/useform/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "register",
+      "title": "register",
+      "readOrder": 7,
+      "status": "sample",
+      "captureMode": "excerpt",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/register",
+      "sourceRepoPath": "src/content/docs/useform/register.mdx",
+      "files": {
+        "source": "pages/register/source.md",
+        "structure": "pages/register/structure.json",
+        "overlay": "pages/register/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "handlesubmit",
+      "title": "handleSubmit",
+      "readOrder": 8,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/handlesubmit",
+      "sourceRepoPath": "src/content/docs/useform/handlesubmit.mdx",
+      "files": {
+        "source": "pages/handlesubmit/source.md",
+        "structure": "pages/handlesubmit/structure.json",
+        "overlay": "pages/handlesubmit/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "formstate",
+      "title": "formState",
+      "readOrder": 9,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/formstate",
+      "sourceRepoPath": "src/content/docs/useform/formstate.mdx",
+      "files": {
+        "source": "pages/formstate/source.md",
+        "structure": "pages/formstate/structure.json",
+        "overlay": "pages/formstate/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "watch",
+      "title": "watch",
+      "readOrder": 10,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/watch",
+      "sourceRepoPath": "src/content/docs/useform/watch.mdx",
+      "files": {
+        "source": "pages/watch/source.md",
+        "structure": "pages/watch/structure.json",
+        "overlay": "pages/watch/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "setvalue",
+      "title": "setValue",
+      "readOrder": 11,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/setvalue",
+      "sourceRepoPath": "src/content/docs/useform/setvalue.mdx",
+      "files": {
+        "source": "pages/setvalue/source.md",
+        "structure": "pages/setvalue/structure.json",
+        "overlay": "pages/setvalue/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "reset",
+      "title": "reset",
+      "readOrder": 12,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "core-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/reset",
+      "sourceRepoPath": "src/content/docs/useform/reset.mdx",
+      "files": {
+        "source": "pages/reset/source.md",
+        "structure": "pages/reset/structure.json",
+        "overlay": "pages/reset/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "usecontroller",
+      "title": "useController",
+      "readOrder": 13,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/usecontroller",
+      "sourceRepoPath": "src/content/docs/usecontroller.mdx",
+      "files": {
+        "source": "pages/usecontroller/source.md",
+        "structure": "pages/usecontroller/structure.json",
+        "overlay": "pages/usecontroller/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "controller",
+      "title": "Controller",
+      "readOrder": 14,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/usecontroller/controller",
+      "sourceRepoPath": "src/content/docs/usecontroller/controller.mdx",
+      "files": {
+        "source": "pages/controller/source.md",
+        "structure": "pages/controller/structure.json",
+        "overlay": "pages/controller/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "formprovider",
+      "title": "FormProvider",
+      "readOrder": 15,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/formprovider",
+      "sourceRepoPath": "src/content/docs/formprovider.mdx",
+      "files": {
+        "source": "pages/formprovider/source.md",
+        "structure": "pages/formprovider/structure.json",
+        "overlay": "pages/formprovider/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "useformcontext",
+      "title": "useFormContext",
+      "readOrder": 16,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useformcontext",
+      "sourceRepoPath": "src/content/docs/useformcontext.mdx",
+      "files": {
+        "source": "pages/useformcontext/source.md",
+        "structure": "pages/useformcontext/structure.json",
+        "overlay": "pages/useformcontext/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "useformstate-hook",
+      "title": "useFormState",
+      "readOrder": 17,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useformstate",
+      "sourceRepoPath": "src/content/docs/useformstate.mdx",
+      "files": {
+        "source": "pages/useformstate-hook/source.md",
+        "structure": "pages/useformstate-hook/structure.json",
+        "overlay": "pages/useformstate-hook/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "usewatch-hook",
+      "title": "useWatch",
+      "readOrder": 18,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "control-context",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/usewatch",
+      "sourceRepoPath": "src/content/docs/usewatch.mdx",
+      "files": {
+        "source": "pages/usewatch-hook/source.md",
+        "structure": "pages/usewatch-hook/structure.json",
+        "overlay": "pages/usewatch-hook/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "usefieldarray",
+      "title": "useFieldArray",
+      "readOrder": 19,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "dynamic-form",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/usefieldarray",
+      "sourceRepoPath": "src/content/docs/usefieldarray.mdx",
+      "files": {
+        "source": "pages/usefieldarray/source.md",
+        "structure": "pages/usefieldarray/structure.json",
+        "overlay": "pages/usefieldarray/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "getvalues",
+      "title": "getValues",
+      "readOrder": 20,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/getvalues",
+      "sourceRepoPath": "src/content/docs/useform/getvalues.mdx",
+      "files": {
+        "source": "pages/getvalues/source.md",
+        "structure": "pages/getvalues/structure.json",
+        "overlay": "pages/getvalues/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "trigger",
+      "title": "trigger",
+      "readOrder": 21,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/trigger",
+      "sourceRepoPath": "src/content/docs/useform/trigger.mdx",
+      "files": {
+        "source": "pages/trigger/source.md",
+        "structure": "pages/trigger/structure.json",
+        "overlay": "pages/trigger/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "clearerrors",
+      "title": "clearErrors",
+      "readOrder": 22,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/clearerrors",
+      "sourceRepoPath": "src/content/docs/useform/clearerrors.mdx",
+      "files": {
+        "source": "pages/clearerrors/source.md",
+        "structure": "pages/clearerrors/structure.json",
+        "overlay": "pages/clearerrors/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "seterror",
+      "title": "setError",
+      "readOrder": 23,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/seterror",
+      "sourceRepoPath": "src/content/docs/useform/seterror.mdx",
+      "files": {
+        "source": "pages/seterror/source.md",
+        "structure": "pages/seterror/structure.json",
+        "overlay": "pages/seterror/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "resetfield",
+      "title": "resetField",
+      "readOrder": 24,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/resetfield",
+      "sourceRepoPath": "src/content/docs/useform/resetfield.mdx",
+      "files": {
+        "source": "pages/resetfield/source.md",
+        "structure": "pages/resetfield/structure.json",
+        "overlay": "pages/resetfield/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "setfocus",
+      "title": "setFocus",
+      "readOrder": 25,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/setfocus",
+      "sourceRepoPath": "src/content/docs/useform/setfocus.mdx",
+      "files": {
+        "source": "pages/setfocus/source.md",
+        "structure": "pages/setfocus/structure.json",
+        "overlay": "pages/setfocus/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "getfieldstate",
+      "title": "getFieldState",
+      "readOrder": 26,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/getfieldstate",
+      "sourceRepoPath": "src/content/docs/useform/getfieldstate.mdx",
+      "files": {
+        "source": "pages/getfieldstate/source.md",
+        "structure": "pages/getfieldstate/structure.json",
+        "overlay": "pages/getfieldstate/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "control",
+      "title": "control",
+      "readOrder": 27,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/control",
+      "sourceRepoPath": "src/content/docs/useform/control.mdx",
+      "files": {
+        "source": "pages/control/source.md",
+        "structure": "pages/control/structure.json",
+        "overlay": "pages/control/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "form",
+      "title": "Form",
+      "readOrder": 28,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/form",
+      "sourceRepoPath": "src/content/docs/useform/form.mdx",
+      "files": {
+        "source": "pages/form/source.md",
+        "structure": "pages/form/structure.json",
+        "overlay": "pages/form/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "subscribe",
+      "title": "subscribe",
+      "readOrder": 29,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "support-api",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/useform/subscribe",
+      "sourceRepoPath": "src/content/docs/useform/subscribe.mdx",
+      "files": {
+        "source": "pages/subscribe/source.md",
+        "structure": "pages/subscribe/structure.json",
+        "overlay": "pages/subscribe/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ts-overview",
+      "title": "TypeScript Support",
+      "readOrder": 30,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "section",
+      "canonicalUrl": "https://react-hook-form.com/ts",
+      "sourceRepoPath": "src/content/ts.mdx",
+      "files": {
+        "source": "pages/ts-overview/source.md",
+        "structure": "pages/ts-overview/structure.json",
+        "overlay": "pages/ts-overview/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "advanced-usage",
+      "title": "Advanced Usage",
+      "readOrder": 31,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "section",
+      "canonicalUrl": "https://react-hook-form.com/advanced-usage",
+      "sourceRepoPath": "src/content/advanced-usage.mdx",
+      "files": {
+        "source": "pages/advanced-usage/source.md",
+        "structure": "pages/advanced-usage/structure.json",
+        "overlay": "pages/advanced-usage/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "faqs",
+      "title": "FAQs",
+      "readOrder": 32,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "section",
+      "canonicalUrl": "https://react-hook-form.com/faqs",
+      "sourceRepoPath": "src/content/faqs.mdx",
+      "files": {
+        "source": "pages/faqs/source.md",
+        "structure": "pages/faqs/structure.json",
+        "overlay": "pages/faqs/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "createformcontrol",
+      "title": "createFormControl",
+      "readOrder": 33,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/createformcontrol",
+      "sourceRepoPath": "src/content/docs/createFormControl.mdx",
+      "files": {
+        "source": "pages/createformcontrol/source.md",
+        "structure": "pages/createformcontrol/structure.json",
+        "overlay": "pages/createformcontrol/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "uselens",
+      "title": "useLens",
+      "readOrder": 34,
+      "status": "queued",
+      "captureMode": "pending",
+      "pageType": "api-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "canonicalUrl": "https://react-hook-form.com/docs/uselens",
+      "sourceRepoPath": "src/content/docs/useLens.mdx",
+      "files": {
+        "source": "pages/uselens/source.md",
+        "structure": "pages/uselens/structure.json",
+        "overlay": "pages/uselens/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "get-started-full",
+      "title": "Get Started",
+      "readOrder": 35,
+      "status": "sample",
+      "captureMode": "verbatim",
+      "pageType": "section-page",
+      "learningStage": "onboarding",
+      "sourceScope": "full-page",
+      "sectionAnchor": "GetStartedFull",
+      "canonicalUrl": "https://react-hook-form.com/get-started",
+      "sourceRepoPath": "src/content/get-started.mdx",
+      "files": {
+        "source": "pages/get-started-full/source.md",
+        "structure": "pages/get-started-full/structure.json",
+        "overlay": "pages/get-started-full/overlay.ko.json"
+      }
+    }
+  ]
+}

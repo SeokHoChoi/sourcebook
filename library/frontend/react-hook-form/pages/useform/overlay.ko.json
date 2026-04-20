@@ -1,0 +1,41 @@
+{
+  "pageSlug": "useform",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "useform-seg-002",
+      "directTranslation": "useForm은 폼을 더 쉽게 관리하기 위한 커스텀 훅이다. 선택적으로 객체 하나를 인자로 받는다.",
+      "trickySentenceExplanation": "optional argument는 전달하지 않아도 기본 동작이 가능하다는 의미다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "custom hook",
+          "korean": "커스텀 훅",
+          "explanation": "React 훅 로직을 재사용 가능한 함수로 묶은 형태."
+        },
+        {
+          "term": "optional argument",
+          "korean": "선택 인자",
+          "explanation": "호출 시 생략 가능한 인자."
+        }
+      ],
+      "devNote": "useForm은 이후 register, watch, setValue 같은 API를 꺼내 쓰는 출발점이다.",
+      "recallQuestion": "useForm의 인자는 필수인가, 선택인가?",
+      "speakingTransferPrompt": "useForm이 왜 RHF API의 시작점인지 3문장으로 설명해보자."
+    },
+    {
+      "segmentId": "useform-seg-003",
+      "directTranslation": "아래 예시는 기본값과 함께 useForm의 각 프로퍼티를 보여준다.",
+      "trickySentenceExplanation": "properties along with default values는 반환 객체의 필드와 기본 동작을 함께 확인하라는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "default values",
+          "korean": "기본값",
+          "explanation": "명시하지 않아도 자동으로 적용되는 값."
+        }
+      ],
+      "devNote": "공식 예시는 단순한 선언보다 반환 shape를 이해하는 용도로 먼저 읽는다.",
+      "recallQuestion": "이 문장에서 공식 예시를 보는 목적은 무엇인가?",
+      "speakingTransferPrompt": "동료에게 useForm 문서 첫 예시를 어떻게 읽어야 하는지 설명해보자."
+    }
+  ]
+}

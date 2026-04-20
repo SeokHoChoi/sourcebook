@@ -1,0 +1,26 @@
+{
+  "pageSlug": "register",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "register-seg-002",
+      "directTranslation": "이 메서드는 input이나 select 요소를 등록하고 React Hook Form에 검증 규칙을 적용할 수 있게 해준다. 검증 규칙은 HTML 표준 기반이며 커스텀 검증도 허용한다.",
+      "trickySentenceExplanation": "register 호출 결과는 실제 입력 요소에 연결될 props 묶음(ref, name, onChange, onBlur)이라는 점이 핵심이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "validation rules",
+          "korean": "검증 규칙",
+          "explanation": "required, minLength 같은 입력 유효성 조건."
+        },
+        {
+          "term": "custom validation methods",
+          "korean": "커스텀 검증 메서드",
+          "explanation": "표준 규칙으로 부족할 때 직접 작성하는 검증 로직."
+        }
+      ],
+      "devNote": "register는 단순 등록이 아니라 필드와 RHF 상태를 연결하는 wiring API로 이해해야 한다.",
+      "recallQuestion": "register가 반환하는 핵심 props는 무엇인가?",
+      "speakingTransferPrompt": "register를 '배선 API'라고 부르는 이유를 설명해보자."
+    }
+  ]
+}

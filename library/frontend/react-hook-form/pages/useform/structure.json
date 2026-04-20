@@ -1,0 +1,34 @@
+{
+  "pageSlug": "useform",
+  "pageTitle": "useForm",
+  "lastStructuredAt": "2026-04-16",
+  "segments": [
+    {
+      "id": "useform-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "useform-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 3
+      }
+    },
+    {
+      "id": "useform-seg-003",
+      "order": 3,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 5,
+        "endLine": 5
+      }
+    }
+  ]
+}

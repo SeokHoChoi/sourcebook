@@ -28,3 +28,17 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Commit messages use Conventional Commits with Korean subjects
 - Preferred format: `<type>: <한국어 요약>` (example: `fix: E2E 아티팩트 복원 경로 안정화`)
 - Before reporting completion, run `pnpm lint:strict`, `pnpm format:check`, `pnpm type-check`, `pnpm test`, `pnpm test:coverage`, `pnpm build`, and `pnpm test:e2e`
+
+## Sourcebook Formatting Contract
+
+- `source.md` is a verbatim archive. Keep pasted source intact, including menu text, ads, footer, and surrounding chrome.
+- Raw source must not be dumped as a giant unformatted `pre`. Preserve content, but reorganize the view into readable blocks.
+- `structure.json` selects learning-worthy segments only. Do not turn every copied line into a study card.
+- Full-page docs should use official menu/top-level section boundaries for the primary outline whenever those labels exist.
+- Prose segments should keep the English sentence visible first, with Korean direct-reading support immediately below it. Avoid over-fragmented card stacks that break discourse coherence.
+- Slash chunking is allowed only as reading support. Do not replace the original sentence with chunks only.
+- Code segments should default to an editor-style presentation with readable highlighting and inline or line-adjacent annotations tied to the relevant code line.
+- Avoid a separate low-signal `코드 읽기` panel under code when the same explanation can be attached directly to the code block.
+- `devNote` should stay short and explain the programming meaning or worked-example role of the snippet, not restate every line.
+- `trickySentenceExplanation` should only be used for genuinely confusing phrasing, syntax, or reasoning jumps.
+- `selectiveVocabGlosses` should stay selective. Only annotate terms that materially improve comprehension.

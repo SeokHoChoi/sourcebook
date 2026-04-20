@@ -1,0 +1,13 @@
+{
+  "categorySlug": "frontend",
+  "trackSlug": "next",
+  "title": "Next.js 앱 라우터",
+  "status": "planned",
+  "phase": "예정",
+  "description": "Next.js 공식문서를 위한 예정 트랙.",
+  "scope": "App Router 구조, 데이터 패칭, 배포 학습용 예정 트랙.",
+  "homepageUrl": "https://nextjs.org/docs",
+  "documentationRepoUrl": "https://github.com/vercel/next.js",
+  "intakeFlow": [],
+  "pages": []
+}

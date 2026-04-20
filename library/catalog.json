@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-16",
+  "categories": [
+    {
+      "slug": "frontend",
+      "title": "프론트엔드",
+      "description": "프론트엔드 공식문서와 API 문해력을 쌓는 학습 트랙 모음.",
+      "tracks": [
+        {
+          "slug": "react-hook-form",
+          "title": "React Hook Form",
+          "status": "active"
+        },
+        {
+          "slug": "react",
+          "title": "React 기본기",
+          "status": "planned"
+        },
+        {
+          "slug": "next",
+          "title": "Next.js 앱 라우터",
+          "status": "planned"
+        }
+      ]
+    },
+    {
+      "slug": "career",
+      "title": "커리어",
+      "description": "이력서와 면접 준비를 위한 커리어 학습 트랙 모음.",
+      "tracks": [
+        {
+          "slug": "resume",
+          "title": "이력서 준비",
+          "status": "planned"
+        },
+        {
+          "slug": "interview",
+          "title": "면접 준비",
+          "status": "planned"
+        }
+      ]
+    }
+  ]
+}

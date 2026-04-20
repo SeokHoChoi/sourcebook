@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-04-17",
+  "items": [
+    {
+      "id": "review-rhf-001",
+      "pageSlug": "useform",
+      "segmentId": "useform-seg-002",
+      "prompt": "useForm의 입력과 반환을 한 문장으로 설명하라.",
+      "dueOn": "2026-04-18",
+      "status": "due",
+      "sourceEventId": "rhf-event-001"
+    },
+    {
+      "id": "review-rhf-002",
+      "pageSlug": "register",
+      "segmentId": "register-seg-002",
+      "prompt": "register 반환값의 네 가지 핵심 props를 적고 역할을 말하라.",
+      "dueOn": "2026-04-18",
+      "status": "due",
+      "sourceEventId": "rhf-event-002"
+    },
+    {
+      "id": "review-rhf-003",
+      "pageSlug": "useform",
+      "segmentId": "useform-seg-003",
+      "prompt": "선택 인자(optional argument)가 문서 문맥에서 의미하는 바를 설명하라.",
+      "dueOn": "2026-04-19",
+      "status": "scheduled",
+      "sourceEventId": "rhf-event-003"
+    },
+    {
+      "id": "review-rhf-004",
+      "pageSlug": "gs-register-fields",
+      "segmentId": "gs-register-fields-seg-003",
+      "prompt": "field name이 unique해야 하는 이유를 등록 키 충돌 관점으로 설명하라.",
+      "dueOn": "2026-04-20",
+      "status": "due",
+      "sourceEventId": "rhf-event-004"
+    },
+    {
+      "id": "review-rhf-005",
+      "pageSlug": "gs-apply-validation",
+      "segmentId": "gs-apply-validation-seg-002",
+      "prompt": "RHF가 HTML 표준 검증과 정렬된다는 문장이 왜 도입 장벽을 낮추는지 설명하라.",
+      "dueOn": "2026-04-21",
+      "status": "scheduled",
+      "sourceEventId": "rhf-event-005"
+    },
+    {
+      "id": "review-rhf-006",
+      "pageSlug": "gs-installation-example",
+      "segmentId": "gs-installation-example-seg-002",
+      "prompt": "ready to roll의 의미를 제품 온보딩 문맥으로 바꿔 설명하라.",
+      "dueOn": "2026-04-21",
+      "status": "done",
+      "sourceEventId": "rhf-event-006"
+    },
+    {
+      "id": "review-rhf-007",
+      "pageSlug": "get-started-full",
+      "segmentId": "get-started-full-seg-003",
+      "prompt": "전체 복붙 원문에서 raw source와 structure가 각각 맡는 역할을 설명하라.",
+      "dueOn": "2026-04-22",
+      "status": "scheduled",
+      "sourceEventId": "rhf-event-007"
+    }
+  ]
+}
