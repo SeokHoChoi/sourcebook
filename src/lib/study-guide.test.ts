@@ -30,4 +30,22 @@ describe('study guide parser', () => {
     expect(parsed.html).toContain('4-5. <code>&lt;Form /&gt;</code> /');
     expect(parsed.html).toContain('<code>&lt;FormStateSubscribe /&gt;</code>');
   });
+
+  it('escapes raw html-like heading content while preserving html-like labels in anchors', () => {
+    const parsed = parseStudyGuideMarkdown(
+      [
+        '# [4-5. <Form /> / <FormStateSubscribe />](#4-5-form--formstatesubscribe)',
+        '## <script>alert("xss")</script>',
+        '',
+        '```tsx',
+        'const label = "<Form />";',
+        '```',
+      ].join('\n'),
+    );
+
+    expect(parsed.html).toContain('href="#4-5-form--formstatesubscribe"');
+    expect(parsed.html).toContain('&lt;Form /&gt; / &lt;FormStateSubscribe /&gt;');
+    expect(parsed.html).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;');
+    expect(parsed.html).not.toContain('<script>alert("xss")</script>');
+  });
 });

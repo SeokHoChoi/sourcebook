@@ -78,7 +78,6 @@ function normalizeTextLookup(value: string): string {
     .replaceAll(/\*\*([^*]+)\*\*/g, '$1')
     .replaceAll(/\*([^*]+)\*/g, '$1')
     .replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
-    .replaceAll(/<[^>]+>/g, '')
     .replaceAll(/\s+/g, ' ')
     .trim();
 }
@@ -111,7 +110,6 @@ function slugifyHeading(text: string, state: ParseState): string {
   const base =
     text
       .toLowerCase()
-      .replaceAll(/<[^>]+>/g, '')
       .replaceAll(/[`*_~]/g, '')
       .replaceAll(/[^\p{L}\p{N}]+/gu, '-')
       .replaceAll(/^-+|-+$/g, '') || 'section';
@@ -188,27 +186,153 @@ function renderCodeTokenHtml(token: string): string {
   return `<span class="${className}">${escapeHtml(token)}</span>`;
 }
 
-function renderHighlightedCodeLineHtml(line: string): string {
-  const tokenRegex =
-    /\/\/.*$|\/\*.*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`|<\/?[A-Za-z][^>\s]*|[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?/g;
-  const parts: string[] = [];
-  let lastIndex = 0;
+function readQuotedToken(line: string, startIndex: number, quote: '"' | "'" | '`'): number {
+  let index = startIndex + 1;
 
-  for (const match of line.matchAll(tokenRegex)) {
-    const token = match[0];
-    const start = match.index;
+  while (index < line.length) {
+    const char = line[index];
 
-    if (start > lastIndex) {
-      parts.push(escapeHtml(line.slice(lastIndex, start)));
+    if (char === '\\') {
+      index += 2;
+      continue;
     }
 
-    parts.push(renderCodeTokenHtml(token));
-    lastIndex = start + token.length;
+    if (char === quote) {
+      return index + 1;
+    }
+
+    index += 1;
   }
 
-  if (lastIndex < line.length) {
-    parts.push(escapeHtml(line.slice(lastIndex)));
+  return line.length;
+}
+
+function readTagToken(line: string, startIndex: number): number {
+  let index = startIndex + 1;
+
+  if (line[index] === '/') {
+    index += 1;
   }
+
+  if (!/[A-Za-z]/.test(line[index] ?? '')) {
+    return startIndex;
+  }
+
+  while (index < line.length) {
+    const char = line[index] ?? '';
+
+    if (/\s|>/.test(char)) {
+      break;
+    }
+
+    index += 1;
+  }
+
+  return index;
+}
+
+function readIdentifierToken(line: string, startIndex: number): number {
+  let index = startIndex + 1;
+
+  while (index < line.length && /[A-Za-z0-9_]/.test(line[index] ?? '')) {
+    index += 1;
+  }
+
+  return index;
+}
+
+function readNumberToken(line: string, startIndex: number): number {
+  let index = startIndex + 1;
+
+  while (index < line.length && /\d/.test(line[index] ?? '')) {
+    index += 1;
+  }
+
+  if (line[index] === '.' && /\d/.test(line[index + 1] ?? '')) {
+    index += 1;
+
+    while (index < line.length && /\d/.test(line[index] ?? '')) {
+      index += 1;
+    }
+  }
+
+  return index;
+}
+
+function renderHighlightedCodeLineHtml(line: string): string {
+  const parts: string[] = [];
+  let index = 0;
+  let plainBuffer = '';
+
+  const flushPlainBuffer = () => {
+    if (!plainBuffer) {
+      return;
+    }
+
+    parts.push(escapeHtml(plainBuffer));
+    plainBuffer = '';
+  };
+
+  while (index < line.length) {
+    const char = line[index] ?? '';
+    const next = line[index + 1] ?? '';
+    let tokenEnd = index;
+
+    if (char === '/' && next === '/') {
+      flushPlainBuffer();
+      parts.push(renderCodeTokenHtml(line.slice(index)));
+      break;
+    }
+
+    if (char === '/' && next === '*') {
+      flushPlainBuffer();
+      const commentEnd = line.indexOf('*/', index + 2);
+      tokenEnd = commentEnd === -1 ? line.length : commentEnd + 2;
+      parts.push(renderCodeTokenHtml(line.slice(index, tokenEnd)));
+      index = tokenEnd;
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === '`') {
+      flushPlainBuffer();
+      tokenEnd = readQuotedToken(line, index, char);
+      parts.push(renderCodeTokenHtml(line.slice(index, tokenEnd)));
+      index = tokenEnd;
+      continue;
+    }
+
+    if (char === '<') {
+      tokenEnd = readTagToken(line, index);
+
+      if (tokenEnd > index) {
+        flushPlainBuffer();
+        parts.push(renderCodeTokenHtml(line.slice(index, tokenEnd)));
+        index = tokenEnd;
+        continue;
+      }
+    }
+
+    if (/[A-Za-z_]/.test(char)) {
+      flushPlainBuffer();
+      tokenEnd = readIdentifierToken(line, index);
+      parts.push(renderCodeTokenHtml(line.slice(index, tokenEnd)));
+      index = tokenEnd;
+      continue;
+    }
+
+    if (/\d/.test(char)) {
+      flushPlainBuffer();
+      tokenEnd = readNumberToken(line, index);
+      parts.push(renderCodeTokenHtml(line.slice(index, tokenEnd)));
+      index = tokenEnd;
+      continue;
+    }
+
+    plainBuffer += char;
+    index += 1;
+  }
+
+  flushPlainBuffer();
 
   return parts.join('');
 }
