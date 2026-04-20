@@ -1,0 +1,43 @@
+{
+  "pageSlug": "gs-apply-validation",
+  "pageTitle": "Get Started - Apply validation",
+  "lastStructuredAt": "2026-04-17",
+  "segments": [
+    {
+      "id": "gs-apply-validation-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "gs-apply-validation-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 3
+      }
+    },
+    {
+      "id": "gs-apply-validation-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 5,
+        "endLine": 12
+      }
+    },
+    {
+      "id": "gs-apply-validation-seg-004",
+      "order": 4,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 14,
+        "endLine": 14
+      }
+    }
+  ]
+}

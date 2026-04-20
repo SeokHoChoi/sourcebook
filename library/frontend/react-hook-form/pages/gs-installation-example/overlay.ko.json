@@ -1,0 +1,56 @@
+{
+  "pageSlug": "gs-installation-example",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "gs-installation-example-seg-002",
+      "directTranslation": "React Hook Form 설치는 명령 하나면 끝나고 바로 시작할 수 있다.",
+      "trickySentenceExplanation": "ready to roll은 준비가 끝나 곧바로 작업 가능하다는 관용 표현이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "single command",
+          "korean": "단일 명령",
+          "explanation": "복잡한 설정 없이 한 줄 커맨드로 설치가 끝난다는 뜻."
+        },
+        {
+          "term": "ready to roll",
+          "korean": "바로 시작 가능",
+          "explanation": "준비 완료 상태를 가리키는 구어 표현."
+        }
+      ],
+      "devNote": "온보딩 단계에서 설치 복잡도가 낮다는 메시지를 먼저 확인하면 도입 장벽이 내려간다.",
+      "recallQuestion": "이 문장이 강조하는 RHF 도입 장벽은 무엇인가?",
+      "speakingTransferPrompt": "팀원에게 RHF 설치 진입 장벽을 2문장으로 설명해보자."
+    },
+    {
+      "segmentId": "gs-installation-example-seg-003",
+      "directTranslation": "설치 명령은 npm install react-hook-form이다.",
+      "trickySentenceExplanation": "CLI 명령은 번역하지 말고 원문 그대로 기억해야 재현성이 유지된다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "npm install",
+          "korean": "npm 설치 명령",
+          "explanation": "패키지를 현재 프로젝트 의존성으로 추가하는 기본 명령."
+        }
+      ],
+      "devNote": "명령어는 복사 가능한 정답형 데이터라서 오버레이보다 원문 보존이 우선이다.",
+      "recallQuestion": "RHF 설치 커맨드를 정확히 다시 써보자.",
+      "speakingTransferPrompt": "신입 개발자에게 설치 명령과 의미를 짧게 설명해보자."
+    },
+    {
+      "segmentId": "gs-installation-example-seg-005",
+      "directTranslation": "아래 코드는 가장 기본적인 사용 예시를 보여준다.",
+      "trickySentenceExplanation": "basic usage example은 기능 전부가 아니라 최소 동작 경로를 보여주는 샘플이라는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "code excerpt",
+          "korean": "코드 발췌",
+          "explanation": "전체 코드가 아닌 핵심 부분만 잘라 보여주는 형태."
+        }
+      ],
+      "devNote": "API 레퍼런스를 읽기 전에 최소 예시를 먼저 보면 이후 문장 해석 속도가 빨라진다.",
+      "recallQuestion": "이 예시는 전체 기능이 아니라 무엇을 보여주기 위한 예시인가?",
+      "speakingTransferPrompt": "기본 예시를 먼저 읽어야 하는 이유를 영어와 한국어로 각각 말해보자."
+    }
+  ]
+}

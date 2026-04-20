@@ -1,0 +1,25 @@
+{
+  "pageSlug": "register",
+  "pageTitle": "register",
+  "lastStructuredAt": "2026-04-16",
+  "segments": [
+    {
+      "id": "register-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 1,
+        "endLine": 1
+      }
+    },
+    {
+      "id": "register-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 3
+      }
+    }
+  ]
+}

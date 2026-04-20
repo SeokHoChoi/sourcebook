@@ -1,0 +1,475 @@
+{
+  "pageSlug": "get-started-full",
+  "pageTitle": "Get Started",
+  "lastStructuredAt": "2026-04-17",
+  "segments": [
+    {
+      "id": "get-started-full-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 20,
+        "endLine": 20
+      }
+    },
+    {
+      "id": "get-started-full-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 21,
+        "endLine": 21
+      }
+    },
+    {
+      "id": "get-started-full-seg-003",
+      "order": 3,
+      "kind": "heading",
+      "source": {
+        "startLine": 55,
+        "endLine": 55
+      }
+    },
+    {
+      "id": "get-started-full-seg-004",
+      "order": 4,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 56,
+        "endLine": 56
+      }
+    },
+    {
+      "id": "get-started-full-seg-005",
+      "order": 5,
+      "kind": "code",
+      "source": {
+        "startLine": 59,
+        "endLine": 59
+      }
+    },
+    {
+      "id": "get-started-full-seg-006",
+      "order": 6,
+      "kind": "heading",
+      "source": {
+        "startLine": 60,
+        "endLine": 60
+      }
+    },
+    {
+      "id": "get-started-full-seg-007",
+      "order": 7,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 61,
+        "endLine": 61
+      }
+    },
+    {
+      "id": "get-started-full-seg-008",
+      "order": 8,
+      "kind": "code",
+      "source": {
+        "startLine": 68,
+        "endLine": 100
+      }
+    },
+    {
+      "id": "get-started-full-seg-036",
+      "order": 9,
+      "kind": "heading",
+      "source": {
+        "startLine": 101,
+        "endLine": 101
+      }
+    },
+    {
+      "id": "get-started-full-seg-037",
+      "order": 10,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 102,
+        "endLine": 102
+      }
+    },
+    {
+      "id": "get-started-full-seg-009",
+      "order": 11,
+      "kind": "heading",
+      "source": {
+        "startLine": 105,
+        "endLine": 105
+      }
+    },
+    {
+      "id": "get-started-full-seg-010",
+      "order": 12,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 106,
+        "endLine": 108
+      }
+    },
+    {
+      "id": "get-started-full-seg-011",
+      "order": 13,
+      "kind": "code",
+      "source": {
+        "startLine": 115,
+        "endLine": 146
+      }
+    },
+    {
+      "id": "get-started-full-seg-012",
+      "order": 14,
+      "kind": "heading",
+      "source": {
+        "startLine": 147,
+        "endLine": 147
+      }
+    },
+    {
+      "id": "get-started-full-seg-013",
+      "order": 15,
+      "kind": "list",
+      "source": {
+        "startLine": 148,
+        "endLine": 159
+      }
+    },
+    {
+      "id": "get-started-full-seg-014",
+      "order": 16,
+      "kind": "code",
+      "source": {
+        "startLine": 166,
+        "endLine": 186
+      }
+    },
+    {
+      "id": "get-started-full-seg-038",
+      "order": 17,
+      "kind": "heading",
+      "source": {
+        "startLine": 187,
+        "endLine": 187
+      }
+    },
+    {
+      "id": "get-started-full-seg-039",
+      "order": 18,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 188,
+        "endLine": 188
+      }
+    },
+    {
+      "id": "get-started-full-seg-040",
+      "order": 19,
+      "kind": "code",
+      "source": {
+        "startLine": 195,
+        "endLine": 244
+      }
+    },
+    {
+      "id": "get-started-full-seg-041",
+      "order": 20,
+      "kind": "heading",
+      "source": {
+        "startLine": 245,
+        "endLine": 245
+      }
+    },
+    {
+      "id": "get-started-full-seg-042",
+      "order": 21,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 246,
+        "endLine": 246
+      }
+    },
+    {
+      "id": "get-started-full-seg-043",
+      "order": 22,
+      "kind": "code",
+      "source": {
+        "startLine": 253,
+        "endLine": 300
+      }
+    },
+    {
+      "id": "get-started-full-seg-015",
+      "order": 23,
+      "kind": "heading",
+      "source": {
+        "startLine": 301,
+        "endLine": 301
+      }
+    },
+    {
+      "id": "get-started-full-seg-016",
+      "order": 24,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 302,
+        "endLine": 302
+      }
+    },
+    {
+      "id": "get-started-full-seg-017",
+      "order": 25,
+      "kind": "heading",
+      "source": {
+        "startLine": 304,
+        "endLine": 304
+      }
+    },
+    {
+      "id": "get-started-full-seg-018",
+      "order": 26,
+      "kind": "code",
+      "source": {
+        "startLine": 311,
+        "endLine": 338
+      }
+    },
+    {
+      "id": "get-started-full-seg-019",
+      "order": 27,
+      "kind": "heading",
+      "source": {
+        "startLine": 339,
+        "endLine": 339
+      }
+    },
+    {
+      "id": "get-started-full-seg-020",
+      "order": 28,
+      "kind": "code",
+      "source": {
+        "startLine": 345,
+        "endLine": 380
+      }
+    },
+    {
+      "id": "get-started-full-seg-044",
+      "order": 29,
+      "kind": "heading",
+      "source": {
+        "startLine": 381,
+        "endLine": 381
+      }
+    },
+    {
+      "id": "get-started-full-seg-045",
+      "order": 30,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 382,
+        "endLine": 382
+      }
+    },
+    {
+      "id": "get-started-full-seg-046",
+      "order": 31,
+      "kind": "code",
+      "source": {
+        "startLine": 385,
+        "endLine": 412
+      }
+    },
+    {
+      "id": "get-started-full-seg-021",
+      "order": 32,
+      "kind": "heading",
+      "source": {
+        "startLine": 413,
+        "endLine": 413
+      }
+    },
+    {
+      "id": "get-started-full-seg-022",
+      "order": 33,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 414,
+        "endLine": 414
+      }
+    },
+    {
+      "id": "get-started-full-seg-023",
+      "order": 34,
+      "kind": "code",
+      "source": {
+        "startLine": 419,
+        "endLine": 448
+      }
+    },
+    {
+      "id": "get-started-full-seg-047",
+      "order": 35,
+      "kind": "heading",
+      "source": {
+        "startLine": 449,
+        "endLine": 449
+      }
+    },
+    {
+      "id": "get-started-full-seg-048",
+      "order": 36,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 450,
+        "endLine": 450
+      }
+    },
+    {
+      "id": "get-started-full-seg-049",
+      "order": 37,
+      "kind": "code",
+      "source": {
+        "startLine": 452,
+        "endLine": 474
+      }
+    },
+    {
+      "id": "get-started-full-seg-024",
+      "order": 38,
+      "kind": "heading",
+      "source": {
+        "startLine": 475,
+        "endLine": 475
+      }
+    },
+    {
+      "id": "get-started-full-seg-025",
+      "order": 39,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 476,
+        "endLine": 478
+      }
+    },
+    {
+      "id": "get-started-full-seg-026",
+      "order": 40,
+      "kind": "code",
+      "source": {
+        "startLine": 481,
+        "endLine": 481
+      }
+    },
+    {
+      "id": "get-started-full-seg-027",
+      "order": 41,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 482,
+        "endLine": 482
+      }
+    },
+    {
+      "id": "get-started-full-seg-028",
+      "order": 42,
+      "kind": "code",
+      "source": {
+        "startLine": 487,
+        "endLine": 519
+      }
+    },
+    {
+      "id": "get-started-full-seg-052",
+      "order": 43,
+      "kind": "heading",
+      "source": {
+        "startLine": 520,
+        "endLine": 520
+      }
+    },
+    {
+      "id": "get-started-full-seg-053",
+      "order": 44,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 521,
+        "endLine": 521
+      }
+    },
+    {
+      "id": "get-started-full-seg-054",
+      "order": 45,
+      "kind": "code",
+      "source": {
+        "startLine": 524,
+        "endLine": 580
+      }
+    },
+    {
+      "id": "get-started-full-seg-029",
+      "order": 46,
+      "kind": "heading",
+      "source": {
+        "startLine": 581,
+        "endLine": 581
+      }
+    },
+    {
+      "id": "get-started-full-seg-030",
+      "order": 47,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 582,
+        "endLine": 582
+      }
+    },
+    {
+      "id": "get-started-full-seg-031",
+      "order": 48,
+      "kind": "code",
+      "source": {
+        "startLine": 587,
+        "endLine": 623
+      }
+    },
+    {
+      "id": "get-started-full-seg-032",
+      "order": 49,
+      "kind": "heading",
+      "source": {
+        "startLine": 624,
+        "endLine": 624
+      }
+    },
+    {
+      "id": "get-started-full-seg-033",
+      "order": 50,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 625,
+        "endLine": 625
+      }
+    },
+    {
+      "id": "get-started-full-seg-034",
+      "order": 51,
+      "kind": "list",
+      "source": {
+        "startLine": 627,
+        "endLine": 629
+      }
+    },
+    {
+      "id": "get-started-full-seg-035",
+      "order": 52,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 630,
+        "endLine": 632
+      }
+    }
+  ]
+}

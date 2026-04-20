@@ -1,0 +1,777 @@
+{
+  "pageSlug": "get-started-full",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "get-started-full-seg-001",
+      "directTranslation": "시작하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-003",
+      "directTranslation": "설치",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-006",
+      "directTranslation": "예제",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-036",
+      "directTranslation": "React 웹 영상 튜토리얼",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-009",
+      "directTranslation": "필드 등록하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-012",
+      "directTranslation": "검증 적용하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-038",
+      "directTranslation": "기존 폼 연동하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-041",
+      "directTranslation": "UI 라이브러리와 연동하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-015",
+      "directTranslation": "제어형 입력 연동하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-017",
+      "directTranslation": "컴포넌트 API 사용하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-019",
+      "directTranslation": "훅 API 사용하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-044",
+      "directTranslation": "전역 상태와 연동하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-021",
+      "directTranslation": "에러 처리하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-047",
+      "directTranslation": "서비스와 연동하기",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-024",
+      "directTranslation": "스키마 검증",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-052",
+      "directTranslation": "리액트 네이티브",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-029",
+      "directTranslation": "타입스크립트",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-032",
+      "directTranslation": "설계와 철학",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "get-started-full-seg-002",
+      "directTranslation": "Simple form validation / 간단한 폼 검증을\nwith React Hook Form. / React Hook Form으로 시작해보자는 안내다.",
+      "trickySentenceExplanation": "simple form validation은 전체 기능 설명이 아니라 가장 기본적인 사용 흐름부터 보여주겠다는 약속이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "simple form validation",
+          "korean": "간단한 폼 검증",
+          "explanation": "복잡한 고급 기능보다 최소한의 입력/제출/에러 흐름부터 익히는 단계."
+        }
+      ],
+      "devNote": "Get Started는 API 참조보다 먼저 읽는 온보딩 페이지라서 전체 철학과 최소 예제를 빠르게 연결해 준다.",
+      "recallQuestion": "이 페이지가 처음부터 약속하는 학습 범위는 무엇인가?",
+      "speakingTransferPrompt": "RHF Get Started 페이지가 초보자에게 무엇을 보여주는지 2문장으로 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-004",
+      "directTranslation": "Installing React Hook Form / React Hook Form 설치는\nonly takes a single command / 명령 한 줄이면 끝나고\nand you're ready to roll. / 바로 시작할 수 있다.",
+      "trickySentenceExplanation": "ready to roll은 단순 준비 완료가 아니라 설치 직후 바로 사용 가능한 도입 속도를 강조하는 관용 표현이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "single command",
+          "korean": "명령 한 줄",
+          "explanation": "설치 절차가 짧고 복잡한 사전 구성이 거의 없다는 메시지."
+        },
+        {
+          "term": "ready to roll",
+          "korean": "바로 시작 가능",
+          "explanation": "실무에서 자주 쓰이는 관용 표현으로, 준비가 끝나 즉시 실행 가능한 상태를 뜻한다."
+        }
+      ],
+      "devNote": "도구 도입 문서에서는 설치 난이도가 낮다는 메시지가 핵심 설득 포인트가 된다.",
+      "recallQuestion": "이 문장이 강조하는 RHF의 도입 장점은 무엇인가?",
+      "speakingTransferPrompt": "팀원에게 RHF 설치 진입 장벽이 낮은 이유를 짧게 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-005",
+      "directTranslation": "설치 커맨드는 npm install react-hook-form이다.",
+      "trickySentenceExplanation": "CLI 명령은 해석 대상이 아니라 정확히 복원해야 하는 실행 데이터라서 원문 보존이 우선이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "npm install",
+          "korean": "npm 설치 명령",
+          "explanation": "패키지를 현재 프로젝트 의존성으로 추가하는 기본 명령."
+        }
+      ],
+      "devNote": "코드와 명령어는 번역보다 재현성이 중요하므로 raw source에서 그대로 보존한다.",
+      "recallQuestion": "RHF 설치 명령을 정확히 다시 써보자.",
+      "speakingTransferPrompt": "새 프로젝트에서 RHF를 설치하는 방법을 영어 한 문장과 한국어 한 문장으로 말해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-007",
+      "directTranslation": "The following code excerpt / 다음 코드 발췌는\ndemonstrates / 보여준다\na basic usage example: / 가장 기본적인 사용 예시를.",
+      "trickySentenceExplanation": "code excerpt는 전체 앱이 아니라 핵심 흐름만 잘라 보여주는 예제라는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "code excerpt",
+          "korean": "코드 발췌",
+          "explanation": "전체 코드 중 설명에 필요한 부분만 뽑아 제시하는 형식."
+        },
+        {
+          "term": "basic usage example",
+          "korean": "기본 사용 예시",
+          "explanation": "고급 사례가 아니라 가장 작은 성공 경로를 보여주는 예제."
+        }
+      ],
+      "devNote": "학습 초반에는 완전한 API 목록보다 worked example 하나가 구조를 더 빨리 이해하게 해 준다.",
+      "recallQuestion": "이 문장에서 example이 의미하는 학습 전략은 무엇인가?",
+      "speakingTransferPrompt": "왜 레퍼런스보다 기본 예제를 먼저 읽는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-008",
+      "directTranslation": "useForm에서 / useForm 훅에서\nregister, handleSubmit, watch, errors를 꺼내고 / register, handleSubmit, watch, errors를 꺼낸다.\nregister는 필드 연결 / register는 필드를 연결하고\nhandleSubmit은 제출 전 검증 / handleSubmit은 제출 전에 검증하고\nwatch는 값 관찰 / watch는 값을 지켜보고\nerrors는 실패 표시 / errors는 검증 실패를 보여준다.",
+      "trickySentenceExplanation": "코드는 줄마다 번역하기보다 어떤 역할 묶음을 한 화면에서 보여주는지 먼저 잡아야 읽기가 쉬워진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "SubmitHandler",
+          "korean": "제출 핸들러 타입",
+          "explanation": "폼 제출 시 전달되는 데이터 타입을 함수 시그니처에 고정하는 타입."
+        },
+        {
+          "term": "watch",
+          "korean": "값 관찰",
+          "explanation": "특정 필드 값을 구독하듯 읽어 변화 확인에 쓰는 API."
+        },
+        {
+          "term": "errors",
+          "korean": "에러 객체",
+          "explanation": "검증 실패 정보를 필드별로 담는 상태 객체."
+        }
+      ],
+      "devNote": "이 코드는 RHF의 최소 worked example이다. register로 필드를 연결하고, handleSubmit으로 제출 전 검증을 걸고, errors로 실패 결과를 렌더링한다.",
+      "recallQuestion": "이 예제에서 register, handleSubmit, watch, errors는 각각 무슨 역할을 하나?",
+      "speakingTransferPrompt": "이 기본 예제를 동료에게 3문장으로 요약 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-010",
+      "directTranslation": "One of the key concepts / 핵심 개념 중 하나는\nin React Hook Form / React Hook Form에서\nis to register your component into the hook. / 컴포넌트를 훅에 register하는 것이다.\nThis will make its value available / 그러면 그 값이 사용 가능해진다\nfor both the form validation and submission. / 폼 검증과 제출 둘 다에.\nEach field is required / 각 필드는 필요하다\nto have a name / name을 가져야 한다\nas a key for the registration process. / 등록 과정의 키로서.",
+      "trickySentenceExplanation": "available for both the form validation and submission은 값이 단순 저장만 되는 것이 아니라 검증과 제출 흐름 전체에 연결된다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "register",
+          "korean": "등록하다",
+          "explanation": "필드를 RHF 관리 대상에 연결해 ref, 이벤트, name을 묶는 동작."
+        },
+        {
+          "term": "registration process",
+          "korean": "등록 과정",
+          "explanation": "필드 식별자와 이벤트 핸들러를 폼 시스템에 연결하는 절차."
+        },
+        {
+          "term": "key",
+          "korean": "키",
+          "explanation": "필드를 구분하는 식별자로 값, 에러, touched 상태 연결에 쓰인다."
+        }
+      ],
+      "devNote": "name이 빠지면 RHF가 필드를 추적할 기준점이 없다. 그래서 field name은 단순 label이 아니라 상태 매핑의 키다.",
+      "recallQuestion": "register가 값을 어디에 쓸 수 있게 만들고, field name은 왜 필요한가?",
+      "speakingTransferPrompt": "register와 field name의 관계를 입문자에게 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-011",
+      "directTranslation": "이 예제는 firstName input과 gender select를 각각 register에 연결해 텍스트 입력과 선택 입력이 같은 폼 시스템으로 수집되는 모습을 보여준다.",
+      "trickySentenceExplanation": "텍스트 input과 select가 같은 register 호출 규칙으로 묶인다는 점이 핵심이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "Gender Selection",
+          "korean": "성별 선택",
+          "explanation": "select 요소 예제를 보여주기 위한 라벨."
+        }
+      ],
+      "devNote": "Get Started 단계에서는 다양한 입력 타입도 결국 name 기반 등록 모델로 수렴한다는 점을 확인하는 것이 중요하다.",
+      "recallQuestion": "이 예제가 보여주는 register의 공통 규칙은 무엇인가?",
+      "speakingTransferPrompt": "text input과 select가 RHF에서 어떻게 같은 방식으로 연결되는지 말해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-013",
+      "directTranslation": "React Hook Form / React Hook Form은\nmakes form validation easy / 폼 검증을 쉽게 만든다\nby aligning with / 맞춰 가기 때문에\nthe existing HTML standard / 기존 HTML 표준과.\nList of validation rules supported: / 지원하는 검증 규칙 목록은 다음과 같다.\nrequired, min, max, minLength, maxLength, pattern, validate / required, min, max, minLength, maxLength, pattern, validate.\nYou can read more detail / 더 자세한 내용은 읽을 수 있다\nin the register section. / register 섹션에서.",
+      "trickySentenceExplanation": "aligning with the existing HTML standard는 브라우저가 이미 가진 폼 검증 개념과 어긋나지 않는다는 뜻이지, 별도 독자 규칙 체계를 강요한다는 뜻이 아니다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "existing HTML standard",
+          "korean": "기존 HTML 표준",
+          "explanation": "브라우저가 기본 제공하는 폼 검증 규칙과 속성 모델."
+        },
+        {
+          "term": "pattern",
+          "korean": "패턴 검증",
+          "explanation": "정규식으로 입력값 형식을 제한하는 규칙."
+        },
+        {
+          "term": "validate",
+          "korean": "사용자 정의 검증",
+          "explanation": "직접 만든 함수로 추가 검증을 수행하는 옵션."
+        }
+      ],
+      "devNote": "표준과 정렬된 API는 학습 비용이 낮다. 기존 HTML 폼 지식을 버리지 않고 RHF 규칙으로 확장할 수 있기 때문이다.",
+      "recallQuestion": "이 문단이 말하는 RHF 검증 설계의 핵심 장점은 무엇인가?",
+      "speakingTransferPrompt": "RHF 검증 규칙이 HTML 표준과 정렬된다는 말의 의미를 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-014",
+      "directTranslation": "register 옵션 안에 / register 옵션 안에\nrequired, maxLength, pattern, min, max를 넣어 / required, maxLength, pattern, min, max를 넣는다.\n각 필드가 / 각 필드가\n자기 검증 규칙을 / 자기 검증 규칙을\n선언적으로 가진다 / 선언적으로 가지는 패턴이다.",
+      "trickySentenceExplanation": "옵션 객체는 각 필드의 검증 정책을 선언하는 자리라는 점을 읽어야 코드가 단순 문법 나열로 보이지 않는다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "register options",
+          "korean": "register 옵션",
+          "explanation": "필드 등록과 함께 검증 규칙이나 변환 규칙을 넘기는 설정 객체."
+        }
+      ],
+      "devNote": "필드 수준 validation은 RHF의 가장 기본적인 활용 패턴이다. 이후 schema resolver를 붙이더라도 이 모델을 먼저 이해해야 한다.",
+      "recallQuestion": "이 예제에서 각 필드는 검증 규칙을 어디에 선언하고 있나?",
+      "speakingTransferPrompt": "register 옵션으로 검증을 붙이는 방식을 짧게 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-016",
+      "directTranslation": "This library / 이 라이브러리는\nembraces uncontrolled components / 비제어 컴포넌트를 기본으로 받아들이고\nand native HTML inputs. / 기본 HTML input도 그대로 활용한다.\nHowever / 하지만\nit's hard to avoid working with / 함께 써야 할 때를 피하기 어렵다\nexternal controlled components / 외부 controlled 컴포넌트와.\nsuch as shadcn/ui, React-Select, AntD and MUI. / 예를 들면 shadcn/ui, React-Select, AntD, MUI 같은 것들이다.\nTo make this simple / 이를 단순하게 만들기 위해\nwe provide a wrapper component, Controller, / Controller라는 래퍼 컴포넌트를 제공하고\nto streamline the integration process / 통합 과정을 정리해 주면서도\nwhile still giving you the freedom to use a custom register. / 필요하면 custom register를 직접 쓸 자유도 남겨 둔다.",
+      "trickySentenceExplanation": "embraces uncontrolled components는 uncontrolled만 허용한다는 뜻이 아니라, 기본 철학이 거기에 더 가깝다는 의미다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "uncontrolled components",
+          "korean": "비제어 컴포넌트",
+          "explanation": "값을 React state로 매번 제어하지 않고 DOM이 기본 상태를 가지는 입력 방식."
+        },
+        {
+          "term": "controlled components",
+          "korean": "제어 컴포넌트",
+          "explanation": "값과 이벤트를 React state가 직접 관리하는 입력 방식."
+        },
+        {
+          "term": "wrapper component",
+          "korean": "래퍼 컴포넌트",
+          "explanation": "다른 컴포넌트를 감싸 연결 규칙을 단순화하는 컴포넌트."
+        }
+      ],
+      "devNote": "입문 단계에서 RHF의 철학은 uncontrolled 쪽이지만, 실무에서는 외부 UI 라이브러리 때문에 controlled 통합 패턴도 바로 알아야 한다.",
+      "recallQuestion": "Controller가 필요한 상황은 언제인가?",
+      "speakingTransferPrompt": "왜 RHF가 Controller를 제공하는지 controlled/uncontrolled 관점으로 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-018",
+      "directTranslation": "Using Component API / Component API를 쓰면\nController가 / Controller가\nCheckbox 같은 외부 입력을 감싸고 / Checkbox 같은 외부 입력을 감싼다.\nrules와 field를 연결해서 / rules와 field를 연결해서\ncontrolled input을 / controlled input을\nRHF 흐름 안에 넣는다 / RHF 흐름 안에 넣는다.",
+      "trickySentenceExplanation": "streamline the integration process는 통합을 자동화한다기보다 반복 연결 코드를 단순화한다는 의미에 가깝다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "rules",
+          "korean": "검증 규칙",
+          "explanation": "Controller에서도 register와 비슷하게 필드 검증 조건을 지정할 수 있다."
+        }
+      ],
+      "devNote": "Controller의 render prop이 중요한 이유는 외부 컴포넌트가 기대하는 props 형태에 맞춰 field를 주입할 수 있기 때문이다.",
+      "recallQuestion": "이 예제에서 Controller는 어떤 컴포넌트를 어떤 방식으로 연결하고 있나?",
+      "speakingTransferPrompt": "Checkbox 같은 controlled input을 RHF에 붙이는 과정을 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-020",
+      "directTranslation": "Using Hooks API / Hooks API를 쓰면\nuseController가 / useController가\nfield와 fieldState를 돌려주고 / field와 fieldState를 반환한다.\n커스텀 Input 안에서 / 그래서 커스텀 Input 안에서\ntouched, dirty, invalid 상태를 / touched, dirty, invalid 상태를\n직접 읽을 수 있다 / 직접 읽을 수 있다.",
+      "trickySentenceExplanation": "Using Hooks API는 단순 문법 선택이 아니라, 컴포넌트 수준 추상화를 직접 만들고 싶을 때의 확장 경로를 뜻한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "fieldState",
+          "korean": "필드 상태",
+          "explanation": "특정 필드의 touched, dirty, invalid 같은 상태 묶음."
+        },
+        {
+          "term": "isDirty",
+          "korean": "변경됨 상태",
+          "explanation": "초기값과 비교해 현재 값이 달라졌는지 나타내는 플래그."
+        }
+      ],
+      "devNote": "Controller가 빠른 통합용이라면 useController는 재사용 가능한 입력 컴포넌트를 직접 설계할 때 더 유연하다.",
+      "recallQuestion": "useController가 Controller보다 유리한 순간은 언제인가?",
+      "speakingTransferPrompt": "field와 fieldState가 왜 커스텀 입력 컴포넌트에 유용한지 말해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-022",
+      "directTranslation": "React Hook Form provides / React Hook Form은 제공한다\nan errors object / errors 객체를\nto show you the errors in the form. / 폼 안의 에러를 보여주기 위해.\nerrors' type will return / errors의 타입은 반환된다\ngiven validation constraints. / 선언한 검증 제약에 맞게.\nThe following example / 다음 예제는\nshowcases a required validation rule. / required 검증 규칙을 보여준다.",
+      "trickySentenceExplanation": "given validation constraints는 에러 객체가 임의 문자열 집합이 아니라 선언한 규칙 구조를 반영한다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "validation constraints",
+          "korean": "검증 제약",
+          "explanation": "필드에 선언한 required, pattern 같은 검증 조건."
+        }
+      ],
+      "devNote": "에러 표시는 단순 UX 장식이 아니라 검증 규칙을 사용자에게 다시 노출하는 인터페이스다.",
+      "recallQuestion": "errors 객체는 어떤 정보를 담고, 무엇에 의해 모양이 결정되는가?",
+      "speakingTransferPrompt": "RHF에서 errors 객체를 왜 읽어야 하는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-023",
+      "directTranslation": "register로 / register로\nrequired 규칙을 선언하고 / required 규칙을 선언한다.\nerrors를 읽어서 / errors를 읽어서\naria-invalid를 바꾸고 / aria-invalid를 바꾸고\nrole=\"alert\" 메시지를 조건부로 보여준다 / role=\"alert\" 메시지를 조건부로 보여준다.",
+      "trickySentenceExplanation": "접근성 속성과 에러 렌더링이 함께 배치된 점을 읽어야 이 코드의 의도가 보인다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "aria-invalid",
+          "korean": "유효성 오류 표시 속성",
+          "explanation": "보조 기술에 현재 입력이 유효하지 않음을 알리는 접근성 속성."
+        },
+        {
+          "term": "role=\"alert\"",
+          "korean": "경고 역할",
+          "explanation": "스크린리더가 오류 메시지를 즉시 알릴 수 있게 돕는 역할 속성."
+        }
+      ],
+      "devNote": "Get Started 안에서 에러 처리와 접근성을 같이 보여주는 것은 RHF가 UX뿐 아니라 A11y도 기본값으로 고려한다는 신호다.",
+      "recallQuestion": "이 예제는 에러 표시와 접근성을 어떤 속성으로 연결하는가?",
+      "speakingTransferPrompt": "aria-invalid와 alert 메시지가 왜 함께 필요한지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-025",
+      "directTranslation": "We also support / 또한 지원한다\nschema-based form validation / 스키마 기반 폼 검증도\nwith Yup, Zod, Superstruct & Joi. / Yup, Zod, Superstruct, Joi와 함께.\nwhere you can pass your schema / 여기서는 schema를 넘길 수 있고\nto useForm / useForm에\nas an optional config. / 선택 설정으로 넘긴다.\nIt will validate your input data / 그러면 입력 데이터를 검증하고\nand return with either errors or a valid result. / errors 또는 유효한 결과를 돌려준다.\nStep 1 / 1단계는\nInstall Yup into your project. / 프로젝트에 Yup을 설치하는 것이다.",
+      "trickySentenceExplanation": "optional config는 필수가 아닌 확장 지점이라는 뜻이다. 기본 필드 검증을 이해한 뒤 resolver로 검증 레이어를 교체할 수 있다는 의미다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "schema-based validation",
+          "korean": "스키마 기반 검증",
+          "explanation": "필드 규칙을 개별 옵션 대신 별도 스키마 객체로 선언하는 검증 방식."
+        },
+        {
+          "term": "resolver",
+          "korean": "리졸버",
+          "explanation": "외부 검증 라이브러리 결과를 RHF 형식으로 연결해 주는 어댑터."
+        }
+      ],
+      "devNote": "이 문단은 register 수준 검증에서 schema resolver 수준 검증으로 학습 범위를 확장하는 전환점이다.",
+      "recallQuestion": "schema를 useForm에 넘기면 어떤 결과가 돌아오는가?",
+      "speakingTransferPrompt": "필드 규칙 검증과 schema 검증의 차이를 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-026",
+      "directTranslation": "npm install @hookform/resolvers yup / Yup 기반 검증을 쓰려면\n@hookform/resolvers와 yup을 / @hookform/resolvers와 yup을\n프로젝트에 설치한다 / 프로젝트에 설치한다.",
+      "trickySentenceExplanation": "설치 명령은 schema validation 기능이 RHF 코어 외부 생태계와 연결된다는 점도 함께 보여준다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "@hookform/resolvers",
+          "korean": "리졸버 패키지",
+          "explanation": "Yup, Zod 같은 외부 스키마 검증 도구를 RHF에 연결하는 공식 패키지."
+        }
+      ],
+      "devNote": "resolver 패키지는 RHF가 특정 스키마 라이브러리에 강하게 결합되지 않도록 해 주는 확장 레이어다.",
+      "recallQuestion": "Yup 연동에 필요한 패키지 두 개는 무엇인가?",
+      "speakingTransferPrompt": "resolver 패키지가 왜 필요한지 설치 관점에서 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-027",
+      "directTranslation": "Step 2 / 2단계는\nPrepare your schema for validation / 검증용 스키마를 준비하고\nand register inputs / 입력들을 register해서\nwith React Hook Form. / React Hook Form에 연결하는 것이다.",
+      "trickySentenceExplanation": "Prepare your schema와 register inputs가 함께 나와서, 스키마 정의와 필드 연결이 둘 다 필요하다는 점을 놓치면 안 된다.",
+      "selectiveVocabGlosses": [],
+      "devNote": "스키마를 만들었다고 끝이 아니다. 실제 필드 등록과 에러 렌더링이 있어야 검증 결과가 UI에 연결된다.",
+      "recallQuestion": "스키마 설치 다음 단계에서 해야 하는 두 가지는 무엇인가?",
+      "speakingTransferPrompt": "schema validation 설정의 2단계를 한국어와 영어로 각각 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-028",
+      "directTranslation": "yup.object(...)로 / yup.object(...)로\n검증 스키마를 만들고 / 검증 스키마를 만든다.\nresolver: yupResolver(schema)로 / resolver: yupResolver(schema)로\nuseForm과 schema를 연결한다 / useForm과 schema를 연결한다.\n그 결과 / 그 결과\nerrors.firstName, errors.age로 / errors.firstName, errors.age로\n검증 실패 메시지를 읽는다 / 검증 실패 메시지를 읽는다.",
+      "trickySentenceExplanation": "핵심은 yup 자체 문법보다 RHF에 resolver로 주입되는 연결 지점을 읽는 것이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "yupResolver",
+          "korean": "Yup 리졸버",
+          "explanation": "Yup 검증 결과를 RHF의 errors 형식으로 매핑하는 함수."
+        }
+      ],
+      "devNote": "이 코드는 register 옵션 검증에서 resolver 검증으로 확장될 때 구조가 어떻게 바뀌는지 보여주는 bridge example이다.",
+      "recallQuestion": "이 예제에서 schema와 useForm은 어떤 API로 연결되는가?",
+      "speakingTransferPrompt": "Yup 스키마를 RHF에 붙이는 절차를 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-030",
+      "directTranslation": "React Hook Form is built with TypeScript, / React Hook Form은 TypeScript로 만들어졌고\nand you can define a FormData type / FormData 타입을 정의해서\nto support form values. / 폼 값 타입을 지원할 수 있다.",
+      "trickySentenceExplanation": "support form values는 단순 자동완성 제공이 아니라 폼 값 구조를 타입 수준에서 강하게 고정해 준다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "FormData type",
+          "korean": "폼 데이터 타입",
+          "explanation": "폼 값 객체의 shape를 타입으로 명시한 것."
+        }
+      ],
+      "devNote": "RHF의 TypeScript 지원은 DX 포인트다. 런타임 전에 잘못된 필드명과 값 타입을 잡아낼 수 있다.",
+      "recallQuestion": "FormData 타입을 정의하면 무엇이 좋아지는가?",
+      "speakingTransferPrompt": "RHF에서 TypeScript를 쓰는 이점을 한 문단으로 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-031",
+      "directTranslation": "useForm<FormData>() / useForm<FormData>()로\n폼 값 구조를 고정하고 / 폼 값 구조를 고정한다.\nsetValue(\"lastName\", \"luo\")는 허용되고 / setValue(\"lastName\", \"luo\")는 허용된다.\nsetValue(\"firstName\", true)는 거부되고 / setValue(\"firstName\", true)는 거부된다.\nerrors.bill도 거부된다 / errors.bill도 거부된다.\nTypeScript가 / TypeScript가\n잘못된 필드 조작을 / 잘못된 필드 조작을\n빌드 전에 막아준다 / 빌드 전에 막아준다.",
+      "trickySentenceExplanation": "코드 안의 ✅/❌ 주석은 TypeScript가 무엇을 허용하고 막는지 대비해서 읽으라는 신호다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "build-time feedback",
+          "korean": "빌드 시점 피드백",
+          "explanation": "앱 실행 전에 타입 검사 단계에서 오류를 알려주는 것."
+        }
+      ],
+      "devNote": "이 예제의 핵심은 setValue 자체보다 타입 시스템이 잘못된 필드 조작을 사전에 막는다는 점이다.",
+      "recallQuestion": "TypeScript 예제에서 무엇이 허용되고 무엇이 거부되는가?",
+      "speakingTransferPrompt": "RHF 타입 지원이 버그를 어떻게 줄이는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-033",
+      "directTranslation": "React Hook Form's design and philosophy / React Hook Form의 설계와 철학은\nfocus on / 초점을 둔다\nuser and developer experience. / 사용자 경험과 개발자 경험에.\nThe library aims / 이 라이브러리는 목표로 한다\nto provide users / 사용자에게\nwith a smoother interaction experience / 더 부드러운 상호작용 경험을 제공하는 것을\nby fine-tuning the performance / 성능을 미세 조정하고\nand improving accessibility. / 접근성을 높여서.\nSome of the performance enhancements include: / 성능 개선 예시로는 다음이 있다.",
+      "trickySentenceExplanation": "user and developer experience를 함께 언급한 것은 RHF가 단순 API 편의성뿐 아니라 실제 사용자 상호작용 품질까지 설계 목표로 둔다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "fine-tuning the performance",
+          "korean": "성능 미세 조정",
+          "explanation": "큰 기능 추가보다 불필요한 렌더와 계산을 줄여 체감 성능을 올리는 방향."
+        },
+        {
+          "term": "accessibility",
+          "korean": "접근성",
+          "explanation": "더 다양한 사용자가 폼을 이해하고 사용할 수 있도록 돕는 품질 기준."
+        }
+      ],
+      "devNote": "RHF의 철학을 읽으면 이후 API 설명이 왜 re-render 최소화와 A11y를 반복하는지 이해가 쉬워진다.",
+      "recallQuestion": "RHF가 동시에 최적화하려는 두 경험은 무엇인가?",
+      "speakingTransferPrompt": "RHF의 철학을 UX와 DX 관점으로 나눠 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-034",
+      "directTranslation": "Introducing form state subscription model / form state subscription 모델 도입,\nthrough the proxy / proxy를 통해서.\nAvoiding unnecessary computation / 불필요한 계산 피하기.\nIsolating component re-rendering / 컴포넌트 리렌더를 분리하기\nwhen required / 필요할 때만.",
+      "trickySentenceExplanation": "이 세 항목은 기능 목록이 아니라 RHF가 왜 빠르게 느껴지는지 설명하는 성능 원리 목록이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "subscription model",
+          "korean": "구독 모델",
+          "explanation": "필요한 상태 변화만 선택적으로 반응하게 만드는 구조."
+        },
+        {
+          "term": "proxy",
+          "korean": "프록시",
+          "explanation": "속성 접근을 가로채 상태 추적을 세밀하게 제어하는 JavaScript 메커니즘."
+        },
+        {
+          "term": "isolating component re-rendering",
+          "korean": "리렌더 분리",
+          "explanation": "모든 컴포넌트가 함께 다시 그려지지 않도록 영향 범위를 줄이는 최적화."
+        }
+      ],
+      "devNote": "이 리스트는 RHF API를 외우기 전에 성능 설계 방향을 잡아 주는 압축 요약이다.",
+      "recallQuestion": "Design and philosophy 섹션이 제시한 성능 향상 원리 세 가지는 무엇인가?",
+      "speakingTransferPrompt": "RHF가 리렌더를 줄이는 방식을 핵심 키워드 세 개로 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-035",
+      "directTranslation": "Overall / 전체적으로\nit improves the user experience / 사용자 경험을 개선하고\nwhile users interact with the application. / 사용자가 앱과 상호작용하는 동안.\nAs for the developers / 개발자 쪽에서는\nwe introduce built-in validation / 내장 검증을 제공하고\nalign with HTML standards / HTML 표준과 가깝게 맞추며\nallow further extension with powerful validation methods / 강력한 검증 방식으로 더 확장할 수 있게 하고\nallow schema validation integration natively / 스키마 검증 연동도 자연스럽게 허용한다.\nstrongly type-checked form / 강하게 타입 검사되는 폼은\nearly build-time feedback을 준다 / 빌드 전에 이른 피드백을 줘서\nto help and guide the developer / 개발자가\nbuild a robust form solution. / 더 견고한 폼 구조를 만들도록 돕는다.\nThe following talk given by Bill / 아래 Bill의 발표는\nshowcased some of the ideas and design patterns: / 이런 아이디어와 설계 패턴 일부를 보여준다.",
+      "trickySentenceExplanation": "early build-time feedback은 실제 오류가 터진 뒤가 아니라 빌드 단계에서 방향을 바로잡게 해 준다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "robust form solution",
+          "korean": "견고한 폼 솔루션",
+          "explanation": "검증, 접근성, 타입 안정성까지 갖춘 신뢰도 높은 폼 구현."
+        }
+      ],
+      "devNote": "입문 페이지 마지막 문단은 RHF의 가치 제안을 한 번에 요약한다. 이후 API 페이지를 읽을 때 기준점으로 삼기 좋다.",
+      "recallQuestion": "RHF가 개발자에게 제공한다고 말하는 네 가지 강점은 무엇인가?",
+      "speakingTransferPrompt": "Get Started 전체 페이지를 읽고 RHF의 가치 제안을 4문장 이내로 요약해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-037",
+      "directTranslation": "This video tutorial / 이 영상 튜토리얼은\nillustrates / 보여준다\nbasic usage and concepts / 기본 사용법과 핵심 개념을\nof React Hook Form. / React Hook Form의.",
+      "trickySentenceExplanation": "텍스트 설명 뒤에 video tutorial을 둔 것은 같은 내용을 다른 매체로 한 번 더 이해하게 하려는 보조 학습 장치다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "video tutorial",
+          "korean": "영상 튜토리얼",
+          "explanation": "글 예제를 다시 따라가며 이해를 보강하는 영상형 학습 자료."
+        },
+        {
+          "term": "concepts",
+          "korean": "핵심 개념",
+          "explanation": "문법이나 코드 조각보다 더 큰 원리 수준의 이해 포인트."
+        }
+      ],
+      "devNote": "문서 저자는 기본 예제 다음에 비디오를 배치해 텍스트와 시각 설명을 연결한다.",
+      "recallQuestion": "이 비디오 튜토리얼 섹션은 무엇을 보강하려고 들어가 있나?",
+      "speakingTransferPrompt": "글 예제와 영상 튜토리얼이 각각 어떤 학습 역할을 하는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-039",
+      "directTranslation": "Integrating an existing form / 기존 폼을 통합하는 일은\nshould be simple. / 단순해야 한다.\nThe important step / 중요한 단계는\nis to register the component's ref / 컴포넌트의 ref를 register하고\nand assign relevant props / 관련 props를 할당하는 것이다\nto your input. / input에.",
+      "trickySentenceExplanation": "기존 컴포넌트를 버리고 새로 짜라는 뜻이 아니라, ref와 props 연결점만 맞추면 RHF에 붙일 수 있다는 말이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "ref",
+          "korean": "ref 참조",
+          "explanation": "RHF가 실제 input 요소에 접근하고 등록 상태를 추적하는 연결점."
+        },
+        {
+          "term": "relevant props",
+          "korean": "관련 props",
+          "explanation": "name, onChange, onBlur처럼 RHF 흐름을 연결하는 핵심 속성들."
+        }
+      ],
+      "devNote": "기존 디자인 시스템 컴포넌트를 RHF에 붙일 때는 컴포넌트를 갈아엎는 대신 ref와 register 반환 props를 연결하는 쪽이 핵심이다.",
+      "recallQuestion": "기존 폼 컴포넌트를 RHF에 붙일 때 가장 중요한 연결 지점 두 가지는 무엇인가?",
+      "speakingTransferPrompt": "기존 Input 컴포넌트를 RHF에 통합하는 방법을 ref와 props 관점에서 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-040",
+      "directTranslation": "Path와 UseFormRegister 타입으로 / Path와 UseFormRegister 타입으로\n기존 Input, Select 컴포넌트의 props를 정의하고 / 기존 Input, Select 컴포넌트 props를 정의한다.\nregister가 돌려주는 ref, onChange, onBlur, name을 / register가 돌려주는 ref, onChange, onBlur, name을\n기존 컴포넌트에 흘려보낸다 / 기존 컴포넌트에 흘려보낸다.\nReact.forwardRef로 / React.forwardRef로\nselect에도 ref를 전달해 / select에도 ref를 전달해\nRHF 추적 경로를 유지한다 / RHF 추적 경로를 유지한다.",
+      "trickySentenceExplanation": "register 호출 결과는 단순 이벤트 핸들러가 아니라 RHF와 필드를 묶는 연결 패키지라고 읽어야 한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "UseFormRegister",
+          "korean": "register 타입",
+          "explanation": "register 함수가 어떤 필드 이름을 받고 어떤 연결 props를 돌려주는지 표현하는 타입."
+        },
+        {
+          "term": "React.forwardRef",
+          "korean": "forwardRef",
+          "explanation": "상위에서 받은 ref를 내부 실제 DOM 요소까지 전달하게 돕는 React API."
+        }
+      ],
+      "devNote": "이 예제는 기존 컴포넌트 API를 RHF의 register 반환값에 맞게 연결하는 브리지 패턴을 보여준다.",
+      "recallQuestion": "Select 예제에서 forwardRef가 필요한 이유는 무엇인가?",
+      "speakingTransferPrompt": "기존 Input/Select 컴포넌트에 register 반환값을 어떻게 연결하는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-042",
+      "directTranslation": "React Hook Form / React Hook Form은\nhas made it easy / 쉽게 만들어 두었다\nto integrate with / 통합하기를\nexternal UI component libraries. / 외부 UI 컴포넌트 라이브러리와.\nIf the component doesn't expose input's ref / 컴포넌트가 input의 ref를 노출하지 않으면\nthen you should use the Controller component, / Controller 컴포넌트를 써야 한다\nwhich will take care of the registration process. / 등록 과정을 대신 처리해 주기 때문이다.",
+      "trickySentenceExplanation": "ref를 노출하지 않는 컴포넌트는 register만으로 바로 붙지 않으므로 Controller가 어댑터 역할을 한다는 의미다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "external UI component libraries",
+          "korean": "외부 UI 컴포넌트 라이브러리",
+          "explanation": "MUI, AntD, React Select처럼 자체 컴포넌트 추상화를 가진 UI 도구들."
+        },
+        {
+          "term": "expose input's ref",
+          "korean": "input ref를 노출하다",
+          "explanation": "외부에서 실제 입력 요소 참조를 전달받아 연결할 수 있게 열어두는 것."
+        }
+      ],
+      "devNote": "실무에서 shadcn/ui, React Select, MUI를 쓸 때 RHF 입문자가 가장 빨리 만나게 되는 연결 지점이 Controller다.",
+      "recallQuestion": "어떤 조건일 때 register보다 Controller를 먼저 떠올려야 하나?",
+      "speakingTransferPrompt": "왜 외부 UI 라이브러리에서는 Controller가 자주 필요한지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-043",
+      "directTranslation": "react-select와 MUI Input처럼 / react-select와 MUI Input처럼\n외부 controlled UI 컴포넌트는 / 외부 controlled UI 컴포넌트는\nController의 render 안에서 / Controller의 render 안에서\nfield props를 받아 연결한다 / field props를 받아 연결한다.\ndefaultValues로 초기값을 두고 / defaultValues로 초기값을 두고\nhandleSubmit 결과는 그대로 data 객체로 받는다 / handleSubmit 결과는 그대로 data 객체로 받는다.",
+      "trickySentenceExplanation": "Controller는 외부 컴포넌트를 RHF 규칙에 강제로 바꾸는 것이 아니라, field props를 중간에서 맞춰 주는 연결층이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "field props",
+          "korean": "field props",
+          "explanation": "value, onChange, onBlur, name처럼 RHF가 필드에 주입하는 연결 속성 묶음."
+        }
+      ],
+      "devNote": "control 객체가 중심이 되고, Controller render 안에서 field를 외부 컴포넌트 prop 형태로 흘리는 패턴이 핵심이다.",
+      "recallQuestion": "이 예제에서 Controller render는 무엇을 외부 컴포넌트에 전달하나?",
+      "speakingTransferPrompt": "react-select 같은 UI 라이브러리를 RHF에 연결하는 흐름을 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-045",
+      "directTranslation": "This library doesn't require you / 이 라이브러리는 요구하지 않는다\nto rely on a state management library, / 상태 관리 라이브러리에 의존하라고.\nbut you can easily integrate with them. / 하지만 그런 도구와 쉽게 통합할 수는 있다.",
+      "trickySentenceExplanation": "doesn't require와 can integrate는 반대가 아니다. RHF가 전역 상태를 필수로 요구하지 않지만, 필요하면 연결할 수 있다는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "state management library",
+          "korean": "상태 관리 라이브러리",
+          "explanation": "Redux 같은 전역 상태 도구를 가리킨다."
+        }
+      ],
+      "devNote": "폼 입력 상태는 RHF가 맡고, 제출 이후의 비즈니스 흐름만 Redux나 다른 전역 상태 도구에 연결하는 패턴을 권하는 뉘앙스다.",
+      "recallQuestion": "RHF는 상태 관리 라이브러리를 필수로 요구하는가?",
+      "speakingTransferPrompt": "RHF와 Redux의 역할을 나눠서 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-046",
+      "directTranslation": "useForm은 / useForm은\n폼 입력값을 자체적으로 관리하고 / 폼 입력값을 자체적으로 관리한다.\nsubmit 시점에 / submit 시점에\ndata를 Redux action으로 넘겨 / data를 Redux action으로 넘겨\n외부 전역 상태와 연결할 수 있다 / 외부 전역 상태와 연결할 수 있다.\n즉 RHF는 / 즉 RHF는\n전역 상태를 대체하기보다 / 전역 상태를 대체하기보다\n폼 입력 수집 레이어를 맡는다 / 폼 입력 수집 레이어를 맡는다.",
+      "trickySentenceExplanation": "폼 입력값을 키 입력마다 Redux로 밀어 넣는 구조를 기본으로 삼지 않아도 된다는 점이 핵심이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "updateAction",
+          "korean": "업데이트 액션",
+          "explanation": "submit 결과를 Redux store에 반영하기 위해 호출하는 액션 함수."
+        }
+      ],
+      "devNote": "이 예제는 RHF가 폼 상태 수집을 담당하고, 전역 상태는 제출 이후 동기화 지점으로 쓰는 구성을 보여준다.",
+      "recallQuestion": "이 코드에서 RHF와 Redux는 각각 어떤 역할을 맡고 있나?",
+      "speakingTransferPrompt": "폼 입력 수집과 전역 상태 업데이트를 왜 분리하는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-048",
+      "directTranslation": "To integrate React Hook Form with a service, / React Hook Form을 서비스와 통합하려면\nyou can use the library's built-in submission handling. / 라이브러리의 내장 제출 처리를 사용할 수 있다.\n<Form /> component / <Form /> 컴포넌트는\nallow you to easily send form data / 폼 데이터를 쉽게 보내게 해 준다\nto an API endpoint or other service. / API 엔드포인트나 다른 서비스로.\nFind out more about Form component. / Form 컴포넌트는 문서에서 더 알아볼 수 있다.",
+      "trickySentenceExplanation": "service는 거창한 별도 시스템만 뜻하지 않는다. 폼 데이터를 보내는 API 엔드포인트도 포함하는 넓은 표현이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "built-in submission handling",
+          "korean": "내장 제출 처리",
+          "explanation": "제출 이벤트와 데이터 전송 흐름을 RHF가 기본 제공하는 방식으로 다루는 것."
+        },
+        {
+          "term": "API endpoint",
+          "korean": "API 엔드포인트",
+          "explanation": "폼 데이터가 실제로 전송되는 서버 경로."
+        }
+      ],
+      "devNote": "이 문단은 handleSubmit 직접 호출 외에도 RHF가 <Form /> 컴포넌트로 제출 흐름을 감쌀 수 있다는 확장 API를 소개한다.",
+      "recallQuestion": "<Form /> 컴포넌트가 쉽게 해 주는 일은 무엇인가?",
+      "speakingTransferPrompt": "서비스 연동에서 RHF <Form /> 컴포넌트를 왜 쓰는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-049",
+      "directTranslation": "<Form /> 컴포넌트에 / <Form /> 컴포넌트에\naction, onSuccess, onError, control을 넘기면 / action, onSuccess, onError, control을 넘기면\nFormData 또는 JSON 제출 흐름을 / FormData 또는 JSON 제출 흐름을\nRHF가 감싼다 / RHF가 감싼다.\nregister는 그대로 쓰면서 / register는 그대로 쓰면서\n제출 경로만 서비스 호출로 바꾼다 / 제출 경로만 서비스 호출로 바꾼다.",
+      "trickySentenceExplanation": "핵심은 필드 등록 방식은 유지한 채, submit transport layer만 <Form />으로 바뀐다는 점이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "FormData",
+          "korean": "폼 데이터 객체",
+          "explanation": "브라우저 폼 제출 형식으로 직렬화된 데이터 묶음."
+        }
+      ],
+      "devNote": "서비스 연동 예제는 register와 control은 동일하게 유지하면서 제출 경로만 확장할 수 있음을 보여준다.",
+      "recallQuestion": "<Form /> 예제에서 바뀌는 것은 필드 등록 방식인가, 제출 경로인가?",
+      "speakingTransferPrompt": "RHF <Form /> 컴포넌트가 action/onSuccess/onError를 어떻게 묶는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-053",
+      "directTranslation": "You will get the same performance boost / 같은 성능 이점을 얻을 수 있고\nand enhancement / 같은 개선을 얻을 수 있다\nin React Native. / React Native에서도.\nTo integrate with input component, / input 컴포넌트와 통합하려면\nyou can wrap it with Controller. / Controller로 감싸면 된다.",
+      "trickySentenceExplanation": "웹 전용 최적화가 아니라 RHF 철학과 성능 모델이 React Native 쪽에도 이어진다는 의미다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "performance boost",
+          "korean": "성능 향상",
+          "explanation": "불필요한 업데이트를 줄여 체감 속도와 안정성을 높이는 효과."
+        }
+      ],
+      "devNote": "React Native 입력 컴포넌트는 웹 input과 prop 이름이 다르므로 Controller가 연결 계층으로 더 중요해진다.",
+      "recallQuestion": "React Native 예제에서 왜 Controller를 먼저 떠올려야 하나?",
+      "speakingTransferPrompt": "웹과 React Native에서 RHF 연결 방식이 왜 달라지는지 설명해보자."
+    },
+    {
+      "segmentId": "get-started-full-seg-054",
+      "directTranslation": "React Native에서는 / React Native에서는\nTextInput이 onChangeText, value 같은 props를 쓰므로 / TextInput이 onChangeText, value props를 쓰므로\nController render 안에서 / Controller render 안에서\nonChange, onBlur, value를 매핑한다 / onChange, onBlur, value를 매핑한다.\nerrors.firstName으로 / errors.firstName으로\n필수 입력 실패도 함께 렌더링한다 / 필수 입력 실패도 함께 렌더링한다.",
+      "trickySentenceExplanation": "웹 input의 onChange와 React Native TextInput의 onChangeText 차이를 Controller가 흡수한다고 이해하면 읽기가 쉬워진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "onChangeText",
+          "korean": "텍스트 변경 콜백",
+          "explanation": "React Native TextInput이 값 변경을 전달할 때 쓰는 prop."
+        }
+      ],
+      "devNote": "React Native 예제는 Controller가 플랫폼별 입력 API 차이를 흡수하는 어댑터라는 점을 가장 잘 보여준다.",
+      "recallQuestion": "TextInput 예제에서 Controller render는 어떤 prop 매핑을 담당하나?",
+      "speakingTransferPrompt": "React Native TextInput을 RHF에 연결하는 과정을 단계별로 설명해보자."
+    }
+  ]
+}
