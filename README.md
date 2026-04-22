@@ -1,6 +1,6 @@
 # Sourcebook
 
-Local-first learning repository for official technical documentation.
+Local-first learning repository for official technical documentation and short-form field notes.
 
 This workspace stores official source text verbatim, then layers Korean direct-reading notes, selective vocabulary glosses, dev notes, recall questions, speaking prompts, and learner memory on top as separate Git-tracked files.
 
@@ -14,6 +14,7 @@ The app is read-only for learning flow. Codex updates repository files for intak
   - `frontend/next` (planned)
   - `career/resume` (planned)
   - `career/interview` (planned)
+  - `notes/question-log` (active)
 - React Hook Form curriculum is tracked in:
   - `library/frontend/react-hook-form/references/curriculum.md`
 - RHF roadmap now includes onboarding sections + core API + support API + reference pages

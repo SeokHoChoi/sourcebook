@@ -30,7 +30,7 @@ type TrackSidebarProps = {
   trackSlug: string;
   track: TrackRecord;
   currentPageSlug?: string;
-  currentView?: 'track' | 'page' | 'study';
+  currentView?: 'track' | 'page' | 'study' | 'journal';
   navigationMode?: 'full' | 'study';
 };
 
@@ -109,9 +109,35 @@ function buildSidebarPageGroups(track: TrackRecord): Array<[string, SidebarPageG
 function buildStudyQuickLinks(track: TrackRecord) {
   const preferredOrder = ['get-started-full', 'useform', 'register', 'controller'];
 
-  return preferredOrder
+  const preferredMatches = preferredOrder
     .map((slug) => track.pages.find((page) => page.slug === slug))
     .filter((page): page is TrackPageRecord => Boolean(page));
+
+  if (preferredMatches.length > 0) {
+    return preferredMatches;
+  }
+
+  const primaryPages: TrackPageRecord[] = [];
+  const seenPrimarySlugs = new Set<string>();
+
+  for (const page of track.pages) {
+    const target = resolvePageTarget(track, page);
+
+    if (seenPrimarySlugs.has(target.pageSlug)) {
+      continue;
+    }
+
+    const primaryPage = track.pages.find((candidate) => candidate.slug === target.pageSlug);
+
+    if (!primaryPage) {
+      continue;
+    }
+
+    seenPrimarySlugs.add(primaryPage.slug);
+    primaryPages.push(primaryPage);
+  }
+
+  return primaryPages.sort((left, right) => left.readOrder - right.readOrder).slice(0, 4);
 }
 
 function SidebarContent({
@@ -208,6 +234,33 @@ function SidebarContent({
               />
             </Link>
           ) : null}
+          <Link
+            href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+            aria-current={currentView === 'journal' ? 'page' : undefined}
+            data-clickable="true"
+            className={cn(
+              'group flex items-start justify-between gap-3 rounded-2xl border px-4 py-3 transition-all focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px',
+              currentView === 'journal'
+                ? 'border-amber-700 bg-amber-700 text-white shadow-[0_16px_32px_-22px_rgba(180,83,9,0.42)]'
+                : 'border-black/8 bg-white text-slate-900 hover:-translate-y-px hover:border-black/15 hover:bg-white hover:shadow-[0_12px_24px_-20px_rgba(15,23,42,0.35)]',
+            )}
+          >
+            <div className="min-w-0">
+              <p className="text-[0.7rem] font-semibold tracking-[0.18em] uppercase opacity-70">
+                학습 기록
+              </p>
+              <p className="mt-2 text-lg font-semibold tracking-tight">막힌 지점 모아보기</p>
+              <p className="mt-2 text-sm leading-6 opacity-80">
+                질문, 이유, 정리, 정확한 원래 위치를 한 화면에서 다시 본다.
+              </p>
+            </div>
+            <ChevronRight
+              className={cn(
+                'mt-1 size-4 shrink-0 transition-transform group-hover:translate-x-0.5',
+                currentView === 'journal' ? 'text-white/70' : 'text-slate-400',
+              )}
+            />
+          </Link>
           <p className="text-sm leading-7 text-slate-600">{track.manifest.description}</p>
           {track.manifest.homepageUrl ? (
             <Link
@@ -244,14 +297,14 @@ function SidebarContent({
                 >
                   <span className="min-w-0">{page.title}</span>
                   <span className="shrink-0 text-[0.62rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
-                    공식 문서
+                    리더
                   </span>
                 </Link>
               );
             })}
           </div>
           <p className="text-xs leading-6 text-slate-500">
-            전체 공식 문서 목록은 트랙 개요 화면에서 보고, 스터디 화면에서는 막힌 지점만 바로
+            전체 원문 목록은 트랙 개요 화면에서 보고, 스터디 화면에서는 지금 막힌 지점만 바로
             왕복하는 쪽이 덜 복잡하다.
           </p>
         </section>

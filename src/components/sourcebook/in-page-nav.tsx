@@ -11,15 +11,22 @@ export type InPageNavItem = {
   label: string;
   targetId: string | null;
   badge?: string | null;
+  depth?: number;
 };
 
 type InPageNavProps = {
   ariaLabel: string;
   items: InPageNavItem[];
   variant?: 'default' | 'compact';
+  onNavigate?: ((targetId: string) => void) | null;
 };
 
-export function InPageNav({ ariaLabel, items, variant = 'default' }: InPageNavProps) {
+export function InPageNav({
+  ariaLabel,
+  items,
+  variant = 'default',
+  onNavigate = null,
+}: InPageNavProps) {
   const activeCandidates = useMemo(
     () =>
       items
@@ -56,6 +63,7 @@ export function InPageNav({ ariaLabel, items, variant = 'default' }: InPageNavPr
     <nav className="space-y-2" aria-label={ariaLabel}>
       {items.map((item, index) => {
         const isSelected = Boolean(item.targetId) && item.targetId === activeId;
+        const depth = Math.max(0, item.depth ?? 0);
 
         if (!item.targetId) {
           return (
@@ -91,6 +99,7 @@ export function InPageNav({ ariaLabel, items, variant = 'default' }: InPageNavPr
               event.preventDefault();
               scrollToTarget(targetId);
               setActiveId(targetId);
+              onNavigate?.(targetId);
             }}
             className={cn(
               'group/nav flex items-center justify-between gap-3 rounded-2xl border px-3 py-3 text-sm font-medium transition-all focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px',
@@ -102,14 +111,19 @@ export function InPageNav({ ariaLabel, items, variant = 'default' }: InPageNavPr
           >
             <span className="min-w-0">
               <span
-                className={cn(
-                  'mr-2 text-[0.65rem] font-semibold tracking-[0.16em] uppercase transition-colors',
-                  isSelected ? 'text-white/55' : 'text-slate-400 group-hover/nav:text-slate-600',
-                )}
+                className="flex min-w-0 items-center gap-2"
+                style={{ paddingLeft: depth > 0 ? `${depth * 0.8}rem` : undefined }}
               >
-                {String(index + 1).padStart(2, '0')}
+                <span
+                  className={cn(
+                    'shrink-0 text-[0.65rem] font-semibold tracking-[0.16em] uppercase transition-colors',
+                    isSelected ? 'text-white/55' : 'text-slate-400 group-hover/nav:text-slate-600',
+                  )}
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="truncate">{item.label}</span>
               </span>
-              {item.label}
             </span>
 
             {item.badge ? (

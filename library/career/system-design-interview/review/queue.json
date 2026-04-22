@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-04-22",
+  "items": [
+    {
+      "id": "review-system-design-001",
+      "pageSlug": "ch01-pp14-15-intro-single-server",
+      "segmentId": "ch01-pp14-15-intro-single-server-seg-002",
+      "prompt": "프론트가 만드는 `시스템 부하의 모양`이 무엇인지 정의하고, 자동완성이나 재시도 예시로 왜 대규모에서 용량, 비용, 장애 문제로 바뀌는지 설명하라.",
+      "dueOn": "2026-04-24",
+      "status": "due",
+      "sourceEventId": "system-design-event-001"
+    },
+    {
+      "id": "review-system-design-002",
+      "pageSlug": "ch01-pp14-15-intro-single-server",
+      "segmentId": "ch01-pp14-15-intro-single-server-seg-002",
+      "prompt": "지속적인 계량이 왜 측정 -> 병목 확인 -> 개선의 루프를 뜻하는지 설명하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-002"
+    },
+    {
+      "id": "review-system-design-003",
+      "pageSlug": "ch01-pp14-15-intro-single-server",
+      "segmentId": "ch01-pp14-15-intro-single-server-seg-004",
+      "prompt": "이 문맥의 컴포넌트가 React 컴포넌트가 아닌 이유를 문맥 단서와 함께 말하라.",
+      "dueOn": "2026-04-24",
+      "status": "due",
+      "sourceEventId": "system-design-event-003"
+    },
+    {
+      "id": "review-system-design-004",
+      "pageSlug": "ch01-pp14-15-intro-single-server",
+      "segmentId": "ch01-pp14-15-intro-single-server-seg-004",
+      "prompt": "배포 단위와 실행 배치의 차이를 설명하고, `한 EC2에 nginx/app/postgres/redis`가 함께 도는 경우와 `S3+CloudFront, EC2, RDS, ElastiCache`로 나뉜 경우를 비교하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-004"
+    }
+  ]
+}

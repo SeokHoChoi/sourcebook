@@ -63,7 +63,7 @@ export default async function HomePage() {
               <div className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
                 <p>원문은 저장소 파일에 그대로 남긴다.</p>
                 <p>직독직해와 용어 설명은 오버레이로 겹친다.</p>
-                <p>공식 문서 질문만 learner history에 누적한다.</p>
+                <p>공식 문서 질문과 단발성 해결 메모를 learner history에 누적한다.</p>
               </div>
             </section>
           </aside>

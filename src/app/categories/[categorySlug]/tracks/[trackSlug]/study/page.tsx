@@ -4,10 +4,20 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { InPageNav } from '@/components/sourcebook/in-page-nav';
+import { LearnerEventCard } from '@/components/sourcebook/learner-event-card';
+import { StudyGuideFloatingNav } from '@/components/sourcebook/study-guide-floating-nav';
 import { TrackSidebar } from '@/components/sourcebook/track-sidebar';
 import { MetricTile, Panel } from '@/components/sourcebook/ui';
 import { buttonVariants } from '@/components/ui/button';
-import { findTrack, getTrackStudyRouteParams } from '@/lib/sourcebook';
+import {
+  findTrack,
+  getLearnerEventJournalHref,
+  getTrackStudyRouteParams,
+  isStudyLearnerEvent,
+  type LearnerEvent,
+  resolveLearnerEventTarget,
+  resolvePageTarget,
+} from '@/lib/sourcebook';
 import { parseStudyGuideMarkdown } from '@/lib/study-guide';
 import { cn } from '@/lib/utils';
 
@@ -55,6 +65,160 @@ function buildPartNavigation(headings: ReturnType<typeof parseStudyGuideMarkdown
   });
 }
 
+function buildStudyOutlineNavigation(
+  headings: ReturnType<typeof parseStudyGuideMarkdown>['headings'],
+  maxLevel: 2 | 3,
+) {
+  return headings
+    .map((heading, index) => ({ heading, index }))
+    .filter(({ heading, index }) => {
+      if (index === 0 && heading.level === 1 && !heading.text.startsWith('PART ')) {
+        return false;
+      }
+
+      return heading.level <= maxLevel;
+    })
+    .map(({ heading }) => ({
+      id: `study-outline-${heading.id}`,
+      label: heading.text,
+      targetId: heading.id,
+      depth: Math.max(0, heading.level - 1),
+      badge: heading.level === 1 && heading.text.startsWith('PART ') ? 'part' : null,
+    }));
+}
+
+function buildStudyReaderShortcut(
+  categorySlug: string,
+  trackSlug: string,
+  track: NonNullable<Awaited<ReturnType<typeof findTrack>>>,
+) {
+  const preferredPage =
+    ['get-started-full', 'useform', 'register']
+      .map((slug) => track.pages.find((page) => page.slug === slug))
+      .find((page) => Boolean(page)) ??
+    track.pages.find((page) => page.captureMode !== 'pending') ??
+    null;
+
+  if (!preferredPage) {
+    return null;
+  }
+
+  const target = resolvePageTarget(track, preferredPage);
+
+  return {
+    href: `/categories/${categorySlug}/tracks/${trackSlug}/pages/${target.pageSlug}${
+      target.hash ? `#${target.hash}` : ''
+    }`,
+    label: target.relatedFullPage ? target.relatedFullPage.title : preferredPage.title,
+  };
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function escapeRegExp(value: string): string {
+  return value.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function renderStudyLearnerEventNoticeHtml({
+  createdAt,
+  question,
+  confusionReason,
+  answerSummary,
+  journalHref,
+  status,
+}: {
+  createdAt: string;
+  question: string;
+  confusionReason: string;
+  answerSummary: string;
+  journalHref: string;
+  status: string;
+}) {
+  return `<aside class="mt-5 rounded-[1.35rem] border border-amber-300/45 bg-[linear-gradient(180deg,rgba(255,251,235,0.98),rgba(255,255,255,0.94))] px-4 py-4 shadow-[0_16px_36px_-30px_rgba(180,83,9,0.4)]">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="rounded-full border border-amber-300/55 bg-amber-100 px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-amber-900 uppercase">여기서 실제로 막혔음</span>
+        <span class="rounded-full border border-black/8 bg-white px-2.5 py-1 text-[0.68rem] tracking-[0.14em] text-slate-500 uppercase">${escapeHtml(
+          status,
+        )}</span>
+      </div>
+      <span class="text-[0.72rem] text-slate-500">${escapeHtml(createdAt)}</span>
+    </div>
+    <p class="mt-3 text-sm leading-7 font-semibold text-slate-950">${escapeHtml(question)}</p>
+    <p class="mt-2 text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">막힌 이유:</strong> ${escapeHtml(
+      confusionReason,
+    )}</p>
+    <p class="mt-2 text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">짧은 정리:</strong> ${escapeHtml(
+      answerSummary,
+    )}</p>
+    <div class="mt-4 flex flex-wrap gap-3">
+      <a href="${escapeHtml(
+        journalHref,
+      )}" class="inline-flex items-center rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-slate-950 hover:text-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px">학습 기록에서 크게 보기</a>
+    </div>
+  </aside>`;
+}
+
+function injectStudyLearnerEventNotices({
+  categorySlug,
+  html,
+  studyLearnerEvents,
+  trackSlug,
+}: {
+  categorySlug: string;
+  html: string;
+  studyLearnerEvents: LearnerEvent[];
+  trackSlug: string;
+}) {
+  const groupedEvents = new Map<string, LearnerEvent[]>();
+
+  for (const event of studyLearnerEvents) {
+    const anchorId = event.targetAnchorId;
+
+    if (!anchorId) {
+      continue;
+    }
+
+    const current = groupedEvents.get(anchorId) ?? [];
+    current.push(event);
+    groupedEvents.set(anchorId, current);
+  }
+
+  let nextHtml = html;
+
+  for (const [anchorId, events] of groupedEvents.entries()) {
+    const noticesHtml = events
+      .map((event) =>
+        renderStudyLearnerEventNoticeHtml({
+          createdAt: event.createdAt,
+          question: event.question,
+          confusionReason: event.confusionReason,
+          answerSummary: event.answerSummary,
+          journalHref: getLearnerEventJournalHref(categorySlug, trackSlug, event),
+          status: event.status,
+        }),
+      )
+      .join('');
+    const headingRegex = new RegExp(
+      `(<h[1-6]\\s+id="${escapeRegExp(anchorId)}"[^>]*>[\\s\\S]*?<\\/h[1-6]>)`,
+    );
+
+    nextHtml = nextHtml.replace(
+      headingRegex,
+      `$1<div class="study-guide-inline-events">${noticesHtml}</div>`,
+    );
+  }
+
+  return nextHtml;
+}
+
 export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
   const { categorySlug, trackSlug } = await params;
   const track = await findTrack(categorySlug, trackSlug);
@@ -65,6 +229,16 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
 
   const parsedGuide = parseStudyGuideMarkdown(track.studyGuide.markdown);
   const partNavigation = buildPartNavigation(parsedGuide.headings);
+  const outlineNavigation = buildStudyOutlineNavigation(parsedGuide.headings, 2);
+  const floatingOutlineNavigation = buildStudyOutlineNavigation(parsedGuide.headings, 3);
+  const studyLearnerEvents = track.learnerEvents.filter((event) => isStudyLearnerEvent(event));
+  const readerShortcut = buildStudyReaderShortcut(categorySlug, trackSlug, track);
+  const studyGuideHtml = injectStudyLearnerEventNotices({
+    categorySlug,
+    html: parsedGuide.html,
+    studyLearnerEvents,
+    trackSlug,
+  });
 
   return (
     <main className="min-h-svh bg-[#f7f5ef] text-slate-950">
@@ -79,6 +253,11 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
           />
 
           <section className="mt-8 min-w-0 lg:mt-0">
+            <StudyGuideFloatingNav
+              items={floatingOutlineNavigation}
+              title={track.studyGuide.title}
+            />
+
             <header className="border-b border-black/10 pb-6">
               <p className="text-[0.72rem] font-semibold tracking-[0.2em] text-slate-400 uppercase">
                 study / {categorySlug}.{trackSlug}
@@ -99,6 +278,15 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
+                  <Link
+                    href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+                    className={cn(
+                      buttonVariants({ variant: 'outline' }),
+                      'rounded-full border-black/10 bg-white/95',
+                    )}
+                  >
+                    학습 기록
+                  </Link>
                   <Link
                     href={`/categories/${categorySlug}/tracks/${trackSlug}`}
                     className={cn(
@@ -200,6 +388,29 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
               </Panel>
 
               <Panel
+                eyebrow="이 문서에서 막혔던 지점"
+                title="스터디 본문에 직접 연결된 질문"
+                description="mental model 단계에서 막힌 질문은 여기 모인다. 클릭하면 본문 정확한 위치로 바로 돌아간다."
+              >
+                {studyLearnerEvents.length > 0 ? (
+                  <div className="space-y-4">
+                    {studyLearnerEvents.map((event) => (
+                      <LearnerEventCard
+                        key={event.id}
+                        event={event}
+                        target={resolveLearnerEventTarget(track, categorySlug, trackSlug, event)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-[1.35rem] border border-dashed border-black/10 bg-slate-100/70 px-5 py-4 text-sm leading-6 text-slate-600">
+                    아직 스터디 본문에 연결된 질문 기록이 없다. 앞으로 막히는 지점은 중앙 학습
+                    기록과 함께 여기에 누적한다.
+                  </div>
+                )}
+              </Panel>
+
+              <Panel
                 eyebrow="최종 검토 기준"
                 title="이번 최종본에 반영한 교차검증 포인트"
                 description="시간 민감한 항목은 공식 소스 우선, 실무 혼동은 커뮤니티를 보조 근거로 사용했다."
@@ -230,7 +441,7 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
 
               <article
                 className="study-guide mt-8"
-                dangerouslySetInnerHTML={{ __html: parsedGuide.html }}
+                dangerouslySetInnerHTML={{ __html: studyGuideHtml }}
               />
             </section>
           </section>
@@ -239,21 +450,36 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
             <div className="xl:sticky xl:top-6 xl:space-y-6">
               <section className="rounded-[1.5rem] border border-black/6 bg-white/94 p-5 shadow-[0_18px_48px_-40px_rgba(15,23,42,0.22)]">
                 <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-                  part jump
+                  ebook toc
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                  큰 흐름부터 이동
+                  문서 목차
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
-                  세부 장 이동은 본문 목차를 쓰고, 여기서는 PART 단위로만 빠르게 점프한다.
+                  전자책처럼 따라다니는 빠른 이동 영역이다. 현재 문서의 큰 흐름과 주요 절을 바로
+                  오갈 수 있다.
                 </p>
                 <div className="mt-5 max-h-[min(60vh,720px)] overflow-auto pr-1">
                   <InPageNav
-                    ariaLabel={`${track.studyGuide.title} PART 탐색`}
-                    items={partNavigation}
+                    ariaLabel={`${track.studyGuide.title} 문서 목차`}
+                    items={outlineNavigation}
                     variant="compact"
                   />
                 </div>
+                {partNavigation.length > 0 ? (
+                  <div className="mt-5 border-t border-black/8 pt-5">
+                    <p className="text-[0.68rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                      part jump
+                    </p>
+                    <div className="mt-3">
+                      <InPageNav
+                        ariaLabel={`${track.studyGuide.title} PART 탐색`}
+                        items={partNavigation}
+                        variant="compact"
+                      />
+                    </div>
+                  </div>
+                ) : null}
                 <div className="mt-5 rounded-[1.1rem] border border-black/7 bg-[#fbfaf7] p-4 text-sm leading-7 text-slate-600">
                   <p>
                     스터디 가이드에서 mental model을 잡고, 실제 API 세부 문장은 왼쪽의 빠른 왕복
@@ -266,12 +492,14 @@ export default async function TrackStudyPage({ params }: TrackStudyPageProps) {
                     >
                       트랙 개요
                     </Link>
-                    <Link
-                      href={`/categories/${categorySlug}/tracks/${trackSlug}/pages/get-started-full`}
-                      className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-slate-950 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none"
-                    >
-                      Get Started 전문
-                    </Link>
+                    {readerShortcut ? (
+                      <Link
+                        href={readerShortcut.href}
+                        className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-slate-950 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none"
+                      >
+                        {readerShortcut.label}
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </section>

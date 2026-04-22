@@ -20,6 +20,7 @@ export type SourceScope = 'full-page' | 'section';
 export type SegmentKind = 'heading' | 'paragraph' | 'code' | 'list';
 export type LearnerEventStatus = 'open' | 'scheduled' | 'resolved';
 export type ReviewItemStatus = 'due' | 'scheduled' | 'done';
+export type LearnerEventTargetView = 'page' | 'study';
 
 export type CatalogTrackReference = {
   slug: string;
@@ -146,8 +147,11 @@ export type GlossaryCollection = {
 export type LearnerEvent = {
   id: string;
   createdAt: string;
-  pageSlug: string;
+  pageSlug: string | null;
   relatedSegmentIds: string[];
+  targetView?: LearnerEventTargetView;
+  targetAnchorId?: string | null;
+  targetLabel?: string | null;
   question: string;
   confusionReason: string;
   answerSummary: string;
@@ -230,6 +234,13 @@ export type TrackRecord = {
 
 export type TrackStudyGuideRecord = TrackStudyGuideManifest & {
   markdown: string;
+};
+
+export type LearnerEventTarget = {
+  href: string | null;
+  scopeLabel: string;
+  targetLabel: string;
+  anchorId: string | null;
 };
 
 export type TrackSummary = {
@@ -394,13 +405,17 @@ function deriveConfusionPatterns(events: LearnerEvent[]): LearnerPattern[] {
 
     if (existing) {
       existing.count += 1;
-      existing.pageSlugs.add(event.pageSlug);
+      existing.pageSlugs.add(
+        event.pageSlug ?? (getLearnerEventTargetView(event) === 'study' ? 'study' : 'unknown'),
+      );
       continue;
     }
 
     map.set(label, {
       count: 1,
-      pageSlugs: new Set([event.pageSlug]),
+      pageSlugs: new Set([
+        event.pageSlug ?? (getLearnerEventTargetView(event) === 'study' ? 'study' : 'unknown'),
+      ]),
       representativeQuestion: event.question,
     });
   }
@@ -473,6 +488,22 @@ async function loadTrackResources(
   };
 }
 
+export function getLearnerEventTargetView(event: LearnerEvent): LearnerEventTargetView {
+  return event.targetView ?? 'page';
+}
+
+export function getLearnerEventAnchorId(event: LearnerEvent): string | null {
+  return event.targetAnchorId ?? event.relatedSegmentIds[0] ?? null;
+}
+
+export function isStudyLearnerEvent(event: LearnerEvent): boolean {
+  return getLearnerEventTargetView(event) === 'study';
+}
+
+export function isPageLearnerEvent(event: LearnerEvent, pageSlug: string): boolean {
+  return getLearnerEventTargetView(event) === 'page' && event.pageSlug === pageSlug;
+}
+
 export const getTrack = cache(
   async (categorySlug: string, trackSlug: string): Promise<TrackRecord> => {
     const manifest = await loadTrackManifest(categorySlug, trackSlug);
@@ -530,7 +561,9 @@ export const getTrack = cache(
         const glossaryTerms = glossary.terms.filter((term) =>
           term.pageRefs.some((pageRef) => pageRef.pageSlug === page.slug),
         );
-        const pageLearnerEvents = learnerEvents.filter((event) => event.pageSlug === page.slug);
+        const pageLearnerEvents = learnerEvents.filter((event) =>
+          isPageLearnerEvent(event, page.slug),
+        );
         const reviewItems = reviewQueue.items.filter((item) => item.pageSlug === page.slug);
 
         return {
@@ -555,9 +588,7 @@ export const getTrack = cache(
     const openConfusions = learnerEvents.filter((event) => event.status !== 'resolved').length;
 
     const confusionPatterns =
-      learnerPatterns.patterns.length > 0
-        ? learnerPatterns.patterns
-        : deriveConfusionPatterns(learnerEvents);
+      learnerEvents.length > 0 ? deriveConfusionPatterns(learnerEvents) : learnerPatterns.patterns;
 
     return {
       manifest,
@@ -594,6 +625,61 @@ export async function findTrack(
 
     throw error;
   }
+}
+
+export function resolveLearnerEventTarget(
+  track: Pick<TrackRecord, 'pages'>,
+  categorySlug: string,
+  trackSlug: string,
+  event: LearnerEvent,
+): LearnerEventTarget {
+  const targetView = getLearnerEventTargetView(event);
+  const anchorId = getLearnerEventAnchorId(event);
+
+  if (targetView === 'study') {
+    return {
+      href: `/categories/${categorySlug}/tracks/${trackSlug}/study${anchorId ? `#${anchorId}` : ''}`,
+      scopeLabel: '스터디 가이드',
+      targetLabel: event.targetLabel ?? '스터디 가이드',
+      anchorId,
+    };
+  }
+
+  const page = event.pageSlug
+    ? (track.pages.find((candidate) => candidate.slug === event.pageSlug) ?? null)
+    : null;
+
+  if (!page) {
+    return {
+      href: null,
+      scopeLabel: '공식 문서',
+      targetLabel: event.targetLabel ?? '연결 위치 없음',
+      anchorId,
+    };
+  }
+
+  const resolved = resolvePageTarget(track, page);
+  const hrefAnchor =
+    anchorId && page.sourceScope !== 'section' ? anchorId : (event.targetAnchorId ?? resolved.hash);
+
+  return {
+    href: `/categories/${categorySlug}/tracks/${trackSlug}/pages/${resolved.pageSlug}${
+      hrefAnchor ? `#${hrefAnchor}` : ''
+    }`,
+    scopeLabel: '공식 문서',
+    targetLabel:
+      event.targetLabel ??
+      (resolved.relatedFullPage ? `${resolved.relatedFullPage.title} · ${page.title}` : page.title),
+    anchorId: hrefAnchor,
+  };
+}
+
+export function getLearnerEventJournalHref(
+  categorySlug: string,
+  trackSlug: string,
+  event: Pick<LearnerEvent, 'id'>,
+): string {
+  return `/categories/${categorySlug}/tracks/${trackSlug}/journal#event-${event.id}`;
 }
 
 export async function getTrackPage(
@@ -719,6 +805,22 @@ export async function getTrackStudyRouteParams(): Promise<
 
         throw error;
       }
+    }),
+  );
+
+  return entries.filter((entry): entry is { categorySlug: string; trackSlug: string } =>
+    Boolean(entry),
+  );
+}
+
+export async function getTrackJournalRouteParams(): Promise<
+  Array<{ categorySlug: string; trackSlug: string }>
+> {
+  const trackParams = await getTrackRouteParams();
+  const entries = await Promise.all(
+    trackParams.map(async (trackParam) => {
+      const track = await findTrack(trackParam.categorySlug, trackParam.trackSlug);
+      return track ? trackParam : null;
     }),
   );
 

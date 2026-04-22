@@ -18,6 +18,9 @@ describe('study guide parser', () => {
       text: 'React Hook Form 실전 학습 트랙',
     });
     expect(parsed.headings.some((heading) => heading.id === '3-1-rhf--zod')).toBe(true);
+    expect(
+      parsed.headings.some((heading) => heading.id === '브라우저-프로세스부터-rhf-내부-저장소까지'),
+    ).toBe(true);
     expect(parsed.stats.partCount).toBe(5);
     expect(parsed.stats.sectionCount).toBeGreaterThanOrEqual(20);
     expect(parsed.stats.codeBlockCount).toBeGreaterThanOrEqual(20);

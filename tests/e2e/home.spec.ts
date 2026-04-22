@@ -10,6 +10,8 @@ test.describe('home page', () => {
     await expect(page.getByRole('heading', { name: /문서 읽기 작업대/ })).toBeVisible();
     await expect(page.getByRole('heading', { name: /지금 열 수 있는 트랙/ })).toBeVisible();
     await expect(page.getByRole('link', { name: /React Hook Form/i }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /대규모 시스템 설계 기초/ }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /질문 해결 노트/ }).first()).toBeVisible();
     await expect(page.getByRole('link', { name: /RHF 스터디 가이드/ })).toBeVisible();
 
     const headers = response?.headers() ?? {};
@@ -33,7 +35,8 @@ test.describe('home page', () => {
     ).toBeVisible();
     await expect(page.getByText(/학습 로그/)).toBeVisible();
     await page.getByText('학습 로그').click();
-    await expect(page.getByText(/useForm이 반환하는 객체는 설정값 모음인가/)).toBeVisible();
+    await expect(page.getByText(/useForm이 반환하는 객체는 설정값 모음인가/)).toHaveCount(2);
+    await expect(page.getByText('여기서 실제로 막혔음').first()).toBeVisible();
   });
 
   test('renders the RHF study guide page', async ({ page }) => {
@@ -47,11 +50,141 @@ test.describe('home page', () => {
     await expect(
       page.locator('h2', { hasText: '2-3. watch / useWatch / getValues / subscribe' }),
     ).toBeVisible();
-    await expect(page.getByRole('link', { name: /PART 1\. 빠른 진입/ })).toBeVisible();
+    await expect(page.getByRole('link', { name: /PART 1\. 빠른 진입/ }).first()).toBeVisible();
     await expect(
       page.getByText(/stable 버전 표기는 npm latest dist-tag 기준 7.72.1/),
     ).toBeVisible();
     await expect(page.getByText('Code Example').first()).toBeVisible();
+    const domHeading = page.getByRole('heading', {
+      level: 3,
+      name: 'DOM이 관리한다는 말의 정확한 뜻',
+    });
+    const domNotice = domHeading.locator('xpath=following-sibling::*[1]');
+    await expect(domHeading).toBeVisible();
+    await expect(
+      domNotice.getByText(/브라우저 DOM이 live value의 source of truth라는 뜻인지 헷갈렸다/),
+    ).toBeVisible();
+    await expect(domNotice.getByText('여기서 실제로 막혔음')).toBeVisible();
+    await expect(
+      page.locator(
+        'a[href="/categories/frontend/tracks/react-hook-form/journal#event-rhf-event-008"]',
+      ),
+    ).toHaveCount(1);
+  });
+
+  test('renders the central learning journal with exact return links', async ({ page }) => {
+    await page.goto('/categories/frontend/tracks/react-hook-form/journal');
+
+    await expect(page.getByRole('heading', { name: /^학습 기록$/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '질문에서 바로 뛰기' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'DOM vs RHF 내부 상태 구분 혼동' }),
+    ).toBeVisible();
+    await expect(
+      page.locator(
+        'a[href="/categories/frontend/tracks/react-hook-form/study#dom이-관리한다는-말의-정확한-뜻"]',
+      ),
+    ).toHaveCount(2);
+  });
+
+  test('renders the question log study and journal flow', async ({ page }) => {
+    await page.goto('/categories/notes/tracks/question-log/study');
+
+    await expect(page.getByRole('heading', { name: /^필드 노트 아카이브$/ })).toBeVisible();
+    await expect(
+      page.locator('h2', { hasText: '1. DevTools가 열려 있을 때만 네트워크를 기록하는 이유' }),
+    ).toBeVisible();
+    await expect(
+      page.locator('h2', { hasText: '3. React 프로젝트에서 Node 버전을 관리하는 방법' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/DevTools는 브라우저 내부 로그를 아무 때나 들춰보는 창이 아니라/),
+    ).toBeVisible();
+
+    await page.goto('/categories/notes/tracks/question-log/journal');
+
+    await expect(page.getByRole('heading', { name: /^학습 기록$/ })).toBeVisible();
+    await expect(
+      page
+        .locator('#event-question-log-001')
+        .getByText(/왜 Chrome DevTools는 열려 있던 시점 이후의 요청만 기록하고/),
+    ).toBeVisible();
+    await expect(
+      page.locator(
+        'a[href="/categories/notes/tracks/question-log/study#2-포털을-새로고침해야-새-배포가-보였던-이유"]',
+      ),
+    ).toHaveCount(1);
+    await expect(
+      page.locator(
+        'a[href="/categories/notes/tracks/question-log/study#3-react-프로젝트에서-node-버전을-관리하는-방법"]',
+      ),
+    ).toHaveCount(1);
+  });
+
+  test('renders the system design study guide seeded from the provided table of contents', async ({
+    page,
+  }) => {
+    await page.goto('/categories/career/tracks/system-design-interview/study');
+
+    await expect(
+      page.getByRole('heading', { name: /^대규모 시스템 설계 기초 스터디$/ }).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/프론트엔드 개발자인 네가 시스템 설계를 공부하는 이유는/),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: /PART 2\. 차례 원문 아카이브/ }).first(),
+    ).toBeVisible();
+    await expect(page.locator('h2', { hasText: '2. 차례' })).toBeVisible();
+    await expect(page.getByText('1장 사용자 수에 따른 규모 확장성 14p')).toBeVisible();
+    await expect(page.getByText('14장 유튜브 설계 260p')).toBeVisible();
+    await expect(page.getByText('15장 구글 드라이브 설계 290p')).toBeVisible();
+    await expect(
+      page.locator(
+        'a[href="/categories/career/tracks/system-design-interview/pages/get-started-full"]',
+      ),
+    ).toHaveCount(0);
+  });
+
+  test('renders the first system design reading batch as a real reader page', async ({ page }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp14-15-intro-single-server',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 14~15p 도입과 단일 서버$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/OCR로 옮긴 원문과 쉬운 해설/)).toBeVisible();
+    await expect(page.getByText('원문 아카이브').first()).toBeVisible();
+    await expect(page.getByText('핵심 해설').first()).toBeVisible();
+    await expect(page.getByText(/프론트엔드도 이 범위 밖이 아니다/).first()).toBeVisible();
+    await expect(page.getByText(/여기서 실제로 막혔음/).first()).toBeVisible();
+    await expect(
+      page.getByText(/프론트엔드도 사용자 수의 영향을 직접 받는가/).first(),
+    ).toBeVisible();
+  });
+
+  test('renders the system design journal with the captured chapter-1 questions', async ({
+    page,
+  }) => {
+    await page.goto('/categories/career/tracks/system-design-interview/journal');
+
+    await expect(page.getByRole('heading', { name: /^학습 기록$/ })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: /프론트 확장성 범위 오판/ }).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByText(/웹 앱과 데이터베이스, 캐시가 서버 한 대에서 실행된다는 말이 정확히 무엇인가/)
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator(
+          'a[href="/categories/career/tracks/system-design-interview/pages/ch01-pp14-15-intro-single-server#ch01-pp14-15-intro-single-server-seg-004"]',
+        )
+        .first(),
+    ).toBeVisible();
   });
 
   test('renders code examples as editor-style blocks with inline guidance', async ({ page }) => {

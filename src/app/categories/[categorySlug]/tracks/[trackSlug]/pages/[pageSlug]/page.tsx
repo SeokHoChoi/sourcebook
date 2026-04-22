@@ -5,6 +5,8 @@ import { notFound, redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
 
 import { InPageNav, type InPageNavItem } from '@/components/sourcebook/in-page-nav';
+import { InlineLearnerEventNotice } from '@/components/sourcebook/inline-learner-event-notice';
+import { LearnerEventCard } from '@/components/sourcebook/learner-event-card';
 import {
   PageGlossaryRail,
   type PageGlossaryRailEntry,
@@ -15,9 +17,13 @@ import { buttonVariants } from '@/components/ui/button';
 import {
   findTrack,
   findTrackPage,
+  getLearnerEventAnchorId,
+  getLearnerEventJournalHref,
   getTrackPageRouteParams,
+  type LearnerEvent,
   type OverlayGloss,
   type PageStructure,
+  resolveLearnerEventTarget,
   resolvePageTarget,
   type SegmentCard,
 } from '@/lib/sourcebook';
@@ -34,12 +40,6 @@ type PageSection = {
   heading: SegmentCard | null;
   items: SegmentCard[];
   codeCount: number;
-};
-
-const learnerStatusLabels: Record<string, string> = {
-  open: '미해결',
-  scheduled: '예정',
-  resolved: '해결',
 };
 
 const reviewStatusLabels: Record<string, string> = {
@@ -446,7 +446,7 @@ function buildGlossaryRailEntries({
     .sort((left, right) => left.term.localeCompare(right.term));
 }
 
-function renderSourceParagraphs(text: string | null) {
+function renderSourceParagraphs(text: string | null, language: 'ko' | 'en' = 'en') {
   const blocks = getBlocks(text);
 
   if (blocks.length === 0) {
@@ -454,7 +454,7 @@ function renderSourceParagraphs(text: string | null) {
   }
 
   return (
-    <div className="mx-auto max-w-[64ch] space-y-4" lang="en">
+    <div className="mx-auto max-w-[64ch] space-y-4" lang={language}>
       {blocks.map((block, index) => (
         <p
           key={`${index}-${block.slice(0, 24)}`}
@@ -467,7 +467,7 @@ function renderSourceParagraphs(text: string | null) {
   );
 }
 
-function renderSourceList(text: string | null) {
+function renderSourceList(text: string | null, language: 'ko' | 'en' = 'en') {
   const blocks = getBlocks(text);
 
   if (blocks.length === 0) {
@@ -475,7 +475,7 @@ function renderSourceList(text: string | null) {
   }
 
   return (
-    <div className="mx-auto max-w-[64ch] space-y-4" lang="en">
+    <div className="mx-auto max-w-[64ch] space-y-4" lang={language}>
       {blocks.map((block, index) => {
         const lines = getLines(block);
 
@@ -507,6 +507,43 @@ function renderSourceList(text: string | null) {
 
 function containsHangul(text: string) {
   return /[가-힣]/.test(text);
+}
+
+function detectSourceLanguage(text: string | null): 'ko' | 'en' | 'unknown' {
+  if (!text) {
+    return 'unknown';
+  }
+
+  const hangulCount = (text.match(/[가-힣]/g) ?? []).length;
+  const latinLetterCount = (text.match(/[A-Za-z]/g) ?? []).length;
+
+  if (hangulCount === 0 && latinLetterCount === 0) {
+    return 'unknown';
+  }
+
+  return hangulCount >= latinLetterCount ? 'ko' : 'en';
+}
+
+function getNarrativeLabels(text: string | null) {
+  const language = detectSourceLanguage(text);
+
+  if (language === 'ko') {
+    return {
+      language,
+      sourceLabel: '원문 아카이브',
+      supportLabel: '핵심 해설',
+    } as const;
+  }
+
+  return {
+    language: 'en' as const,
+    sourceLabel: '영문 원문',
+    supportLabel: '직독직해',
+  };
+}
+
+function isExternalReference(value: string | null | undefined) {
+  return /^https?:\/\//.test(value ?? '');
 }
 
 function isLikelyEnglishChunk(text: string) {
@@ -840,7 +877,11 @@ function ThinkingPrompts({ segment }: { segment: SegmentCard }) {
 }
 
 function NarrativeBlock({ segment, label }: { segment: SegmentCard; label: string }) {
-  const renderSource = segment.kind === 'list' ? renderSourceList : renderSourceParagraphs;
+  const narrativeLabels = getNarrativeLabels(segment.sourceText);
+  const renderSource =
+    segment.kind === 'list'
+      ? (text: string | null) => renderSourceList(text, narrativeLabels.language)
+      : (text: string | null) => renderSourceParagraphs(text, narrativeLabels.language);
 
   return (
     <section
@@ -857,19 +898,21 @@ function NarrativeBlock({ segment, label }: { segment: SegmentCard; label: strin
       <div className="mt-4 space-y-4">
         <section className="space-y-3">
           <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-            영문 원문
+            {narrativeLabels.sourceLabel}
           </p>
           <div className="rounded-[1.45rem] border border-black/8 bg-[#fffdfa] px-4 py-5 md:px-5">
             {renderSource(segment.sourceText)}
           </div>
         </section>
 
-        <section className="space-y-3">
-          <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-amber-800/70 uppercase">
-            직독직해
-          </p>
-          {renderChunkTranslation(segment.directTranslation)}
-        </section>
+        {segment.directTranslation ? (
+          <section className="space-y-3">
+            <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-amber-800/70 uppercase">
+              {narrativeLabels.supportLabel}
+            </p>
+            {renderChunkTranslation(segment.directTranslation)}
+          </section>
+        ) : null}
 
         <GlossaryCluster glosses={segment.selectiveVocabGlosses} />
 
@@ -1247,13 +1290,19 @@ function CodeBlock({
 }
 
 function SectionArticle({
+  categorySlug,
   codeChromeMap,
   index,
+  learnerEvents,
   section,
+  trackSlug,
 }: {
+  categorySlug: string;
   codeChromeMap: Map<string, string[]>;
   index: number;
+  learnerEvents: LearnerEvent[];
   section: PageSection;
+  trackSlug: string;
 }) {
   const codeSegmentIds = section.items
     .filter((item) => item.kind === 'code')
@@ -1288,6 +1337,18 @@ function SectionArticle({
           <SectionAnchor id={section.id} />
         </div>
       </header>
+
+      {learnerEvents.length > 0 ? (
+        <div className="mt-5 space-y-3">
+          {learnerEvents.map((event) => (
+            <InlineLearnerEventNotice
+              key={event.id}
+              event={event}
+              journalHref={getLearnerEventJournalHref(categorySlug, trackSlug, event)}
+            />
+          ))}
+        </div>
+      ) : null}
 
       <div className="mt-6 space-y-5">
         {section.items.map((segment) => {
@@ -1352,6 +1413,13 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
   const isFullPageReader = page.captureMode === 'verbatim' && page.sourceScope === 'full-page';
   const rawLineCount = page.rawSource?.split(/\r?\n/).length ?? 0;
   const codeSections = pageSections.filter((section) => section.codeCount > 0);
+  const pageSourceLanguage = detectSourceLanguage(
+    page.segmentCards.map((segment) => segment.sourceText ?? '').join('\n'),
+  );
+  const sourceChipLabel = pageSourceLanguage === 'ko' ? 'OCR 원문' : '공식 원문';
+  const supportChipLabel = pageSourceLanguage === 'ko' ? '핵심 해설' : '직독직해';
+  const hasReadingSupport = page.segmentCards.some((segment) => Boolean(segment.directTranslation));
+  const externalCanonicalUrl = isExternalReference(page.canonicalUrl) ? page.canonicalUrl : null;
   const outlineEntries = buildOutlineEntries(page.rawSource, pageSections);
   const sectionNavItems: InPageNavItem[] = pageSections.map((section) => ({
     id: `section-nav-${section.id}`,
@@ -1369,7 +1437,31 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
   });
   const pageDescription = isFullPageReader
     ? '공식문서 흐름 그대로 읽되, 영문 원문 바로 아래에 직독직해와 헷갈릴 단어 설명을 붙여 두었다. 코드 예시는 문서 메타와 함께 원문 그대로 유지한다.'
-    : '원문과 직독직해, 코드 읽기 포인트를 같은 문맥 안에서 바로 확인하는 읽기 리더다.';
+    : pageSourceLanguage === 'ko'
+      ? 'OCR로 옮긴 원문과 쉬운 해설, 실제로 막혔던 질문, 복습 포인트를 같은 문맥 안에서 다시 보는 읽기 리더다.'
+      : '원문과 직독직해, 코드 읽기 포인트를 같은 문맥 안에서 바로 확인하는 읽기 리더다.';
+  const sectionLearnerEvents = new Map<string, LearnerEvent[]>();
+
+  for (const section of pageSections) {
+    const sectionSegmentIds = new Set<string>([
+      section.id,
+      ...(section.heading ? [section.heading.id] : []),
+      ...section.items.map((segment) => segment.id),
+    ]);
+    const matchedEvents = page.learnerEvents.filter((event) => {
+      const anchorId = getLearnerEventAnchorId(event);
+
+      if (anchorId && sectionSegmentIds.has(anchorId)) {
+        return true;
+      }
+
+      return event.relatedSegmentIds.some((segmentId) => sectionSegmentIds.has(segmentId));
+    });
+
+    if (matchedEvents.length > 0) {
+      sectionLearnerEvents.set(section.id, matchedEvents);
+    }
+  }
 
   return (
     <main className="min-h-svh bg-[#f6f2ea] text-slate-950">
@@ -1438,26 +1530,42 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
 
                   <div className="mt-6 flex flex-wrap gap-2">
                     <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.72rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
-                      공식 원문
+                      {sourceChipLabel}
                     </span>
-                    <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.72rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
-                      직독직해
-                    </span>
-                    <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.72rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
-                      코드 예시 {codeSections.length}
-                    </span>
+                    {hasReadingSupport ? (
+                      <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.72rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
+                        {supportChipLabel}
+                      </span>
+                    ) : null}
+                    {codeSections.length > 0 ? (
+                      <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.72rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
+                        코드 예시 {codeSections.length}
+                      </span>
+                    ) : null}
                   </div>
 
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
-                      href={page.canonicalUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={cn(buttonVariants({ variant: 'default' }), 'rounded-full')}
+                      href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+                      className={cn(
+                        buttonVariants({ variant: 'outline' }),
+                        'rounded-full border-black/10 bg-white',
+                      )}
                     >
-                      공식 문서 열기
-                      <ArrowUpRight className="size-4" />
+                      학습 기록
+                      <ArrowRight className="size-4" />
                     </Link>
+                    {externalCanonicalUrl ? (
+                      <Link
+                        href={externalCanonicalUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={cn(buttonVariants({ variant: 'default' }), 'rounded-full')}
+                      >
+                        공식 문서 열기
+                        <ArrowUpRight className="size-4" />
+                      </Link>
+                    ) : null}
                     <Link
                       href={`/categories/${categorySlug}/tracks/${trackSlug}`}
                       className={cn(
@@ -1487,10 +1595,13 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
                   {pageSections.length > 0 ? (
                     pageSections.map((section, index) => (
                       <SectionArticle
+                        categorySlug={categorySlug}
                         key={section.id}
                         codeChromeMap={codeChromeMap}
                         index={index}
+                        learnerEvents={sectionLearnerEvents.get(section.id) ?? []}
                         section={section}
+                        trackSlug={trackSlug}
                       />
                     ))
                   ) : (
@@ -1571,30 +1682,16 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
                   {page.learnerEvents.length > 0 ? (
                     <div className="space-y-4">
                       {page.learnerEvents.map((event) => (
-                        <article
+                        <LearnerEventCard
                           key={event.id}
-                          className="rounded-2xl border border-black/8 bg-slate-50/80 px-4 py-4"
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <p className="text-xs tracking-[0.16em] text-slate-400 uppercase">
-                              {event.createdAt}
-                            </p>
-                            <span className="text-xs tracking-[0.16em] text-slate-500 uppercase">
-                              {learnerStatusLabels[event.status] ?? event.status}
-                            </span>
-                          </div>
-                          <p className="mt-2 text-sm leading-7 font-medium text-slate-900">
-                            {event.question}
-                          </p>
-                          <p className="mt-2 text-sm leading-7 text-slate-700">
-                            {event.answerSummary}
-                          </p>
-                        </article>
+                          event={event}
+                          target={resolveLearnerEventTarget(track, categorySlug, trackSlug, event)}
+                        />
                       ))}
                     </div>
                   ) : (
                     <EmptyState
-                      description="공식 문서에 대한 질문이 생기면 learner/events.ndjson에 누적된다."
+                      description="이 원문에 대한 질문이 생기면 learner/events.ndjson에 누적된다."
                       title="질문 기록이 없습니다"
                     />
                   )}

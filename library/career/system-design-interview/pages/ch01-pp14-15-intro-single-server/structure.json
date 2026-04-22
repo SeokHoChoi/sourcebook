@@ -1,0 +1,79 @@
+{
+  "pageSlug": "ch01-pp14-15-intro-single-server",
+  "pageTitle": "1장 · 14~15p 도입과 단일 서버",
+  "lastStructuredAt": "2026-04-22",
+  "segments": [
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 7,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 9,
+        "endLine": 9
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-003",
+      "order": 3,
+      "kind": "heading",
+      "source": {
+        "startLine": 11,
+        "endLine": 11
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-004",
+      "order": 4,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 13,
+        "endLine": 13
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-005",
+      "order": 5,
+      "kind": "list",
+      "source": {
+        "startLine": 26,
+        "endLine": 34
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-006",
+      "order": 6,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 36,
+        "endLine": 36
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-007",
+      "order": 7,
+      "kind": "list",
+      "source": {
+        "startLine": 38,
+        "endLine": 46
+      }
+    },
+    {
+      "id": "ch01-pp14-15-intro-single-server-seg-008",
+      "order": 8,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 48,
+        "endLine": 48
+      }
+    }
+  ]
+}
