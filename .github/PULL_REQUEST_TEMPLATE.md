@@ -11,6 +11,7 @@
 ## 체크리스트
 
 - [ ] `pnpm validate` 통과
+- [ ] `pnpm verify:push` 통과
 - [ ] `pnpm test:coverage` 통과
 - [ ] `pnpm build` 성공
 - [ ] `pnpm test:e2e` 성공
