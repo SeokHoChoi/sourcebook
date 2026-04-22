@@ -1,0 +1,116 @@
+{
+  "trackSlug": "system-design-interview",
+  "terms": [
+    {
+      "id": "system-design-scalability",
+      "term": "규모 확장성",
+      "korean": "scalability",
+      "explanation": "사용자와 트래픽이 늘어도 성능과 안정성을 유지하도록 구조를 키워 가는 성질.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "continuous-measurement",
+      "term": "계량",
+      "korean": "measurement",
+      "explanation": "지연 시간, 에러율, QPS 같은 지표를 실제 숫자로 측정하는 것.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "system-component",
+      "term": "컴포넌트",
+      "korean": "component",
+      "explanation": "이 문맥에서는 웹 서버, 데이터베이스, 캐시처럼 배포/실행되는 시스템 구성 요소를 뜻한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "single-server",
+      "term": "단일 서버",
+      "korean": "single server",
+      "explanation": "웹 앱, 데이터베이스, 캐시 등을 같은 머신에 둔 가장 단순한 시작 구조.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "deployment-unit",
+      "term": "deployment unit",
+      "korean": "배포 단위",
+      "explanation": "어떤 산출물이나 서비스를 따로 빌드·릴리스·배포하는 단위. 실제로 어느 머신에서 도는지와는 별개다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "runtime-placement",
+      "term": "runtime placement",
+      "korean": "실행 배치",
+      "explanation": "프로세스와 서비스가 실제로 어떤 머신에서 함께 실행되는지, 즉 최종적으로 어디에 올라가서 도는지를 나타내는 구조.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "system-load-shape",
+      "term": "시스템 부하의 모양",
+      "korean": "load shape",
+      "explanation": "단순 총요청 수가 아니라 요청률, 버스트, 중복, fan-out(요청 하나가 여러 서버 호출로 퍼지는 현상), payload 크기(오가는 데이터 양), cache hit ratio(캐시가 대신 처리해 준 비율)처럼 시스템에 가해지는 부하 패턴 전체를 뜻한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "dns",
+      "term": "DNS",
+      "korean": "도메인 이름 서비스",
+      "explanation": "도메인 이름을 IP 주소로 찾아 주는 시스템.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": [
+            "ch01-pp14-15-intro-single-server-seg-007",
+            "ch01-pp14-15-intro-single-server-seg-008"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ip-address",
+      "term": "IP address",
+      "korean": "IP 주소",
+      "explanation": "네트워크에서 실제 서버 위치를 가리키는 주소.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp14-15-intro-single-server",
+          "segmentIds": ["ch01-pp14-15-intro-single-server-seg-007"]
+        }
+      ]
+    }
+  ]
+}

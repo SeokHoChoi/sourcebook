@@ -1,0 +1,29 @@
+{
+  "generatedAt": "2026-04-22",
+  "patterns": [
+    {
+      "label": "프론트 확장성 범위 오판",
+      "count": 1,
+      "pageSlugs": ["ch01-pp14-15-intro-single-server"],
+      "representativeQuestion": "프론트엔드도 사용자 수의 영향을 직접 받는가? 서버가 망가진 뒤에야 영향을 받는다고 생각했는데 그 이상이 있는가?"
+    },
+    {
+      "label": "계량 의미 축소 해석",
+      "count": 1,
+      "pageSlugs": ["ch01-pp14-15-intro-single-server"],
+      "representativeQuestion": "지속적인 계량과 끝없는 개선이라는 문장은 특정 규모마다 문제가 생긴다는 뜻인가, 아니면 예측 불가한 문제들이 계속 나온다는 뜻인가?"
+    },
+    {
+      "label": "문맥상 컴포넌트 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp14-15-intro-single-server"],
+      "representativeQuestion": "여기서 컴포넌트는 React 컴포넌트가 아니라 시스템 컴포넌트로 읽어야 하는가? 이런 애매한 용어는 어떻게 문맥에서 판별해야 하는가?"
+    },
+    {
+      "label": "단일 서버 배치 모델 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp14-15-intro-single-server"],
+      "representativeQuestion": "웹 앱과 데이터베이스, 캐시가 서버 한 대에서 실행된다는 말이 정확히 무엇인가? 브라우저 프론트도 서버에서 돈다는 뜻처럼 보여서 헷갈렸다."
+    }
+  ]
+}

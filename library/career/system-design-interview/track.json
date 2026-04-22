@@ -1,0 +1,51 @@
+{
+  "categorySlug": "career",
+  "trackSlug": "system-design-interview",
+  "title": "대규모 시스템 설계 기초",
+  "status": "active",
+  "phase": "1장 p14~15 적재 완료",
+  "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
+  "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
+  "studyGuide": {
+    "slug": "study",
+    "title": "대규모 시스템 설계 기초 스터디",
+    "description": "책 OCR 텍스트 아카이브, 프론트엔드 중심 학습 포인트, 향후 캡처/해석 기록 규칙, 외부 근거 레지스트리를 한곳에 모은 스터디 문서.",
+    "file": "references/study-guide.md",
+    "updatedAt": "2026-04-22",
+    "verificationNotes": [
+      "목차는 2026-04-22에 전달된 전자책 캡처 8장을 기준으로 OCR 가능한 화면 텍스트와 페이지 번호만 전사했다.",
+      "학습 운영 원칙은 retrieval practice, distributed practice, worked example, metacognitive scaffolding 연구를 참고해 구성했다.",
+      "스크린샷 원본은 저장하지 않고, OCR 텍스트는 다회 대조 후 가독성 좋은 학습 문서로만 반영한다.",
+      "1장 첫 배치인 14~15p는 이미지 확인, 영문 OCR, 수동 대조를 함께 써서 본문과 그림 레이블을 교차검증했다."
+    ]
+  },
+  "intakeFlow": [
+    "사용자가 보낸 캡처에서 스크린샷 자체는 저장하지 않고 OCR 텍스트만 추출한다.",
+    "추출 텍스트를 여러 번 대조해 오탈자, 줄바꿈, 페이지 번호를 교차검증한다.",
+    "책 문장을 생략하지 않고 references/table-of-contents-archive.md 또는 장별 아카이브 섹션에 텍스트로만 남긴다.",
+    "references/study-guide.md에 프론트엔드 우선 해설, 풀스택 보강 설명, 예시를 덧붙인다.",
+    "사용자가 함께 보낸 해석과 생각은 learner/events.ndjson에 질문·막힌 이유·정리 형태로 누적한다.",
+    "틀린 해석은 왜 틀렸는지와 더 나은 mental model을 같이 적는다.",
+    "용어는 쉬운 한국어 풀이와 필요한 영문 원어를 함께 남긴다.",
+    "장별 보강 근거는 research/source-registry.md에 논문, 공식 문서, 빅테크 글, GitHub, 커뮤니티 출처와 함께 기록한다."
+  ],
+  "pages": [
+    {
+      "slug": "ch01-pp14-15-intro-single-server",
+      "title": "1장 · 14~15p 도입과 단일 서버",
+      "readOrder": 1,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "canonicalUrl": "전자책 캡처 14~15p",
+      "sourceRepoPath": "ebook-capture/ch01-pp14-15",
+      "files": {
+        "source": "pages/ch01-pp14-15-intro-single-server/source.md",
+        "structure": "pages/ch01-pp14-15-intro-single-server/structure.json",
+        "overlay": "pages/ch01-pp14-15-intro-single-server/overlay.ko.json"
+      }
+    }
+  ]
+}
