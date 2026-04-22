@@ -120,6 +120,21 @@ export default async function TrackPage({ params }: TrackPageProps) {
   }
 
   const pageGroups = buildPageGroups(track.pages);
+  const pageEmptyState =
+    track.manifest.status === 'planned'
+      ? {
+          title: '아직 문서가 없습니다',
+          description: '이 트랙은 예정 상태로만 보이고, 실제 수집은 아직 시작되지 않았다.',
+        }
+      : track.studyGuide
+        ? {
+            title: '문서형 페이지는 아직 없습니다',
+            description: '이 트랙은 문서 페이지 대신 스터디 문서와 질문 기록을 중심으로 쌓는다.',
+          }
+        : {
+            title: '아직 문서가 없습니다',
+            description: '이 트랙은 활성 상태지만 아직 읽을 문서를 추가하지 않았다.',
+          };
 
   return (
     <main className="min-h-svh bg-[#f3eee4] text-slate-950">
@@ -160,6 +175,16 @@ export default async function TrackPage({ params }: TrackPageProps) {
                     <ArrowRight className="size-4" />
                   </Link>
                 ) : null}
+                <Link
+                  href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'rounded-full border-black/10 bg-white',
+                  )}
+                >
+                  학습 기록
+                  <ArrowRight className="size-4" />
+                </Link>
                 {track.manifest.homepageUrl ? (
                   <Link
                     href={track.manifest.homepageUrl}
@@ -196,12 +221,15 @@ export default async function TrackPage({ params }: TrackPageProps) {
                       study section
                     </p>
                     <h2 className="mt-2 text-3xl font-semibold tracking-tight text-slate-950">
-                      공식 문서와 별개로 읽는 RHF 스터디 뷰
+                      {track.studyGuide.title}
                     </h2>
                     <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-                      mental model, 실무 선택 기준, 비교표, 근거 부록을 한 번에 보는 학습 전용
-                      문서다. 원문 전문을 읽기 전에 여기서 큰 그림을 먼저 잡고 내려가는 용도로
-                      붙였다.
+                      {track.studyGuide.description}
+                    </p>
+                    <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+                      원문 리더와 별개로, 개념 정리와 실무 판단 기준, 짧은 질문 아카이브를 한 번에
+                      보는 학습 전용 문서다. 먼저 큰 그림을 잡고 필요할 때 세부 기록으로 다시
+                      내려가는 흐름을 위해 붙였다.
                     </p>
                   </div>
                   <Link
@@ -227,8 +255,8 @@ export default async function TrackPage({ params }: TrackPageProps) {
                   읽을 문서
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
-                  공식 문서가 한 페이지인 경우에는 전문을 먼저 보여주고, 내부 목차 섹션은 아래에
-                  묶어서 보여준다.
+                  원문이 한 페이지로 묶인 경우에는 전문을 먼저 보여주고, 하위 섹션이나 이어 읽을
+                  배치는 아래에 묶어서 보여준다.
                 </p>
               </div>
 
@@ -263,10 +291,10 @@ export default async function TrackPage({ params }: TrackPageProps) {
                               </h3>
                               <p className="mt-2 text-sm leading-7 text-slate-600">
                                 {group.sectionPages.length > 0
-                                  ? '공식 사이트에서는 하나의 페이지이며, 아래 목차 섹션들을 같은 문맥에서 이어 읽는다.'
+                                  ? '원문은 하나의 페이지이며, 아래 하위 섹션들을 같은 문맥에서 이어 읽는다.'
                                   : page.sectionAnchor
                                     ? `원문 기준 섹션 앵커: #${page.sectionAnchor}`
-                                    : '전체 페이지 또는 독립 API 문서를 읽는 항목.'}
+                                    : '전체 페이지 또는 독립 읽기 항목.'}
                               </p>
                               <p className="mt-2 text-sm leading-7 text-slate-500">
                                 {page.canonicalUrl}
@@ -328,8 +356,8 @@ export default async function TrackPage({ params }: TrackPageProps) {
               ) : (
                 <div className="mt-6">
                   <EmptyState
-                    title="아직 문서가 없습니다"
-                    description="이 트랙은 예정 상태로만 보이고, 실제 수집은 아직 시작되지 않았다."
+                    title={pageEmptyState.title}
+                    description={pageEmptyState.description}
                   />
                 </div>
               )}
@@ -383,12 +411,18 @@ export default async function TrackPage({ params }: TrackPageProps) {
                       </p>
                     </article>
                   ))}
+                  <Link
+                    href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+                    className="inline-flex items-center rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-slate-950 hover:text-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
+                  >
+                    전체 학습 기록 보기
+                  </Link>
                 </div>
               ) : (
                 <div className="mt-4">
                   <EmptyState
                     title="아직 패턴이 없습니다"
-                    description="공식 문서 질문이 쌓이면 여기서 반복 이유를 다시 볼 수 있다."
+                    description="질문 기록이 쌓이면 여기서 반복 이유를 다시 볼 수 있다."
                   />
                 </div>
               )}

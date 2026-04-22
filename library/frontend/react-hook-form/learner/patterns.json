@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-17",
+  "generatedAt": "2026-04-20",
   "patterns": [
     {
       "label": "반환 형태 개념 혼동",
@@ -36,6 +36,18 @@
       "count": 1,
       "pageSlugs": ["get-started-full"],
       "representativeQuestion": "Get Started 전체를 복붙했는데 왜 메뉴, 광고, 푸터까지 전부 직독직해 카드로 만들지 않는지 헷갈렸다."
+    },
+    {
+      "label": "DOM vs RHF 내부 상태 구분 혼동",
+      "count": 1,
+      "pageSlugs": ["study"],
+      "representativeQuestion": "\"DOM이 관리한다\"는 말이 RHF 자체 메모리를 뜻하는지, 브라우저 DOM이 live value의 source of truth라는 뜻인지 헷갈렸다."
+    },
+    {
+      "label": "브라우저 런타임 메모리 층위 혼동",
+      "count": 1,
+      "pageSlugs": ["study"],
+      "representativeQuestion": "브라우저 프로세스, renderer, JS heap, DOM, React 상태, RHF 내부 저장소가 어떤 포함 관계인지 헷갈렸다. React/Next 앱이 별도 프로세스인지도 모호했다."
     }
   ]
 }
