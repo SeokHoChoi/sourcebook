@@ -67,7 +67,6 @@
 - [1-1. RHF가 해결하는 문제](#1-1-rhf가-해결하는-문제)
 - [1-2. 최소 실행 예제](#1-2-최소-실행-예제)
 - [1-3. 핵심 Mental Model — 비제어 컴포넌트와 DOM](#1-3-핵심-mental-model)
-  - [DOM이 관리한다는 말의 정확한 뜻](#dom이-관리한다는-말의-정확한-뜻)
 - [1-4. 핵심 3가지: register / handleSubmit / errors](#1-4-핵심-3가지)
 - [1-5. PART 1 체크포인트](#1-5-체크포인트)
 
@@ -151,29 +150,7 @@ const [password, setPassword] = useState('');
 
 ### RHF의 해결 방식
 
-RHF은 **입력창 표시의 기본 경로를 React 컴포넌트 state에 두지 않는다**. 대신 브라우저 DOM이 즉시값을 기억하게 하고, RHF은 `ref`와 내부 JS 상태로 그 폼을 운영한다.
-
-### 여기서 바로 잡아야 하는 오해
-
-**`DOM이 관리한다`는 말은 `RHF이 아무 메모리도 안 쓴다`는 뜻이 아니다.**
-
-- **현재 input의 live value는 브라우저 DOM 노드가 들고 있다.**
-- **RHF은 `register()`가 반환하는 `ref`로 그 DOM 노드에 연결된다.**
-- **RHF 내부 메모리는 따로 있다.** 다만 그건 현재 타이핑 값을 React state처럼 들고 있는 저장소가 아니라, 등록 정보, `defaultValues`, `dirty`, `errors`, `formState` 같은 메타 상태를 관리하는 계층이다.
-
-그래서 이 문장은 이렇게 읽는 편이 정확하다.
-
-- **지금 입력창 안 값은 DOM이 들고 있다.**
-- **폼 운영 정보는 RHF 내부 상태가 들고 있다.**
-
-질문을 사용자의 표현 그대로 다시 답하면 이렇다.
-
-- `React의 ref처럼 하는 거야?`
-  - **네. 기본 mental model은 `register`가 돌려주는 `ref`로 DOM 노드와 연결된다고 보면 된다.**
-- `querySelector를 내부적으로 쓰는 거야?`
-  - **그렇게 이해하면 틀린다. 기본 개념은 전역 탐색이 아니라 등록 시점의 `ref` 연결이다.**
-- `RHF 자체 메모리/캐시를 쓴다던데?`
-  - **그 말도 맞다. 다만 그 메모리는 live input value 저장소가 아니라 폼 메타 상태 저장소다.**
+RHF은 **React 상태를 쓰지 않는다**. 대신 브라우저 DOM이 직접 값을 기억하게 한다.
 
 ```
 타이핑 → DOM이 값 기억 → React 상태 변경 없음 → 리렌더 없음
@@ -256,7 +233,7 @@ export function LoginForm() {
 
 HTML 폼은 원래 React 없이도 동작했다. `<input>`은 브라우저가 자체적으로 값을 기억한다. `document.querySelector('input').value`로 읽을 수 있다. React가 그 값을 `useState`로 "가로채서" 관리하는 것이 제어 컴포넌트다.
 
-RHF은 이 가로채기를 **React state 중심으로는** 하지 않는다. `ref`와 이벤트 핸들러를 통해 DOM에 연결하고, 필요할 때 현재 값을 읽거나 내부 스냅샷을 갱신한다.
+RHF은 이 가로채기를 하지 않는다. `ref`를 통해 DOM에 직접 접근하고, 필요할 때만 값을 읽는다.
 
 ```
 제어 컴포넌트 (Formik, 일반 useState):
@@ -268,371 +245,6 @@ RHF은 이 가로채기를 **React state 중심으로는** 하지 않는다. `re
   제출 시 → ref.current.value → 한 번에 읽기
   [React는 검증 결과만 추적]
 ```
-
-### DOM이 관리한다는 말의 정확한 뜻
-
-여기서 가장 많이 헷갈리는 지점은 **"DOM이 관리한다"**, **"`ref`로 읽는다"**, **"RHF 내부 메모리/캐시가 있다"** 가 서로 다른 층위의 말인데 하나처럼 들린다는 점이다.
-
-먼저 가장 짧게 정리하면 이렇다.
-
-- **화면에 지금 보이는 native input의 즉시값은 브라우저 DOM 요소가 들고 있다.**
-- **RHF은 `register()`가 돌려주는 `ref`와 이벤트 핸들러로 그 DOM 노드에 연결된다.**
-- **RHF 내부에도 메모리/캐시는 있다.** 다만 그건 별도 프로세스의 메모리가 아니라, 현재 탭의 renderer 안에 있는 JavaScript heap 위에 올라간 라이브러리 내부 객체들이다.
-- **중요한 차이점은 `RHF이 아무 값도 저장하지 않는다` 가 아니라, `입력창의 화면 표시를 React state 리렌더로 구동하지 않는다` 는 점이다.**
-
-즉 `DOM이 관리한다`는 말은 **"RHF이 아무 정보도 안 들고 있다"** 는 뜻이 아니다.  
-정확한 뜻은 **"사용자가 지금 막 치고 있는 native input의 현재 값은 React state가 아니라 DOM 요소 자체가 들고 있다"** 는 뜻이다.
-
-### 1. 어떤 방법으로 DOM에 연결되는가
-
-핵심은 `querySelector`를 전역으로 돌며 찾는 방식이 아니라, **등록 시점의 `ref` 연결**이다.
-
-```tsx
-// [개념 설명용 의사코드]
-const props = register('email');
-
-// props 대략 형태
-{
-  name: 'email',
-  ref: (element) => { /* 이 DOM 노드를 RHF 내부 레지스트리에 연결 */ },
-  onChange: ...,
-  onBlur: ...,
-}
-```
-
-이 `ref`가 실제 `<input>`에 붙으면 RHF은 그 DOM 요소를 알게 된다.
-
-```tsx
-<input {...register('email')} />
-```
-
-그래서 기본 mental model은 이렇게 잡는 편이 정확하다.
-
-1. 사용자가 타이핑한다.
-2. 브라우저가 `<input>`의 `value`를 바꾼다.
-3. RHF은 `ref`로 그 input과 연결돼 있으므로, **필요할 때 그 값을 읽거나 검증 흐름에 반영한다.**
-4. React 컴포넌트 전체를 다시 렌더하지는 않는다.
-
-즉 **"ref처럼 하는 거야?" → 네, 기본 개념은 그쪽이 맞다.**  
-반대로 **"RHF가 내부적으로 항상 `document.querySelector(...)`를 돌리는 거야?" → 아니라고 이해하는 편이 맞다.**
-
-실제 라이브러리 내부에는 checkbox/radio 묶음처럼 예외 입력을 다루기 위한 보조 처리들이 있을 수 있지만, 학습용 mental model은 **`register`가 반환한 `ref`로 DOM 노드와 연결된다** 로 잡는 것이 정확하다.
-
-### 2. 그럼 RHF 내부 메모리/캐시는 무엇인가
-
-여기서 두 층을 분리해서 봐야 한다.
-
-**층 A — live input value**
-
-- `input.value`
-- `input.checked`
-- `select.value`
-
-이건 브라우저 DOM 요소가 들고 있다.  
-RHF이 uncontrolled 기본 경로에서 성능상 이점을 가지는 이유는, 이 live value를 React state로 복사해서 매 입력마다 컴포넌트 렌더를 다시 돌리지 않기 때문이다.
-
-**층 B — RHF 내부 상태/메타데이터**
-
-- 현재 form value 스냅샷
-- 어떤 필드가 등록됐는가
-- 기본값(`defaultValues`)은 무엇인가
-- dirty / touched / errors / isSubmitting / isValid 같은 파생 상태
-- 제출 시 어떤 이름으로 값을 묶을 것인가
-
-이런 정보는 RHF 내부 메모리에 저장된다.
-
-즉 "RHF 내부 메모리"라는 말은 **있다**. 다만 그 메모리가 뜻하는 바는:
-
-- 브라우저 DOM을 대체하는 별도 렌더 저장소라기보다
-- **폼 운영을 위한 레지스트리 + 현재 값 스냅샷 + 파생 상태 저장소** 에 가깝다.
-
-그래서 아래 두 문장은 동시에 참이다.
-
-- **현재 input 값은 DOM이 들고 있다.**
-- **RHF도 내부 메모리로 현재 값 스냅샷, 필드 등록 정보, formState를 들고 있다.**
-
-헷갈리면 이렇게 구분하면 된다.
-
-> DOM은 **지금 입력창 안에 뭐가 들어있는지** 를 들고 있고,  
-> RHF는 **그 값을 폼 데이터로 어떤 경로에 저장하고, 무엇이 dirty/error/touched인지** 를 들고 있다.
-
-### 브라우저 프로세스부터 RHF 내부 저장소까지
-
-이 부분은 단순히 "DOM이냐 RHF냐" 정도로 보면 계속 헷갈린다.  
-**운영체제 프로세스 → 브라우저 renderer → JavaScript heap → DOM/native memory → React/RHF 객체** 순서로 봐야 구조가 잡힌다.
-
-이 설명은 다음 1차 자료 기준으로 정리했다.
-
-- Chromium 공식 multi-process architecture 문서
-- MDN의 DOM / JavaScript memory management 문서
-- V8 공식 문서
-- Microsoft Edge DevTools memory terminology 문서
-- RHF 공식 소스 `createFormControl.ts`
-
-#### 브라우저가 실행되면 무엇이 프로세스인가
-
-당신이 알고 있는 운영체제 관점부터 다시 맞추면 이렇다.
-
-- Chrome, Edge, Safari 같은 브라우저 실행 파일은 **운영체제의 프로세스들** 로 실행된다.
-- Chromium 계열 브라우저는 기본적으로 **하나의 브라우저 프로세스 + 여러 renderer 프로세스** 구조를 쓴다.
-- Chromium 공식 문서는 메인 UI와 다른 프로세스들을 관리하는 쪽을 **browser process**, 웹 콘텐츠를 처리하는 쪽을 **renderer process** 라고 부른다.
-
-즉 "브라우저"는 운영체제 입장에서 **프로세스 하나** 라기보다, 보통 **협력하는 여러 프로세스 묶음** 으로 보는 편이 맞다.
-
-#### React 앱이나 Next 앱은 프로세스인가
-
-**브라우저 안에서 돌아가는 React 앱은 별도 운영체제 프로세스가 아니다.**
-
-정확히는:
-
-- 서버가 내려준 HTML/CSS/JS를 현재 탭의 **renderer process** 가 받아서 실행한다.
-- 그 JavaScript 번들 안에 React 코드, 애플리케이션 코드, RHF 코드가 함께 들어 있다.
-- 따라서 브라우저 안에서 실행 중인 React 앱은 **renderer process 안에서 돌아가는 JavaScript 프로그램** 이다.
-
-여기서 Next.js는 한 번 더 나눠서 봐야 한다.
-
-- **서버 쪽 Next 런타임**: 개발 서버나 배포 서버에서 도는 Node.js 프로세스
-- **클라이언트 쪽 Next/React 코드**: 브라우저 renderer 안에서 도는 JavaScript
-
-즉 "Next 프로그램"이라고 부를 때:
-
-- 서버에서 돌고 있는 쪽은 **별도 서버 프로세스**
-- 브라우저에서 hydration 이후 돌고 있는 쪽은 **renderer 안의 JS 코드**
-
-둘을 섞으면 "웹앱이 프로세스냐?" 질문이 계속 꼬인다.
-
-#### 이 웹앱은 어떤 메모리를 쓰는가
-
-브라우저 안에서 실행되는 클라이언트 코드는 **현재 탭을 담당하는 renderer process의 메모리** 를 쓴다.
-
-그래서 질문을 당신 식으로 다시 답하면:
-
-- "이 웹프로젝트는 어떤 메모리를 쓰는 거야?"
-  - **renderer process 주소 공간 안의 메모리** 를 쓴다.
-- "브라우저 메모리를 공유받아?"
-  - **그렇다.** 별도 프로세스를 새로 갖는 게 아니라, 그 탭의 renderer 안에서 실행된다.
-
-단, 그 "공유"를 너무 느슨하게 이해하면 안 된다.
-
-- 브라우저 전체와 같은 한 덩어리 메모리를 아무렇게나 다 같이 쓰는 게 아니라
-- **운영체제가 만든 renderer process의 주소 공간 안에서**
-- JS 엔진, DOM, 렌더링 엔진, 페이지 코드가 각자 자기 계층의 메모리를 사용한다.
-
-#### 메모리 층위를 그림으로 보면
-
-```text
-운영체제 메모리
-└─ 브라우저(Chromium 계열)
-   ├─ browser process
-   │  └─ 탭 UI, 주소창, 프로세스 관리
-   ├─ renderer process (현재 탭 / 문서)
-   │  ├─ native / renderer memory
-   │  │  ├─ DOM nodes
-   │  │  ├─ layout / paint 관련 엔진 데이터
-   │  │  └─ 브라우저가 관리하는 문서 구조
-   │  └─ JavaScript engine (V8) + JS heap
-   │     ├─ 애플리케이션 객체
-   │     ├─ React 컴포넌트 함수 / 클로저 / state
-   │     ├─ RHF 내부 객체 (_fields, _formValues, _formState ...)
-   │     └─ 이벤트 핸들러 / validation 함수
-   └─ GPU process 등 기타 프로세스
-```
-
-이 그림에서 핵심은 두 가지다.
-
-- **DOM은 "페이지를 메모리로 표현한 브라우저 쪽 객체 계층"** 이다.
-- **RHF 내부 상태는 "그 페이지 코드가 만든 JavaScript 객체 계층"** 이다.
-
-즉 둘 다 넓게 보면 현재 탭의 renderer 메모리 안에 있지만, **같은 층의 저장소는 아니다.**
-
-#### DOM 메모리와 JS heap은 왜 다른가
-
-MDN은 DOM을 **문서를 메모리 안의 객체 구조로 표현한 것** 이라고 설명한다.  
-Edge DevTools 문서는 메모리를 볼 때 **JavaScript heap objects** 와 **DOM nodes를 표현하는 native memory** 를 구분해서 설명한다.
-
-이 둘을 합치면 다음처럼 이해하면 된다.
-
-- JavaScript 엔진(V8)은 **JavaScript 객체, 함수, 배열, 클로저** 를 위한 메모리를 관리한다.
-- 브라우저는 **DOM 노드와 문서 구조** 를 별도 계층으로 관리하고, JavaScript가 DOM API를 통해 그 객체에 접근하게 해 준다.
-
-즉 `input.value`를 읽는다는 것은 **브라우저가 관리하는 DOM 객체의 상태를 JS가 보는 것** 이고,  
-`const state = { ... }` 같은 객체는 **JS heap 안의 객체를 쓰는 것** 이다.
-
-#### RHF 내부 메모리/캐시는 구체적으로 어디에 있나
-
-RHF의 "내부 메모리/캐시"는 CPU 캐시나 브라우저 HTTP 캐시 같은 게 아니다.  
-그냥 **RHF 라이브러리가 `useForm()` / `createFormControl()` 실행 중 만들어 두는 JavaScript 객체들** 이다.
-
-즉 위치를 계층적으로 말하면:
-
-- **운영체제 메모리**
-  - **renderer process 주소 공간**
-    - **V8 JavaScript heap**
-      - **RHF 내부 객체**
-
-RHF 소스 `createFormControl.ts`를 보면 실제로 이런 내부 저장소가 만들어진다.
-
-- `_fields`: 등록된 필드 ref와 필드 메타데이터 레지스트리
-- `_defaultValues`: dirty 비교의 기준점이 되는 기본값
-- `_formValues`: 현재 폼 값 스냅샷
-- `_formState`: `errors`, `dirtyFields`, `isSubmitting`, `isValid` 같은 파생 상태
-- `_names`: watch / array / mount된 필드 이름 집합
-- `_proxyFormState`: 어떤 `formState` 속성이 구독되었는지 추적
-- `_subjects`: 상태 변경을 구독자에게 브로드캐스트하는 내부 subject
-
-즉 RHF 내부 메모리는 **"폼 엔진이 돌아가기 위해 필요한 JS 객체 묶음"** 이다.
-
-#### 그러면 "현재 값은 DOM"과 "`_formValues`도 있다"가 왜 동시에 참인가
-
-이게 진짜 헷갈리는 핵심이다.
-
-정확히는:
-
-- **화면에서 즉시 보이는 native input 상태** 는 DOM 요소가 들고 있다.
-- **RHF은 이벤트를 받아 `_formValues`라는 JS 스냅샷도 갱신한다.**
-
-RHF 소스를 보면 `onChange` 흐름에서 `set(_formValues, name, fieldValue)` 같은 업데이트가 실제로 일어난다.  
-즉 RHF은 "현재 값"에 대한 JS 측 스냅샷도 분명히 가진다.
-
-그런데도 RHF을 uncontrolled라고 부르는 이유는:
-
-- **입력창의 표시를 React state → rerender → `value` prop 재주입 방식으로 구동하지 않기 때문** 이다.
-
-제어 컴포넌트에서는 보통 이런 흐름이다.
-
-```text
-타이핑 → onChange → React state 변경 → 컴포넌트 리렌더 → value prop으로 다시 input 제어
-```
-
-RHF 기본 경로에서는 이런 흐름에 더 가깝다.
-
-```text
-타이핑 → 브라우저가 input.value 변경 → RHF가 ref/이벤트로 연결돼 있음 → 필요 시 _formValues / formState 갱신
-```
-
-즉 차이는:
-
-- **제어 컴포넌트**: React state가 입력 표시를 "밀어 넣는" 쪽
-- **RHF 기본 경로**: DOM이 입력 표시를 직접 바꾸고, RHF은 그것을 운영하는 쪽
-
-그래서 "DOM만 쓰고 RHF은 값이 없다"도 틀리고,  
-"RHF 내부 메모리가 있으니 결국 controlled와 같다"도 틀리다.
-
-#### React state, RHF 상태, DOM 상태를 한 번에 구분하면
-
-같은 필드 하나에도 사실 세 종류의 상태가 겹쳐 있을 수 있다.
-
-**A. DOM 상태**
-
-- `input.value`
-- `input.checked`
-- 포커스 여부
-- selection/caret 위치
-
-**B. RHF 상태**
-
-- `_formValues.email`
-- `_defaultValues.email`
-- `formState.errors.email`
-- `formState.dirtyFields.email`
-
-**C. React 컴포넌트 상태**
-
-- `useState`로 직접 관리한 열림/닫힘
-- 커스텀 UI 토글 상태
-- "제출 중 스피너를 보여줄까" 같은 별도 표시 상태
-
-실무에서 막히는 이유는 이 셋을 한 문장으로 뭉뚱그려 "상태"라고 부르기 때문이다.  
-그러나 문제를 풀 때는 **어느 계층의 상태를 말하는지** 먼저 분리해야 한다.
-
-#### "ref"는 여기서 어떤 역할인가
-
-`ref`를 포인터처럼 너무 기계적으로 이해할 필요는 없지만, **JavaScript 코드가 특정 DOM 요소 인스턴스에 직접 닿는 통로** 라고 보면 된다.
-
-그래서 RHF은:
-
-- 전역 DOM 트리를 `querySelector`로 매번 탐색하는 대신
-- 등록 시점에 받은 `ref`를 통해
-- "이 필드 이름은 이 DOM 요소와 연결돼 있다"는 레지스트리를 만든다.
-
-이것이 `_fields` 같은 내부 저장소가 필요한 이유이기도 하다.
-
-#### CS 관점으로 가장 짧게 다시 요약하면
-
-당신이 이미 알고 있는 개념으로 번역하면 이렇다.
-
-- 브라우저 탭의 웹앱은 **독립 OS 프로세스가 아니라 renderer process 안에서 도는 프로그램** 이다.
-- 그 프로그램의 JS 객체들은 **V8 heap** 에 놓인다.
-- React state와 RHF 내부 객체도 **V8 heap 위의 JS 객체** 다.
-- DOM 노드는 **브라우저가 renderer 쪽 native memory에서 관리하는 문서 객체** 다.
-- RHF의 내부 메모리/캐시는 **그 DOM과 연결되어 폼 운영을 돕는 JS heap 상의 자료구조** 다.
-
-즉 RHF은 "DOM을 쓰는 라이브러리"이면서 동시에 "자기 내부 JS 상태도 가진 라이브러리"다.  
-둘 중 하나만 말하면 반쪽 설명이 된다.
-
-### 3. 왜 "그냥 DOM이지, 무슨 RHF 자체 메모리야?"라는 느낌이 드는가
-
-이 느낌은 반쯤 맞고 반쯤 틀리다.
-
-- 맞는 부분: **현재 타이핑 값의 저장 장소** 를 말할 때는 정말 DOM이 맞다.
-- 틀린 부분: RHF은 그 DOM만 보고 아무 상태도 없이 움직이지 않는다. 필드 등록표, 기본값 비교 기준, 검증 결과, 제출 상태 같은 건 RHF 내부에 따로 있다.
-
-그래서 RHF을 이해할 때는 "메모리가 있냐 없냐"보다 아래 질문이 더 중요하다.
-
-**어느 층이 무엇의 source of truth인가?**
-
-- native input의 현재 값 → DOM
-- dirty/errors/isValid 같은 파생 상태 → RHF 내부 상태
-- 화면 전체 재렌더 여부 → React
-
-이 세 층을 섞어서 보면 계속 헷갈린다.
-
-### 4. 이걸 코드로 보면 어디를 봐야 하나
-
-```tsx
-// [개념 설명용 의사코드]
-const {
-  register,
-  handleSubmit,
-  formState: { errors },
-} = useForm();
-
-<input {...register('email')} />;
-```
-
-여기서 중요한 포인트는 세 개다.
-
-- `register('email')`가 **ref + name + event handlers** 를 돌려준다.
-- `<input>`은 여전히 native input이라서 **현재 값은 DOM에 있다.**
-- `errors`는 RHF이 내부적으로 관리하는 **파생 상태** 다.
-
-즉 이 한 줄 안에 세 층이 같이 들어 있다.
-
-- DOM 값
-- RHF 내부 메타 상태
-- React 렌더
-
-### 5. 실전에서 이렇게 기억하면 덜 헷갈린다
-
-아래 문장을 통째로 외우는 편이 오히려 낫다.
-
-> RHF은 uncontrolled 기본 경로에서 **입력값 자체는 DOM에 두고**,  
-> **`ref`로 그 DOM과 연결한 다음**,  
-> **dirty/errors/defaultValues 같은 운영 정보는 RHF 내부 상태에 둔다.**
-
-이렇게 이해하면 다음 질문도 자연스럽게 연결된다.
-
-- 왜 타이핑할 때 전체 리렌더가 줄어드나?
-- 왜 `defaultValues`가 `isDirty` 판단의 기준점이 되나?
-- 왜 `formState.errors`를 읽는 순간 그 속성만 구독된다고 말하나?
-
-### 자기 설명 질문
-
-- "DOM이 관리한다"는 말에서, 정확히 DOM이 들고 있는 것은 무엇인가?
-- RHF 내부 메모리는 왜 필요하고, 그 안에는 어떤 종류의 정보가 들어가나?
-- `register`가 반환하는 `ref`는 이 구조에서 어떤 역할을 하나?
-- 브라우저 안의 React 앱은 왜 별도 OS 프로세스라고 부르지 않는가?
-- `input.value`, React state, RHF `_formValues`는 각각 어느 층의 상태인가?
 
 ### RHF의 두 가지 렌더 시점
 
@@ -747,11 +359,11 @@ RHF은 검증 방식이 세 가지다. 언제 어떤 방식을 써야 하는지 
 
 ### 먼저 결론
 
-| 방식                    | 언제                                                   | 한 줄 기준                |
-| ----------------------- | ------------------------------------------------------ | ------------------------- |
-| **내장 검증**           | 폼이 단순하고 의존성을 최소화할 때                     | 필드 5개 이하, 규칙 단순  |
-| **Zod resolver**        | TypeScript 프로젝트, 복잡한 스키마, 서버와 스키마 공유 | 기본 선택지               |
-| **form-level validate** | resolver 없이 크로스 필드 검증이 필요할 때 (v7.72.0+)  | 비교적 최근에 추가된 방식 |
+| 방식                    | 언제                                                   | 한 줄 기준               |
+| ----------------------- | ------------------------------------------------------ | ------------------------ |
+| **내장 검증**           | 폼이 단순하고 의존성을 최소화할 때                     | 필드 5개 이하, 규칙 단순 |
+| **Zod resolver**        | TypeScript 프로젝트, 복잡한 스키마, 서버와 스키마 공유 | 기본 선택지              |
+| **form-level validate** | resolver 없이 크로스 필드 검증이 필요할 때 (v7.72.0+)  | 가장 최근에 추가된 방식  |
 
 ### 세 가지 방식 상세
 
@@ -807,10 +419,7 @@ const { register, handleSubmit } = useForm<FormData>({
 
 ```tsx
 // [실무 패턴 예제] — resolver 없이 폼 전체 검증
-const {
-  register,
-  formState: { errors },
-} = useForm({
+const { register } = useForm({
   validate: async ({ formValues }) => {
     if (formValues.endDate < formValues.startDate) {
       return { type: 'dateError', message: '종료일은 시작일 이후여야 합니다' };
@@ -830,7 +439,7 @@ const {
 
 ### 흔한 실수
 
-`resolver`와 내장 검증(`required`, `min` 등)을 동시에 쓰는 것. 공식 문서 기준으로 둘은 함께 동작하지 않는다. 에러가 명확히 보이지 않고 검증 흐름만 어긋나는 식으로 드러날 수 있어 찾기 어렵다.
+`resolver`와 내장 검증(`required`, `min` 등)을 동시에 쓰는 것. resolver가 있으면 register의 검증 규칙은 완전히 무시된다. 사일런트(silent) 실패라서 찾기 어렵다.
 
 ### 회상 질문
 
@@ -843,7 +452,7 @@ const {
 
 ### 이 섹션의 목적
 
-폼의 "기준값"을 다루는 네 가지 API는 서로 비슷해 보이지만 핵심 역할이 다르다. 혼용하면 `isDirty` 판단이 깨지거나 예상치 않은 렌더가 발생한다.
+폼의 "기준값"을 다루는 네 가지 API는 서로 비슷해 보이지만 역할이 완전히 다르다. 혼용하면 `isDirty` 판단이 깨지거나 예상치 않은 렌더가 발생한다.
 
 ### 먼저 결론
 
@@ -896,10 +505,6 @@ function EditProfileForm({ userId }: { userId: string }) {
   // 1. values prop이 있으므로 별도 useEffect + reset이 불필요하다
   // 2. isDirty = 사용자가 뭔가를 바꿨는가 (서버값과 비교)
   // 3. dirtyFields = 어떤 필드를 바꿨는가 (PATCH용)
-
-  const onSubmit = (data: UserProfile) => {
-    console.log(data);
-  };
 
   if (isLoading) return <div>로딩 중...</div>;
 
@@ -974,7 +579,7 @@ const handleMapSelect = (place: GooglePlace) => {
 
 ### 이 섹션의 목적
 
-값을 "읽는" 방법이 네 가지다. 겉보기에는 비슷하지만 리렌더 비용과 용도가 다르다. 잘못 고르면 불필요한 리렌더가 생기거나, 반대로 값이 최신 상태가 아닐 수 있다.
+값을 "읽는" 방법이 네 가지다. 겉보기에는 비슷하지만 리렌더 비용과 용도가 완전히 다르다. 잘못 고르면 불필요한 리렌더가 생기거나, 반대로 값이 최신 상태가 아닐 수 있다.
 
 ### 먼저 결론
 
@@ -1221,7 +826,7 @@ import Select from 'react-select'; // react-select는 내부 input의 ref를 노
 // ❌ register와 동시 사용 — 이중 등록이 발생한다
 <Controller
   render={({ field }) => (
-    <input {...field} {...register('test')} /> // 피해야 한다: 이중 등록
+    <input {...field} {...register('test')} /> // 절대 이렇게 하면 안 된다
   )}
 />
 ```
@@ -1352,7 +957,7 @@ function OrderForm() {
       {fields.map((field, index) => (
         // 이 코드에서 봐야 할 포인트:
         // key={field.id} — RHF이 부여한 UUID 사용
-        // key={index}는 피해야 한다 — 삭제/재정렬 시 버그 발생
+        // key={index} 절대 금지 — 삭제/재정렬 시 버그 발생
         <div key={field.id}>
           <input {...register(`items.${index}.name`)} />
           <input {...register(`items.${index}.quantity`, { valueAsNumber: true })} type="number" />
@@ -1387,13 +992,6 @@ function OrderForm() {
 
 ```tsx
 // [실무 패턴 예제] — 배열 자체에 대한 검증
-const {
-  control,
-  formState: { errors },
-} = useForm<OrderForm>({
-  defaultValues: { items: [] },
-});
-
 const { fields } = useFieldArray({
   control,
   name: 'items',
@@ -1520,7 +1118,7 @@ function getDirtyValues(dirtyFields: any, values: any): any {
 
 > 수정 폼은 "서버 상태를 폼에 넣는 문제"가 아니라, "비교 기준점과 변경분을 어떻게 관리할 것인가"의 문제다.
 
-### 대표적인 수정 폼 패턴
+### 완전한 수정 폼 패턴
 
 ```tsx
 // [실무 패턴 예제] — 서버 데이터 로딩 → 수정 → PATCH 제출
@@ -1637,11 +1235,6 @@ function EditProfileForm({ userId }: { userId: string }) {
 
 ```tsx
 // [실무 패턴 예제]
-const {
-  setError,
-  formState: { errors },
-} = useForm<FormData>();
-
 const onSubmit = async (data: FormData) => {
   try {
     await submitForm(data);
@@ -1753,13 +1346,7 @@ useForm({ errors: stableErrors });
 
 ```tsx
 // [실무 패턴 예제] — 아이디 중복 확인
-import { useForm } from 'react-hook-form';
 import { debounce } from 'lodash';
-
-const {
-  register,
-  formState: { isValidating, validatingFields },
-} = useForm();
 
 // 디바운스: API 남용 방지
 const debouncedCheck = useCallback(
@@ -1779,6 +1366,11 @@ register('username', {
     },
   },
 });
+
+// 검증 진행 중 UI 표시
+const {
+  formState: { isValidating, validatingFields },
+} = useForm();
 {
   validatingFields.username && <Spinner />;
 }
@@ -1918,7 +1510,7 @@ function FormField({ name, label, type = 'text' }: { name: string; label: string
 
 > RHF + Zod의 핵심 장점은 "검증" 자체보다, 타입과 검증 규칙과 제출 payload shape를 한곳에 모을 수 있다는 점이다.
 
-### 왜 이 조합이 많이 쓰이는가
+### 왜 이 조합이 실무 표준인가
 
 Zod를 쓰면 **타입 선언과 검증 규칙이 한 곳**에서 관리된다.
 
@@ -2044,7 +1636,7 @@ useForm<FormInput, any, FormOutput>({ resolver: zodResolver(schema) });
 
 > UI 라이브러리 통합의 핵심 질문은 "이 컴포넌트가 native input처럼 ref와 이벤트를 그대로 드러내는가?"이다.
 
-UI 라이브러리(shadcn/ui, MUI, Ant Design 등) 컴포넌트를 RHF과 연결할 때는 `Controller`를 검토하는 경우가 많다. 다만 해당 컴포넌트가 `ref`를 적절히 노출하고 네이티브 input 계약을 잘 따르는 경우에는 `register`만으로도 충분할 수 있다. 각 라이브러리의 공식 RHF 통합 가이드를 우선 확인하는 것이 가장 안전하다.
+UI 라이브러리(shadcn/ui, MUI, Ant Design 등) 컴포넌트를 RHF과 연결할 때는 `Controller`를 사용한다. 각 라이브러리의 공식 RHF 통합 가이드를 참고하는 것이 가장 안전하다.
 
 - shadcn/ui: https://ui.shadcn.com/docs/forms/react-hook-form
 
@@ -2182,13 +1774,7 @@ RHF의 기본 장점을 유지하면서도, 대형 폼과 복잡한 화면에서
 
 ```tsx
 // [실무 패턴 예제] — 가상화 + useFieldArray
-import { useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useFieldArray, useForm } from 'react-hook-form';
-
-const { control, register } = useForm<{ items: { name: string }[] }>({
-  defaultValues: { items: [] },
-});
 
 const { fields } = useFieldArray({ control, name: 'items' });
 const parentRef = useRef<HTMLDivElement>(null);
@@ -2390,32 +1976,32 @@ const {
 
 ## 4-7. 검증 라이브러리 비교
 
-|                | Zod                        | Yup                       | Valibot                | Standard Schema             |
-| -------------- | -------------------------- | ------------------------- | ---------------------- | --------------------------- |
-| **번들 특성**  | 중간 크기, 기능 풍부       | 비교적 큰 편              | 매우 작은 편           | 선택한 스키마에 따라 달라짐 |
-| **TypeScript** | `z.infer` 중심의 강한 추론 | `InferType` 지원          | 스키마에서 자동 추론   | 구현체에 따라 다름          |
-| **v2026 기준** | v4, top-level API 권장     | 안정적                    | 모듈식 tree-shake 지향 | 생태계 표준화 계층          |
-| **추천 상황**  | TypeScript 신규 프로젝트   | Formik → RHF 마이그레이션 | 번들 크기 극히 중요    | 라이브러리 독립성           |
+|                | Zod                      | Yup                          | Valibot              | Standard Schema        |
+| -------------- | ------------------------ | ---------------------------- | -------------------- | ---------------------- |
+| **번들 크기**  | ~17.7kB (esbuild)        | ~59KB                        | ~1.37kB              | 라이브러리에 따라 다름 |
+| **TypeScript** | z.infer 자동 추론        | InferType (부정확할 수 있음) | 스키마에서 자동 추론 | -                      |
+| **v2026 기준** | v4, top-level API 권장   | 안정적                       | 모듈식 tree-shake    | 생태계 표준화 중       |
+| **추천 상황**  | TypeScript 신규 프로젝트 | Formik → RHF 마이그레이션    | 번들 크기 극히 중요  | 라이브러리 독립성      |
 
-> 정확한 번들 수치는 번들러, 사용한 스키마 모양, import 방식에 따라 크게 달라진다. 여기 표는 절대 수치 비교가 아니라 성향 비교다. Valibot 비교 페이지의 수치도 특정 예제 기준 벤치마크로 읽어야 한다.
+> 번들 수치 출처: Valibot 공식 비교 페이지, 2026년 4월 기준, esbuild 빌드 기준 로그인 폼 예시.
 
 ---
 
 ## 4-8. RHF vs Formik vs TanStack Form
 
-|                   | RHF                            | Formik                           | TanStack Form                             |
-| ----------------- | ------------------------------ | -------------------------------- | ----------------------------------------- |
-| **기본 모델**     | DOM 중심 비제어 + 선택적 구독  | React state 중심                 | 반응형 필드 상태 + selector 패턴          |
-| **구성 특성**     | 코어가 작고 의존성 없는 편     | 상대적으로 단순하지만 state 중심 | 코어 zero-deps 지향, TanStack 감성이 강함 |
-| **TypeScript**    | 제네릭 기반, 중첩 필드 지원    | 사용 가능하지만 추론은 제한적    | 강한 추론과 deep field 타입 강조          |
-| **성숙도/채택도** | 메인스트림, 문서와 예제가 풍부 | 널리 알려진 성숙 라이브러리      | 성장 중인 대안                            |
-| **추천 맥락**     | 일반적인 React 폼 전반         | 기존 Formik 코드베이스 유지      | TanStack 생태계 + 강한 타입/반응성 선호   |
+|                       | RHF                | Formik                 | TanStack Form               |
+| --------------------- | ------------------ | ---------------------- | --------------------------- |
+| **기본 방식**         | 비제어 (ref → DOM) | 제어 (useState)        | 필드 단위 반응성            |
+| **번들 크기**         | ~12KB              | ~44KB                  | 의존성 0                    |
+| **TypeScript**        | 제네릭 수동 선언   | 부분 지원              | defaultValues에서 자동 파생 |
+| **npm 주간 다운로드** | ~1,600만           | ~240만                 | ~130만                      |
+| **상태**              | 활발. v7.72.1      | 느림. v2.4.9 (2025.11) | 빠른 성장. v1.29.0          |
 
-> 이 표는 공식 소개 문구와 문서 구조를 바탕으로 한 방향성 비교다. 다운로드 수치, 번들 수치, "누가 더 우월한가" 같은 단정은 버전과 측정 방식에 크게 좌우되므로 의도적으로 뺐다.
+> 다운로드 수치: npm trends 기준, 2026년 4월. 집계 방식에 따라 다르게 보일 수 있다.
 
-**Formik**: "공식 maintenance mode"를 선언한 사실은 없다. GitHub Releases 기준으로도 2025년 11월 10일에 2.4.9가 배포됐다. 다만 현재 문서와 소개를 보면 폼 상태를 plain React state/props로 다루는 철학이 분명하고, 이 특성 때문에 입력마다 렌더가 걸리는 구조적 비용은 RHF보다 크게 느껴질 수 있다.
+**Formik**: "공식 maintenance mode"를 선언한 사실은 없다. 다만 2023년 이후 신규 기능 개발이 없고 버그 수정 위주다. 기본 패턴의 성능 차이도 구조적이다(매 타이핑마다 리렌더 vs RHF은 기본 최적화).
 
-**TanStack Form**: 공식 문서는 first-class TypeScript, framework-agnostic, granular reactivity를 강하게 내세운다. 다만 비교 페이지 자체가 "under construction"이라고 밝히고 있으므로, RHF보다 일방적으로 우월하다고 쓰기보다는 "강한 타입 경험과 반응성 모델을 선호할 때 검토할 만한 대안" 정도로 읽는 편이 안전하다.
+**TanStack Form**: 기술적으로 앞선 부분이 있지만 공식 비교 페이지가 "아직 완전히 정확하지 않다(under construction)"고 명시한다. TanStack Query를 이미 쓰고 극도로 복잡한 동적 폼이 필요할 때 검토 대상이 된다.
 
 ---
 
@@ -2466,7 +2052,7 @@ v8 beta에서 예고된 주요 breaking change:
 | `useForm({ validate })`는 7.72.0에서 추가됐다                                               | https://github.com/react-hook-form/react-hook-form/releases/tag/v7.72.0 | https://github.com/react-hook-form/documentation                                      | 2-1            |
 | `watch(callback)`은 v8 beta에서 제거 예정이며 `subscribe()`로 이동해야 한다                 | https://react-hook-form.com/docs/useform/watch                          | https://github.com/react-hook-form/react-hook-form/releases                           | 2-3, 4-1, 4-9  |
 | `values`는 외부 값 변화에 반응하고 내부적으로 reset 계열 동작을 유발하므로 주의가 필요하다  | https://react-hook-form.com/docs/useform                                | https://stackoverflow.com/questions/76647141/react-hook-form-defaultvalues-v-s-values | 2-2, 2-7       |
-| `errors` prop은 참조를 안정적으로 유지해야 한다                                             | https://react-hook-form.com/docs/useform                                | -                                                                                     | 2-8            |
+| `errors` prop은 참조를 안정적으로 유지해야 한다                                             | https://react-hook-form.com/docs/useform                                | https://github.com/react-hook-form/react-hook-form/issues/3455                        | 2-8            |
 | `useFieldArray`는 `field.id`를 key로 써야 하며 `keyName`은 다음 메이저에서 제거 예정이다    | https://react-hook-form.com/docs/usefieldarray                          | https://react-hook-form.nodejs.cn/docs/usefieldarray                                  | 2-5, 4-9       |
 | `update`/`replace`는 remount를 유발할 수 있어 포커스 손실을 낳는다                          | https://react-hook-form.com/docs/usefieldarray                          | https://github.com/orgs/react-hook-form/discussions/11770                             | 2-5, 2-6       |
 | `Controller`는 controlled 외부 컴포넌트 통합용이고 부모 리렌더까지 막아주지는 않는다        | https://react-hook-form.com/docs/usecontroller/controller               | React 공식 렌더 모델                                                                  | 2-4            |
@@ -2566,11 +2152,6 @@ v8 beta에서 예고된 주요 breaking change:
 
 ### 성능 / 접근성 / 빅테크/기관 자료
 
-- Chromium - Multi-process Architecture: https://www.chromium.org/developers/design-documents/multi-process-architecture/
-- MDN - Introduction to the DOM: https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction
-- MDN - JavaScript Memory Management: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
-- V8 - Fast Properties (JS object / hidden class 관점 이해용): https://v8.dev/blog/fast-properties
-- Edge DevTools - Memory 101: https://learn.microsoft.com/en-us/microsoft-edge/devtools-guide-chromium/memory-problems/memory-101
 - web.dev INP: https://web.dev/articles/inp
 - web.dev Optimize INP: https://web.dev/articles/optimize-inp
 - web.dev Learn Forms Accessibility: https://web.dev/learn/forms/accessibility
