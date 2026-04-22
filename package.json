@@ -27,6 +27,8 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "validate": "pnpm lint:strict && pnpm format:check && pnpm type-check && pnpm test",
+    "verify:push": "pnpm validate && pnpm build",
+    "verify": "pnpm validate && pnpm test:coverage && pnpm build && pnpm test:e2e",
     "prepare": "husky"
   },
   "dependencies": {

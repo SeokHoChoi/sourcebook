@@ -106,8 +106,19 @@ pnpm intake:scaffold -- frontend react-hook-form formstate
 - `pnpm test:coverage` - Vitest with coverage
 - `pnpm test:e2e` - Playwright E2E against production server
 - `pnpm validate` - lint + format + type-check + unit/integration tests
+- `pnpm verify:push` - local push gate: `validate` + production build
+- `pnpm verify` - full local gate: `validate` + coverage + build + E2E
 
 Run `pnpm build` before `pnpm test:e2e` when you are not reusing a CI build artifact.
+
+## Development Workflow
+
+- Work on a feature branch, not directly on `main`.
+- `.husky/pre-commit` formats and lints staged files.
+- `.husky/commit-msg` enforces the Conventional Commits + Korean subject rule.
+- `.husky/pre-push` runs `pnpm verify:push`, so a push is blocked if lint, format, type-check, unit/integration tests, or build fail.
+- For UI, route, metadata, environment-contract, or runtime-behavior changes, run `pnpm verify` before merging.
+- CI remains the final gate for `lint`, `type-check`, `test:coverage`, `build`, and `test:e2e`.
 
 ## Commit Convention
 
