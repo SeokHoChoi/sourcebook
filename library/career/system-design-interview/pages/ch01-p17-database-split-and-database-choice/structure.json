@@ -1,0 +1,70 @@
+{
+  "pageSlug": "ch01-p17-database-split-and-database-choice",
+  "pageTitle": "1장 · 17p 데이터베이스 분리와 선택",
+  "lastStructuredAt": "2026-04-23",
+  "segments": [
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 5,
+        "endLine": 5
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 7,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 9,
+        "endLine": 21
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-004",
+      "order": 4,
+      "kind": "heading",
+      "source": {
+        "startLine": 23,
+        "endLine": 23
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 25,
+        "endLine": 25
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-006",
+      "order": 6,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 27,
+        "endLine": 27
+      }
+    },
+    {
+      "id": "ch01-p17-database-split-and-database-choice-seg-007",
+      "order": 7,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 29,
+        "endLine": 29
+      }
+    }
+  ]
+}

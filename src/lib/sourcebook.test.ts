@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(1);
+    expect(career?.counts.totalPages).toBe(5);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -148,22 +148,33 @@ describe('sourcebook catalog loader', () => {
     );
   });
 
-  it('loads the system design interview track with the seeded study guide and no page reader yet', async () => {
+  it('loads the system design interview track with the seeded study guide and chapter-1 page readers', async () => {
     const track = await getTrack('career', 'system-design-interview');
 
     expect(track.manifest.title).toBe('대규모 시스템 설계 기초');
     expect(track.studyGuide).not.toBeNull();
     expect(track.studyGuide?.title).toBe('대규모 시스템 설계 기초 스터디');
     expect(track.studyGuide?.markdown).toContain('# 대규모 시스템 설계 기초 스터디');
+    expect(track.studyGuide?.tocMarkdown).toContain('1장 사용자 수에 따른 규모 확장성 14p');
     expect(track.studyGuide?.markdown).toContain('1장 사용자 수에 따른 규모 확장성');
     expect(track.studyGuide?.markdown).toContain('15장 구글 드라이브 설계');
     expect(track.studyGuide?.markdown).toContain('1장 · 14~15p 도입과 단일 서버');
-    expect(track.counts.totalPages).toBe(1);
-    expect(track.counts.capturedPages).toBe(1);
-    expect(track.counts.structuredPages).toBe(1);
-    expect(track.counts.overlayPages).toBe(1);
-    expect(track.counts.openConfusions).toBe(4);
-    expect(track.learnerEvents).toHaveLength(4);
+    expect(track.studyGuide?.markdown).toContain('1장 · 16p 요청의 출발점과 클라이언트 종류');
+    expect(track.studyGuide?.markdown).toContain('1장 · 17p 데이터베이스 분리와 선택');
+    expect(track.studyGuide?.markdown).toContain('1장 · 18p NoSQL 선택과 규모 확장 방식');
+    expect(track.studyGuide?.markdown).toContain('1장 · 19~21p 로드밸런서와 데이터베이스 다중화');
+    expect(track.counts.totalPages).toBe(5);
+    expect(track.counts.capturedPages).toBe(5);
+    expect(track.counts.structuredPages).toBe(5);
+    expect(track.counts.overlayPages).toBe(5);
+    expect(track.counts.openConfusions).toBe(12);
+    expect(track.learnerEvents).toHaveLength(12);
+    expect(track.studyGuide?.markdown).toContain(
+      '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
+    );
+    expect(track.studyGuide?.markdown).toContain(
+      '로컬 개발용 DB와 운영 복제 토폴로지는 다른 문제다',
+    );
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -176,11 +187,117 @@ describe('sourcebook catalog loader', () => {
     expect(page).not.toBeNull();
     expect(page?.rawSource).toContain('사용자 수에 따른 규모 확장성');
     expect(page?.rawSource).toContain('이 그림의 시스템 구성을 이해하기 위해서는');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('단일 서버');
     expect(page?.segmentCards).toHaveLength(8);
     expect(page?.segmentCards[1]?.directTranslation).toContain('프론트엔드도 이 범위 밖이 아니다');
     expect(page?.segmentCards[7]?.sourceText).toContain('DNS는 보');
     expect(page?.learnerEvents).toHaveLength(4);
     expect(page?.reviewItems).toHaveLength(4);
+  });
+
+  it('loads the second system design reading batch with request-source clarifications', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p16-request-clients-and-http',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('이제 실제 요청이 어디로부터 오는지를 살펴보자.');
+    expect(page?.rawSource).toContain('GET /users/12 - id가 12인 사용자 데이터 접근');
+    expect(page?.segmentCards).toHaveLength(4);
+    expect(page?.segmentCards[1]?.directTranslation).toContain(
+      '가능한 모든 요청 발신자를 전부 나열하는 문장은 아니다',
+    );
+    expect(page?.segmentCards[2]?.devNote).toContain('실제 웹 프론트도 JSON API를 많이 쓴다');
+    expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.reviewItems).toHaveLength(2);
+  });
+
+  it('loads the third system design reading batch with database split feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p17-database-split-and-database-choice',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('사용자가 늘면 서버 하나로는 충분하지 않아서');
+    expect(page?.rawSource).toContain('read/write/update');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('데이터베이스');
+    expect(page?.segmentCards).toHaveLength(7);
+    expect(page?.segmentCards[1]?.devNote).toContain('1) 주장');
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain('차선이 줄어드는 교통 병목');
+    expect(page?.segmentCards[4]?.trickySentenceExplanation).toContain(
+      '도메인 이름만 말하는 것도 아니고',
+    );
+    expect(page?.segmentCards[4]?.devNote).toContain('같은 JSON을 만들 수는 있어도');
+    expect(page?.segmentCards[6]?.trickySentenceExplanation).toContain('문장 끝이 잘려 있다');
+    expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.reviewItems).toHaveLength(3);
+  });
+
+  it('loads the fourth system design reading batch with NoSQL and scaling feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p18-nosql-and-scaling',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('일반적으로 조인 연산은 지');
+    expect(page?.rawSource).toContain('수직적 규모 확장 vs 수평적 규모 확장');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('수직적 규모 확장 vs 수평적 규모 확장');
+    expect(page?.segmentCards).toHaveLength(7);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain(
+      'NoSQL은 데이터 사이에 관계가 없다는 뜻이 아니다',
+    );
+    expect(page?.segmentCards[4]?.devNote).toContain('정의에서 함의를 뽑아내는 연습');
+    expect(page?.segmentCards[6]?.devNote).toContain('capacity를 키우는 이야기');
+    expect(page?.segmentCards[1]?.devNote).toContain('`API가 더 단순하다`는 말은');
+    expect(page?.segmentCards[1]?.devNote).toContain(
+      '중복 데이터의 최신성 관리가 실패하면, 그 결과가 프론트에서는 stale UI로 드러날 수 있다',
+    );
+    expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.reviewItems).toHaveLength(3);
+  });
+
+  it('loads the fifth system design reading batch with load balancer and replication feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp19-21-load-balancer-and-db-replication',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain(
+      '로드밸런서는 부하 분산 집합(load balancing set)에 속한 웹 서버들에게',
+    );
+    expect(page?.rawSource).toContain(
+      '데이터를 지역적으로 떨어진 여러 장소에 다중화시켜 놓을 수 있기 때문이다',
+    );
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('수직적 규모 확장 vs 수평적 규모 확장');
+    expect(page?.segmentCards).toHaveLength(6);
+    expect(page?.segmentCards[2]?.trickySentenceExplanation).toContain(
+      'backend pool 또는 target group에 가깝다',
+    );
+    expect(page?.segmentCards[2]?.devNote).toContain('웹 서버 한 대가 죽어도');
+    expect(page?.segmentCards[3]?.trickySentenceExplanation).toContain(
+      '문장이 다음 페이지로 잘린 부분',
+    );
+    expect(page?.segmentCards[4]?.devNote).toContain(
+      '로컬 개발에서 네가 PostgreSQL 하나를 띄워서 개발하는 것과',
+    );
+    expect(page?.segmentCards[5]?.devNote).toContain('같은 리전 안의 다른 AZ에 standby를 자동으로');
+    expect(page?.segmentCards[5]?.devNote).toContain(
+      '로컬 DB, 스테이징 DB, 프로덕션 DB는 환경 구분',
+    );
+    expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.reviewItems).toHaveLength(2);
   });
 
   it('exposes segment cards and learner events for useform', async () => {
@@ -361,6 +478,26 @@ describe('sourcebook catalog loader', () => {
       categorySlug: 'career',
       trackSlug: 'system-design-interview',
       pageSlug: 'ch01-pp14-15-intro-single-server',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-p16-request-clients-and-http',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-p17-database-split-and-database-choice',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-p18-nosql-and-scaling',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-pp19-21-load-balancer-and-db-replication',
     });
   });
 

@@ -57,6 +57,8 @@ export type TrackPageManifest = {
   learningStage?: LearningStage;
   sourceScope?: SourceScope;
   sectionAnchor?: string;
+  chapterLabel?: string;
+  sectionLabel?: string;
   canonicalUrl: string;
   sourceRepoPath: string;
   files: TrackPageFiles;
@@ -67,6 +69,7 @@ export type TrackStudyGuideManifest = {
   title: string;
   description: string;
   file: string;
+  tocFile?: string;
   updatedAt: string;
   verificationNotes?: string[];
 };
@@ -234,6 +237,7 @@ export type TrackRecord = {
 
 export type TrackStudyGuideRecord = TrackStudyGuideManifest & {
   markdown: string;
+  tocMarkdown: string | null;
 };
 
 export type LearnerEventTarget = {
@@ -514,12 +518,18 @@ export const getTrack = cache(
     const studyGuideMarkdown = manifest.studyGuide
       ? await readTextIfExists(resolveTrackFile(categorySlug, trackSlug, manifest.studyGuide.file))
       : null;
+    const studyGuideTocMarkdown = manifest.studyGuide?.tocFile
+      ? await readTextIfExists(
+          resolveTrackFile(categorySlug, trackSlug, manifest.studyGuide.tocFile),
+        )
+      : null;
 
     const studyGuide =
       manifest.studyGuide && studyGuideMarkdown
         ? {
             ...manifest.studyGuide,
             markdown: studyGuideMarkdown,
+            tocMarkdown: studyGuideTocMarkdown,
           }
         : null;
 

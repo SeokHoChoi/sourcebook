@@ -1,0 +1,61 @@
+{
+  "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+  "pageTitle": "1장 · 19~21p 로드밸런서와 데이터베이스 다중화",
+  "lastStructuredAt": "2026-04-24",
+  "segments": [
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 5,
+        "endLine": 6
+      }
+    },
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-002",
+      "order": 2,
+      "kind": "heading",
+      "source": {
+        "startLine": 8,
+        "endLine": 8
+      }
+    },
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-003",
+      "order": 3,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 10,
+        "endLine": 10
+      }
+    },
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-004",
+      "order": 4,
+      "kind": "list",
+      "source": {
+        "startLine": 12,
+        "endLine": 28
+      }
+    },
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 44,
+        "endLine": 59
+      }
+    },
+    {
+      "id": "ch01-pp19-21-load-balancer-and-db-replication-seg-006",
+      "order": 6,
+      "kind": "list",
+      "source": {
+        "startLine": 61,
+        "endLine": 62
+      }
+    }
+  ]
+}

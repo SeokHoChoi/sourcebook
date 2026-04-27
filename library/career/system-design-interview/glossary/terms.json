@@ -86,6 +86,428 @@
       ]
     },
     {
+      "id": "web-tier",
+      "term": "웹 계층",
+      "korean": "web tier",
+      "explanation": "브라우저나 모바일 앱에서 들어온 요청을 먼저 받고, 화면/API 응답을 만들기 위해 비즈니스 로직을 실행하는 서버 쪽 계층.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": [
+            "ch01-p17-database-split-and-database-choice-seg-002",
+            "ch01-p17-database-split-and-database-choice-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "data-tier",
+      "term": "데이터 계층",
+      "korean": "data tier",
+      "explanation": "데이터베이스나 저장소처럼 데이터를 보관하고 읽기/쓰기 요청을 처리하는 계층.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": [
+            "ch01-p17-database-split-and-database-choice-seg-002",
+            "ch01-p17-database-split-and-database-choice-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "independent-scaling",
+      "term": "독립적 확장",
+      "korean": "independent scaling",
+      "explanation": "모든 구성요소를 한꺼번에 키우지 않고, 병목이 생긴 계층만 따로 키울 수 있게 만드는 것.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "queueing-mental-model",
+      "term": "대기열 모델",
+      "korean": "queueing mental model",
+      "explanation": "요청이 들어오는 속도가 처리 속도에 가까워지거나 넘어설 때 대기 시간이 커진다는 사고 모델. 서버 확장성을 이해하는 출발점으로 유용하지만, 실제 서버는 CPU, 메모리, I/O, 연결 수 등 여러 병목을 함께 가진다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "data-model",
+      "term": "데이터 모델",
+      "korean": "data model",
+      "explanation": "데이터를 DB 안에서 어떤 단위, 필드, 관계, 중복 구조로 저장할지 정한 모양. 도메인 이름이나 최종 JSON 응답만 뜻하지 않는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "query-pattern",
+      "term": "질의 패턴",
+      "korean": "query pattern / access pattern",
+      "explanation": "애플리케이션이 자주 묻는 질문의 모양. 어떤 조건으로, 얼마나 자주, 얼마나 많은 데이터를 읽고 쓰는지까지 포함한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-005"]
+        },
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-001", "ch01-p18-nosql-and-scaling-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "consistency-requirement",
+      "term": "일관성 요구",
+      "korean": "consistency requirement",
+      "explanation": "같은 사실을 여러 위치에서 읽거나 저장할 때 언제까지 같은 값을 보여야 하는지에 대한 요구 수준. 재고 수량은 강하게 맞아야 하지만 추천 목록은 조금 오래돼도 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "operational-complexity",
+      "term": "운영 난이도",
+      "korean": "operational complexity",
+      "explanation": "서비스를 실제로 굴리며 필요한 백업, 복구, 장애 대응, 인덱스 관리, 샤딩, 마이그레이션, 중복 데이터 보정, 모니터링의 어려움.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "rdbms",
+      "term": "RDBMS",
+      "korean": "관계형 데이터베이스 관리 시스템",
+      "explanation": "관계형 데이터베이스를 만들고 조회하고 관리하는 시스템. MySQL, PostgreSQL, Oracle Database 등이 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "nosql",
+      "term": "NoSQL",
+      "korean": "비관계형 데이터베이스 계열",
+      "explanation": "관계형 테이블 모델만을 중심으로 하지 않는 데이터베이스 계열. 키-값, 문서, 그래프, 컬럼 패밀리 같은 여러 모델이 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-007"]
+        },
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": [
+            "ch01-p18-nosql-and-scaling-seg-001",
+            "ch01-p18-nosql-and-scaling-seg-002",
+            "ch01-p18-nosql-and-scaling-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "join",
+      "term": "조인",
+      "korean": "join",
+      "explanation": "여러 테이블이나 데이터 집합을 관련 키나 조건 기준으로 합쳐 하나의 결과처럼 조회하는 연산. NoSQL이 관계를 못 다룬다는 뜻이 아니라, 범용 SQL 조인을 중심 기능으로 삼지 않는 경우가 많다는 점을 구분해야 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p17-database-split-and-database-choice",
+          "segmentIds": ["ch01-p17-database-split-and-database-choice-seg-006"]
+        },
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "relational-model",
+      "term": "관계형 모델",
+      "korean": "relational model",
+      "explanation": "데이터를 테이블, 행, 열, 키 관계로 표현하고 SQL 같은 질의 언어로 조합하는 데이터 모델. 데이터 사이의 관계가 있다는 말과 완전히 같은 말이 아니다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "graph-store",
+      "term": "그래프 저장소",
+      "korean": "graph store",
+      "explanation": "데이터를 노드와 관계선으로 저장하고 연결 경로를 탐색하는 저장소. 관계가 있지만 SQL 테이블 조인이 아니라 그래프 패턴 탐색으로 관계를 읽는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "vertical-scaling",
+      "term": "수직적 규모 확장",
+      "korean": "vertical scaling / scale up",
+      "explanation": "서버 한 대에 더 좋은 CPU, 더 많은 RAM, 더 빠른 저장장치 같은 자원을 추가해 성능을 올리는 방식. 단순하지만 한 대의 물리적 한계와 단일 장애점이 남는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": [
+            "ch01-p18-nosql-and-scaling-seg-005",
+            "ch01-p18-nosql-and-scaling-seg-006",
+            "ch01-p18-nosql-and-scaling-seg-007"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "horizontal-scaling",
+      "term": "수평적 규모 확장",
+      "korean": "horizontal scaling / scale out",
+      "explanation": "서버를 여러 대로 늘리고 요청이나 작업을 나눠 처리하는 방식. 병렬 처리와 장애 대체 여지를 만들 수 있지만 여러 서버를 조율해야 하는 복잡도가 생긴다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "failover",
+      "term": "자동복구",
+      "korean": "failover",
+      "explanation": "한 서버나 리소스가 장애를 일으켰을 때 트래픽이나 역할을 건강한 다른 리소스로 넘겨 서비스가 계속되게 하는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "redundancy",
+      "term": "다중화",
+      "korean": "redundancy",
+      "explanation": "하나가 고장 나도 대신할 수 있도록 같은 역할의 자원을 둘 이상 두는 것.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "single-point-of-failure",
+      "term": "단일 장애점",
+      "korean": "single point of failure",
+      "explanation": "그 하나가 고장 나면 전체 서비스가 멈추는 구성요소. 수직 확장은 한 서버를 크게 만들 수 있지만 이 문제를 자동으로 없애지는 않는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p18-nosql-and-scaling",
+          "segmentIds": ["ch01-p18-nosql-and-scaling-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "load-balancing-set",
+      "term": "부하 분산 집합",
+      "korean": "backend pool / target group",
+      "explanation": "로드밸런서가 요청을 나눠 보낼 대상 서버들의 묶음. 보통 등록된 여러 웹 서버 중 건강한 서버들만 새 요청을 받는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "availability",
+      "term": "가용성",
+      "korean": "availability",
+      "explanation": "장애가 일부 있어도 사용자가 서비스를 계속 사용할 수 있는 정도. 성능이 빠르다는 뜻과는 다르다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "public-ip-address",
+      "term": "공개 IP 주소",
+      "korean": "public IP address",
+      "explanation": "인터넷에서 직접 접근 가능한 IP 주소. 로드밸런서나 공개 서비스 진입점이 이 주소를 가질 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "private-ip-address",
+      "term": "사설 IP 주소",
+      "korean": "private IP address",
+      "explanation": "내부 네트워크 안에서만 쓰는 IP 주소. 보통 백엔드 서버는 사설 IP만 가지고 로드밸런서 뒤에 둔다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "primary-server",
+      "term": "주 서버",
+      "korean": "primary server",
+      "explanation": "데이터 원본이 되고 보통 쓰기 요청을 받는 데이터베이스 서버. 변경 로그를 다른 복제 서버로 보낸다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "standby-server",
+      "term": "부 서버",
+      "korean": "standby / replica server",
+      "explanation": "주 서버의 변경을 받아 적용하는 복제본 서버. 보통 읽기 전용이나 장애 전환 대상 역할을 맡는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "database-replication",
+      "term": "데이터베이스 다중화",
+      "korean": "database replication",
+      "explanation": "데이터베이스 서버를 둘 이상 두고 원본 데이터를 다른 서버로 복제해 읽기 분산이나 장애 대비를 하는 구성.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": [
+            "ch01-pp19-21-load-balancer-and-db-replication-seg-005",
+            "ch01-pp19-21-load-balancer-and-db-replication-seg-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "read-replica",
+      "term": "읽기 복제본",
+      "korean": "read replica",
+      "explanation": "주 서버의 데이터를 복제받아 읽기 요청을 대신 처리하는 복제본 서버. 읽기 분산이나 지역별 읽기 성능 개선에 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "aws-region",
+      "term": "리전",
+      "korean": "Region",
+      "explanation": "클라우드 제공자가 나누어 둔 큰 지역 단위. 예를 들어 서울 리전, 도쿄 리전처럼 서로 지리적으로 떨어진 영역이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "availability-zone",
+      "term": "가용 영역",
+      "korean": "Availability Zone, AZ",
+      "explanation": "한 리전 안에 있는 서로 분리된 데이터센터 묶음. 같은 리전 안에서도 장애 격리를 위해 나뉜다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+          "segmentIds": ["ch01-pp19-21-load-balancer-and-db-replication-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "terminal-client",
+      "term": "단말",
+      "korean": "request sender",
+      "explanation": "서버에 요청을 보내는 기기나 프로그램. 브라우저, 모바일 앱, 다른 서버, 크롤러, CLI 도구(터미널 명령 프로그램) 등이 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p16-request-clients-and-http",
+          "segmentIds": ["ch01-p16-request-clients-and-http-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "web-application",
+      "term": "웹 애플리케이션",
+      "korean": "web application",
+      "explanation": "문맥에 따라 브라우저에서 동작하는 웹 클라이언트를 뜻하기도 하고, 서버와 클라이언트를 함께 가진 웹 서비스 전체를 뜻하기도 한다. 주변 문맥으로 범위를 판별해야 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p16-request-clients-and-http",
+          "segmentIds": [
+            "ch01-p16-request-clients-and-http-seg-002",
+            "ch01-p16-request-clients-and-http-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "http",
+      "term": "HTTP",
+      "korean": "하이퍼텍스트 전송 프로토콜",
+      "explanation": "클라이언트가 요청을 보내고 서버가 응답하는 애플리케이션 계층 프로토콜. 브라우저와 웹 서버뿐 아니라 서버 간 통신이나 API 호출에도 널리 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p16-request-clients-and-http",
+          "segmentIds": [
+            "ch01-p16-request-clients-and-http-seg-001",
+            "ch01-p16-request-clients-and-http-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "json",
+      "term": "JSON",
+      "korean": "자바스크립트 객체 표기법",
+      "explanation": "키-값 구조로 데이터를 표현하는 가벼운 텍스트 포맷. 모바일뿐 아니라 웹 프론트와 서버 간 통신에서도 널리 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p16-request-clients-and-http",
+          "segmentIds": [
+            "ch01-p16-request-clients-and-http-seg-003",
+            "ch01-p16-request-clients-and-http-seg-004"
+          ]
+        }
+      ]
+    },
+    {
       "id": "dns",
       "term": "DNS",
       "korean": "도메인 이름 서비스",

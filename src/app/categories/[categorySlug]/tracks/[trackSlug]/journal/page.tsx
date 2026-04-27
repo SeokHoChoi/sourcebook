@@ -391,8 +391,8 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
             </section>
           </section>
 
-          <aside className="mt-8 space-y-6 lg:col-span-2 xl:col-span-1 xl:mt-0">
-            <div className="xl:sticky xl:top-6 xl:space-y-6">
+          <aside className="mt-8 lg:col-span-2 xl:col-span-1 xl:mt-0">
+            <div className="space-y-6 xl:sticky xl:top-6 xl:max-h-[calc(100svh-3rem)] xl:overflow-y-auto xl:overscroll-contain xl:pr-2">
               <section className="rounded-[1.5rem] border border-black/6 bg-white/94 p-5 shadow-[0_18px_48px_-40px_rgba(15,23,42,0.22)]">
                 <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
                   source split

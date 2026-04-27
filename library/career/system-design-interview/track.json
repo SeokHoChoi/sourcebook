@@ -3,7 +3,7 @@
   "trackSlug": "system-design-interview",
   "title": "대규모 시스템 설계 기초",
   "status": "active",
-  "phase": "1장 p14~15 적재 완료",
+  "phase": "1장 p14~21 적재 완료",
   "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
   "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
   "studyGuide": {
@@ -11,12 +11,17 @@
     "title": "대규모 시스템 설계 기초 스터디",
     "description": "책 OCR 텍스트 아카이브, 프론트엔드 중심 학습 포인트, 향후 캡처/해석 기록 규칙, 외부 근거 레지스트리를 한곳에 모은 스터디 문서.",
     "file": "references/study-guide.md",
-    "updatedAt": "2026-04-22",
+    "tocFile": "references/table-of-contents-archive.md",
+    "updatedAt": "2026-04-24",
     "verificationNotes": [
       "목차는 2026-04-22에 전달된 전자책 캡처 8장을 기준으로 OCR 가능한 화면 텍스트와 페이지 번호만 전사했다.",
       "학습 운영 원칙은 retrieval practice, distributed practice, worked example, metacognitive scaffolding 연구를 참고해 구성했다.",
       "스크린샷 원본은 저장하지 않고, OCR 텍스트는 다회 대조 후 가독성 좋은 학습 문서로만 반영한다.",
-      "1장 첫 배치인 14~15p는 이미지 확인, 영문 OCR, 수동 대조를 함께 써서 본문과 그림 레이블을 교차검증했다."
+      "1장 첫 배치인 14~15p는 이미지 확인, 영문 OCR, 수동 대조를 함께 써서 본문과 그림 레이블을 교차검증했다.",
+      "1장 두 번째 배치인 16p는 화면 상단의 이어진 문장, 번호 목록, bullet, JSON 예제를 나눠 OCR하고 수동으로 다시 맞췄다.",
+      "1장 세 번째 배치인 17p는 로컬 OCR의 한국어 인식 한계를 고려해 수동 전사를 기준으로 삼고, 그림 레이블과 영문/숫자 표기는 OCR 보조 결과와 화면을 다시 대조했다.",
+      "1장 네 번째 배치인 18p는 로컬 OCR 보조 결과가 한글을 충분히 인식하지 못해 수동 전사를 기준으로 삼고, NoSQL/scale up/scale out/failover/redundancy 같은 영문 용어와 줄바꿈은 화면과 OCR 결과를 다시 대조했다.",
+      "1장 다섯 번째 배치인 19~21p는 19p 로드밸런서 화면과 21p 데이터베이스 다중화 화면을 한 배치로 묶고, 잘린 문장은 임의 보완하지 않은 채 도식 레이블과 핵심 문장을 화면 기준으로 수동 전사했다."
     ]
   },
   "intakeFlow": [
@@ -39,12 +44,90 @@
       "pageType": "section-page",
       "learningStage": "reference",
       "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "단일 서버",
       "canonicalUrl": "전자책 캡처 14~15p",
       "sourceRepoPath": "ebook-capture/ch01-pp14-15",
       "files": {
         "source": "pages/ch01-pp14-15-intro-single-server/source.md",
         "structure": "pages/ch01-pp14-15-intro-single-server/structure.json",
         "overlay": "pages/ch01-pp14-15-intro-single-server/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-p16-request-clients-and-http",
+      "title": "1장 · 16p 요청의 출발점과 클라이언트 종류",
+      "readOrder": 2,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "단일 서버",
+      "canonicalUrl": "전자책 캡처 16p",
+      "sourceRepoPath": "ebook-capture/ch01-p16",
+      "files": {
+        "source": "pages/ch01-p16-request-clients-and-http/source.md",
+        "structure": "pages/ch01-p16-request-clients-and-http/structure.json",
+        "overlay": "pages/ch01-p16-request-clients-and-http/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-p17-database-split-and-database-choice",
+      "title": "1장 · 17p 데이터베이스 분리와 선택",
+      "readOrder": 3,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "데이터베이스",
+      "canonicalUrl": "전자책 캡처 17p",
+      "sourceRepoPath": "ebook-capture/ch01-p17",
+      "files": {
+        "source": "pages/ch01-p17-database-split-and-database-choice/source.md",
+        "structure": "pages/ch01-p17-database-split-and-database-choice/structure.json",
+        "overlay": "pages/ch01-p17-database-split-and-database-choice/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-p18-nosql-and-scaling",
+      "title": "1장 · 18p NoSQL 선택과 규모 확장 방식",
+      "readOrder": 4,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "수직적 규모 확장 vs 수평적 규모 확장",
+      "canonicalUrl": "전자책 캡처 18p",
+      "sourceRepoPath": "ebook-capture/ch01-p18",
+      "files": {
+        "source": "pages/ch01-p18-nosql-and-scaling/source.md",
+        "structure": "pages/ch01-p18-nosql-and-scaling/structure.json",
+        "overlay": "pages/ch01-p18-nosql-and-scaling/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-pp19-21-load-balancer-and-db-replication",
+      "title": "1장 · 19~21p 로드밸런서와 데이터베이스 다중화",
+      "readOrder": 5,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "수직적 규모 확장 vs 수평적 규모 확장",
+      "canonicalUrl": "전자책 캡처 19,21p",
+      "sourceRepoPath": "ebook-capture/ch01-pp19-21",
+      "files": {
+        "source": "pages/ch01-pp19-21-load-balancer-and-db-replication/source.md",
+        "structure": "pages/ch01-pp19-21-load-balancer-and-db-replication/structure.json",
+        "overlay": "pages/ch01-pp19-21-load-balancer-and-db-replication/overlay.ko.json"
       }
     }
   ]

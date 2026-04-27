@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-22",
+  "generatedAt": "2026-04-24",
   "patterns": [
     {
       "label": "프론트 확장성 범위 오판",
@@ -24,6 +24,54 @@
       "count": 1,
       "pageSlugs": ["ch01-pp14-15-intro-single-server"],
       "representativeQuestion": "웹 앱과 데이터베이스, 캐시가 서버 한 대에서 실행된다는 말이 정확히 무엇인가? 브라우저 프론트도 서버에서 돈다는 뜻처럼 보여서 헷갈렸다."
+    },
+    {
+      "label": "요청 발신 주체 범위 오독",
+      "count": 1,
+      "pageSlugs": ["ch01-p16-request-clients-and-http"],
+      "representativeQuestion": "서버에서 서버로 요청하는 것도 HTTP 요청 아닌가? 왜 웹 서버로 오는 요청을 웹 앱과 모바일 앱 두 가지로만 말하는가?"
+    },
+    {
+      "label": "웹 앱 용어 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-p16-request-clients-and-http"],
+      "representativeQuestion": "여기서 웹 앱이라는 표현은 서버까지 포함하는가? 앞문장과 bullet에서 같은 뜻으로 읽어야 하는가?"
+    },
+    {
+      "label": "확장 이유와 해법 전개 구분",
+      "count": 1,
+      "pageSlugs": ["ch01-p17-database-split-and-database-choice"],
+      "representativeQuestion": "서버를 입장 인원이 정해진 극장처럼 보면 되는가? 그리고 책은 왜 서버 하나가 부족한 이유를 설명하기보다 웹 계층과 데이터 계층 분리라는 해법으로 바로 넘어가는가?"
+    },
+    {
+      "label": "생략된 이유 추론과 관계 개념 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-p18-nosql-and-scaling"],
+      "representativeQuestion": "NoSQL은 왜 일반적으로 조인을 지원하지 않는가? 그리고 스케일업이 트래픽이 적을 때 좋지만 한계와 장애 단점이 있다는 흐름은 정의에서 바로 추론해야 하는가?"
+    },
+    {
+      "label": "비유 선택과 DB 선택 기준 추상어 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-p17-database-split-and-database-choice"],
+      "representativeQuestion": "트래픽 병목을 문/차선으로 보는 것과 키오스크/식당으로 보는 것 중 무엇이 더 적절한가? 데이터 모델, 질의 패턴, 일관성 요구, 확장 방식, 운영 난이도는 구체적으로 무엇인가?"
+    },
+    {
+      "label": "같은 DTO면 차이 없음 오판",
+      "count": 1,
+      "pageSlugs": ["ch01-p18-nosql-and-scaling"],
+      "representativeQuestion": "RDBMS join 방식과 문서형 저장소 방식이 최종 JSON이 같아도 왜 다른가? `API가 단순하다`와 `stale UI로 드러난다`는 말은 정확히 무엇을 뜻하는가?"
+    },
+    {
+      "label": "부하 분산 집합과 주-부 복제 용어 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp19-21-load-balancer-and-db-replication"],
+      "representativeQuestion": "`부하 분산 집합에 서버를 추가한다`는 말은 정확히 무엇인가? 데이터베이스 `주-부 관계`는 임의로 이름만 붙이는 것인가, 아니면 엔진의 복제 기능과 역할 차이를 뜻하는가?"
+    },
+    {
+      "label": "로컬 개발 DB와 운영 복제 토폴로지 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp19-21-load-balancer-and-db-replication"],
+      "representativeQuestion": "`지역적으로 떨어진 여러 장소에 다중화`는 로컬에서 개발용 DB를 띄우고 나중에 스테이징/프로덕션 DB를 두는 흐름을 말하는가, 아니면 운영 환경에서 리전/AZ를 나누는 복제 토폴로지를 말하는가?"
     }
   ]
 }
