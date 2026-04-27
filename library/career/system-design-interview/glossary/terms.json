@@ -583,6 +583,246 @@
       ]
     },
     {
+      "id": "cache-key",
+      "term": "cache key",
+      "korean": "캐시에서 값을 찾기 위한 이름",
+      "explanation": "`product:v2:123:summary`처럼 캐시에 값을 저장하고 다시 찾기 위해 쓰는 식별자. 도메인, 버전, id, 필터 조건이 빠지면 다른 데이터를 잘못 재사용할 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "origin",
+      "term": "origin",
+      "korean": "원본 서버 또는 원본 저장소",
+      "explanation": "CDN이나 브라우저 캐시가 최종적으로 원본 파일을 가져오는 곳. 캐시 hit이면 origin까지 가지 않고, cache miss이면 origin에 요청이 간다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-008"]
+        }
+      ]
+    },
+    {
+      "id": "cache-control",
+      "term": "Cache-Control",
+      "korean": "HTTP 캐시 정책 헤더",
+      "explanation": "브라우저나 CDN이 HTTP 응답을 캐시해도 되는지, 얼마나 오래 보관해도 되는지 알려주는 응답 헤더.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-008"]
+        }
+      ]
+    },
+    {
+      "id": "max-age",
+      "term": "max-age",
+      "korean": "캐시를 fresh로 보는 최대 시간",
+      "explanation": "`Cache-Control` 안에서 쓰는 지시어. `max-age=60`이면 60초 동안 캐시된 응답을 최신으로 간주한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "stale",
+      "term": "stale",
+      "korean": "최신이라고 확신하기 어려운 오래된 상태",
+      "explanation": "캐시에 값은 있지만 원본과 같다고 확신하기 어려운 상태. stale이 항상 나쁜 것은 아니며, 데이터 성격에 따라 잠깐 허용할 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "stale-while-revalidate",
+      "term": "stale-while-revalidate",
+      "korean": "오래된 캐시를 먼저 보여 주고 뒤에서 갱신하는 전략",
+      "explanation": "캐시된 값을 즉시 사용하되, 백그라운드에서 새 값을 확인해 다음 요청부터 갱신된 값을 쓰게 하는 HTTP 캐시 전략.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-008"]
+        }
+      ]
+    },
+    {
+      "id": "cache-hit-ratio",
+      "term": "cache hit ratio",
+      "korean": "캐시 적중률",
+      "explanation": "전체 요청 중 캐시가 원본 서버나 DB 대신 처리한 비율. 캐시를 넣은 효과를 판단할 때 가장 먼저 보는 지표 중 하나다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-002", "ch01-pp24-26-cache-and-cdn-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "lcp",
+      "term": "LCP",
+      "korean": "Largest Contentful Paint",
+      "explanation": "화면에서 가장 큰 주요 콘텐츠가 표시되기까지 걸린 시간. 이미지, 큰 텍스트, hero 영역이 늦게 뜨면 나빠진다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-008"]
+        }
+      ]
+    },
+    {
+      "id": "server-state",
+      "term": "server state",
+      "korean": "서버가 원본으로 관리하는 상태",
+      "explanation": "상품 목록, 사용자 프로필, 장바구니처럼 브라우저가 직접 소유하지 않고 서버에서 받아오는 데이터의 프론트 표현.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "query-key",
+      "term": "query key",
+      "korean": "프론트 서버 상태 캐시를 구분하는 키",
+      "explanation": "TanStack Query 같은 라이브러리에서 캐시 항목을 구분하는 식별자. id, filter, sort, cursor 같은 조건이 key에 반영되어야 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "optimistic-update",
+      "term": "optimistic update",
+      "korean": "성공을 가정하고 UI를 먼저 바꾸는 방식",
+      "explanation": "서버 응답을 기다리기 전에 요청이 성공할 것이라고 보고 UI를 먼저 갱신하는 방식. 실패하면 이전 상태로 되돌리는 처리가 필요하다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-005", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "fallback",
+      "term": "fallback",
+      "korean": "실패 시 대체 경로",
+      "explanation": "기본 경로가 실패했을 때 쓰는 대체 처리. 캐시 장애 시 DB를 직접 읽거나, stale 값을 임시로 보여 주거나, 일부 기능을 제한하는 방식이 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-006", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "normalized-data-cache",
+      "term": "normalized data cache",
+      "korean": "엔티티를 중복 없이 레코드처럼 관리하는 프론트 데이터 캐시",
+      "explanation": "같은 엔티티가 목록과 상세에 동시에 등장할 때 한 레코드로 연결해 업데이트 일관성을 유지하려는 캐시 방식. Relay가 대표적이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "fetch-policy",
+      "term": "fetch policy",
+      "korean": "캐시와 네트워크 중 무엇을 먼저 볼지 정하는 규칙",
+      "explanation": "캐시를 먼저 볼지, 네트워크를 먼저 볼지, 캐시가 없을 때만 네트워크를 갈지 정하는 규칙. Relay의 `store-or-network` 같은 설정이 여기에 해당한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "background-refetch",
+      "term": "background refetch",
+      "korean": "기존 데이터를 보여 주며 뒤에서 다시 가져오기",
+      "explanation": "화면에는 캐시된 데이터를 유지하고, 뒤에서 새 데이터를 다시 요청해 점진적으로 갱신하는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "p95-p99-latency",
+      "term": "p95/p99 latency",
+      "korean": "95번째/99번째 백분위 지연 시간",
+      "explanation": "요청 지연 시간을 빠른 순서대로 줄 세웠을 때 95번째 백분위와 99번째 백분위에 해당하는 값. 평균보다 느린 사용자 경험을 더 잘 보여 준다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-001", "ch01-pp24-26-cache-and-cdn-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "qps",
+      "term": "QPS",
+      "korean": "Queries Per Second",
+      "explanation": "초당 처리되는 요청 또는 질의 수. DB read QPS가 줄었다는 말은 DB가 받는 읽기 요청 수가 줄었다는 뜻이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-001", "ch01-pp24-26-cache-and-cdn-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "eviction-rate",
+      "term": "eviction rate",
+      "korean": "캐시 방출 빈도",
+      "explanation": "일정 시간 동안 캐시에서 값이 얼마나 자주 밀려나는지 나타내는 지표. 높으면 캐시 용량, TTL, key 설계, 데이터 크기를 다시 봐야 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "request-coalescing",
+      "term": "request coalescing",
+      "korean": "같은 요청을 합쳐 원본 호출을 줄이는 방식",
+      "explanation": "같은 데이터에 대한 cache miss가 동시에 많이 발생했을 때, DB 요청을 여러 번 보내지 않고 하나만 보내도록 합치는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-006", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "rate-limit",
+      "term": "rate limit",
+      "korean": "요청 수 제한",
+      "explanation": "일정 시간 동안 허용할 요청 수를 제한하는 장치. 캐시 장애나 miss 폭증 때 DB나 외부 API가 무너지는 것을 막는 안전장치로 함께 쓴다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-006", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
       "id": "terminal-client",
       "term": "단말",
       "korean": "request sender",

@@ -162,6 +162,8 @@ test.describe('home page', () => {
       page.getByRole('heading', { name: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' }),
     ).toBeVisible();
     await expect(page.getByRole('heading', { name: '1장 · 24~26p 캐시와 CDN 도입' })).toBeVisible();
+    await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
+    await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText('전체 스터디 문서 펼치기')).toBeVisible();
     await expect(
       page.locator(

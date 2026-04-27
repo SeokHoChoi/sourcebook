@@ -320,6 +320,8 @@ describe('sourcebook catalog loader', () => {
     expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('네트워크 왕복뿐 아니라');
     expect(page?.segmentCards[2]?.trickySentenceExplanation).toContain('액세스 패턴');
     expect(page?.segmentCards[6]?.devNote).toContain('TanStack Query');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('stale-while-revalidate');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('cache hit ratio');
     expect(page?.learnerEvents).toHaveLength(1);
     expect(page?.learnerEvents[0]?.questionRevision).toContain('더 좋은 질문으로 다듬으면');
     expect(page?.reviewItems).toHaveLength(2);

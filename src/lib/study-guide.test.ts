@@ -116,6 +116,10 @@ describe('study guide parser', () => {
     expect(chapter1?.contentMarkdown).toContain(
       '첫 배치에서 바로잡은 오해 1. 배포 단위와 실행 배치는 다르다',
     );
+    expect(chapter1?.contentMarkdown).toContain('이 예시에서 쓰인 용어 풀이');
+    expect(chapter1?.contentMarkdown).toContain(
+      'TTL: Time To Live의 줄임말. 캐시에 저장된 값을 얼마나 오래 유효하다고 볼지 정한 시간이다.',
+    );
 
     const chapter1Subsections = splitMarkdownSections(chapter1?.contentMarkdown ?? '').filter(
       (section) => section.level === 3,

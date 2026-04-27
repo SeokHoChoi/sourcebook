@@ -61,6 +61,21 @@
           "term": "TTL",
           "korean": "캐시 데이터의 수명",
           "explanation": "얼마나 지나면 캐시를 오래된 것으로 보고 버릴지 정하는 시간이다."
+        },
+        {
+          "term": "stale-while-revalidate",
+          "korean": "오래된 캐시를 먼저 보여 주고 뒤에서 갱신하는 전략",
+          "explanation": "사용자에게는 캐시된 값을 즉시 보여 주고, 브라우저나 캐시 계층이 백그라운드에서 새 값을 확인해 다음 요청부터 갱신된 값을 쓰게 하는 방식이다."
+        },
+        {
+          "term": "cache hit ratio",
+          "korean": "캐시 적중률",
+          "explanation": "전체 요청 중 캐시가 원본 서버나 DB 대신 처리한 비율이다. 캐시 전략이 실제로 효과가 있었는지 보는 대표 지표다."
+        },
+        {
+          "term": "fallback",
+          "korean": "실패 시 대체 경로",
+          "explanation": "캐시나 네트워크 요청이 실패했을 때 DB를 직접 읽거나, 오래된 값을 임시로 보여 주거나, 일부 기능을 제한하는 대체 처리다."
         }
       ],
       "devNote": "좋은 면접 답변은 암기한 전략 이름을 나열하는 것이 아니라 도메인에서 시작한다. 실무형 답변은 캐시 위치를 먼저 나눈다. 정적 JS/이미지는 브라우저 HTTP 캐시와 CDN에서 `Cache-Control`, 파일명 hash, stale-while-revalidate를 말하고, 서버 상태는 TanStack Query나 Relay 같은 브라우저 메모리 캐시에서 query key, staleTime, invalidation을 말하며, DB 읽기 부하는 Redis/Memcached 같은 서버 캐시에서 key, TTL, miss 처리, 장애 fallback, hit ratio를 말한다.",
