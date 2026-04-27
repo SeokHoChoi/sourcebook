@@ -1,0 +1,161 @@
+{
+  "pageSlug": "ch01-pp24-26-cache-and-cdn",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-001",
+      "directTranslation": "이 절은 캐시를 `빠른 임시 저장소`로 소개하고, 왜 데이터베이스 호출을 줄이는지가 성능과 연결되는지 설명한다.",
+      "trickySentenceExplanation": "`데이터베이스를 얼마나 자주 호출하느냐`라는 표현을 `네트워크보다 DB가 항상 더 비싸다`로 읽으면 과하다. 더 정확히는 DB 호출은 네트워크 왕복뿐 아니라 쿼리 파싱, 인덱스 탐색, 디스크나 메모리 접근, 락 경합, 커넥션 풀 대기, 결과 직렬화까지 포함하는 복합 비용이다. 그래서 네트워크 자체가 느린 경우도 있지만, 대규모 읽기 부하에서는 DB가 병목이 되기 쉽다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "캐시",
+          "korean": "빠른 임시 저장소",
+          "explanation": "원본 데이터를 다시 계산하거나 다시 읽지 않도록, 자주 쓰는 결과를 더 빠른 위치에 잠시 저장하는 계층이다."
+        },
+        {
+          "term": "데이터베이스 호출",
+          "korean": "DB에 질의를 보내 결과를 받는 과정",
+          "explanation": "단순 네트워크 전송만이 아니라 DB 내부 처리와 결과 반환까지 포함한다."
+        }
+      ],
+      "devNote": "프론트엔드 관점에서는 `브라우저가 서버에 요청한다`에서 끝내지 말고, 그 요청이 서버 안에서 DB read를 만드는지, 캐시 hit로 끝나는지까지 상상해야 한다. 같은 API 응답이라도 서버가 매번 DB를 치는지, Redis나 Memcached에서 바로 읽는지에 따라 지연 시간, 비용, 장애 전파가 달라진다.",
+      "recallQuestion": "DB 호출 비용이 네트워크 왕복만이 아닌 이유를 설명하라.",
+      "speakingTransferPrompt": "상품 상세 페이지를 예로 들어, 브라우저 요청이 DB 호출까지 이어지는 경우와 캐시 hit로 끝나는 경우를 비교해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-002",
+      "directTranslation": "캐시 계층은 웹 서버와 데이터베이스 사이에 둘 수 있는 빠른 저장 계층이며, hit이면 DB를 건너뛰고 miss이면 DB에서 읽어 캐시에 채운다.",
+      "trickySentenceExplanation": "여기서 말하는 캐시는 브라우저 HTTP 캐시가 아니라, 주로 웹 서버와 DB 사이에 놓는 서버 측 캐시 계층이다. 물론 캐시는 브라우저, CDN, 서버 메모리, Redis/Memcached, DB 내부 버퍼처럼 여러 위치에 존재할 수 있다. 이 그림의 핵심은 `웹 서버가 DB 전에 캐시를 먼저 본다`는 흐름이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "캐시 계층",
+          "korean": "웹 서버와 원본 저장소 사이의 빠른 임시 저장 계층",
+          "explanation": "Redis나 Memcached 같은 별도 서버일 수도 있고, 애플리케이션 프로세스 안의 메모리 캐시일 수도 있다."
+        },
+        {
+          "term": "cache hit",
+          "korean": "캐시에 원하는 데이터가 있음",
+          "explanation": "원본 DB를 보지 않고 캐시에서 바로 응답할 수 있는 상태다."
+        },
+        {
+          "term": "cache miss",
+          "korean": "캐시에 원하는 데이터가 없음",
+          "explanation": "원본 DB나 다른 저장소를 읽고, 필요하면 그 결과를 캐시에 채워야 하는 상태다."
+        }
+      ],
+      "devNote": "책은 `read-through caching strategy`라고 부르지만, 그림의 흐름은 애플리케이션이 캐시를 먼저 확인하고 miss 때 DB를 읽어 캐시에 채우는 cache-aside/lazy loading과 매우 가깝다. 엄밀한 read-through는 캐시 계층 자체가 DB 읽기를 책임지는 형태로 설명되는 경우가 많다. 면접에서는 용어 이름보다 `누가 캐시 miss를 처리하는가`, `write 시 캐시를 지울지 갱신할지`, `TTL은 어떻게 잡는가`를 설명해야 한다.",
+      "recallQuestion": "브라우저 캐시와 서버 측 캐시 계층의 위치 차이를 설명하라.",
+      "speakingTransferPrompt": "TanStack Query 캐시와 Redis 캐시가 각각 어느 위치에서 무엇을 줄이는지 비교해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-003",
+      "directTranslation": "캐시 전략은 어떤 데이터인지, 얼마나 큰지, 어떤 액세스 패턴을 갖는지에 맞춰 선택해야 한다.",
+      "trickySentenceExplanation": "`액세스 패턴`은 단어 뜻처럼 막연히 `접근`이 아니다. 실무에서는 데이터가 어떤 조건으로, 얼마나 자주, 어떤 순서로, 읽기와 쓰기 중 무엇이 많은지, 같은 키에 요청이 몰리는지, 최신성이 얼마나 중요한지를 묶어 말한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "액세스 패턴",
+          "korean": "데이터를 읽고 쓰는 실제 사용 모양",
+          "explanation": "예: `상품 상세는 읽기 많고 쓰기 적음`, `검색 자동완성은 짧은 키워드에 요청이 몰림`, `장바구니는 사용자별 쓰기가 잦고 최신성이 중요함`."
+        },
+        {
+          "term": "TTL",
+          "korean": "캐시 데이터의 수명",
+          "explanation": "얼마나 지나면 캐시를 오래된 것으로 보고 버릴지 정하는 시간이다."
+        }
+      ],
+      "devNote": "좋은 면접 답변은 암기한 전략 이름을 나열하는 것이 아니라 도메인에서 시작한다. 예를 들어 `상품 카테고리 목록은 변경이 드물어 CDN/서버 캐시 TTL을 길게 잡고, 재고는 stale하면 주문 실패가 나므로 짧게 잡거나 캐시하지 않으며, 사용자 알림 수는 사용자별 키와 짧은 TTL 또는 이벤트 기반 invalidation을 쓴다`처럼 말한다.",
+      "recallQuestion": "`액세스 패턴`을 쇼핑몰, 대시보드, 채팅 중 하나의 예로 풀어 설명하라.",
+      "speakingTransferPrompt": "캐싱 전략을 물어보는 면접 질문에 `무엇을 캐시했고 왜 그렇게 했는지` 중심으로 답해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-004",
+      "directTranslation": "코드는 캐시에 값을 저장하고 다시 읽는 가장 단순한 API 사용 예다.",
+      "trickySentenceExplanation": "`3600 * SECONDS`는 3600초, 즉 1시간 TTL로 값을 저장한다는 뜻이다. 이 예제는 캐시 사용법 자체를 보여 주는 작은 예시일 뿐, 실제 설계에서는 key 설계, 직렬화, TTL, invalidation, 장애 처리까지 함께 정해야 한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "memcached",
+          "korean": "분산 메모리 캐시 시스템",
+          "explanation": "key-value 형태로 데이터를 메모리에 저장해 빠르게 읽는 데 쓰는 대표적인 캐시 서버다."
+        }
+      ],
+      "devNote": "프론트의 TanStack Query도 `queryKey -> data` 형태로 캐시를 갖지만 목적과 위치가 다르다. TanStack Query는 브라우저 안에서 서버 상태를 재사용하고 refetch를 제어한다. Memcached/Redis는 서버 측에서 여러 웹 서버가 공유하는 빠른 저장소로 DB 부하를 줄인다.",
+      "recallQuestion": "TanStack Query 캐시와 Memcached 캐시의 위치와 목적 차이를 말하라.",
+      "speakingTransferPrompt": "같은 `user:12` 데이터를 브라우저 캐시, TanStack Query, Redis에 둘 때 각각 어떤 문제가 줄어드는지 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-005",
+      "directTranslation": "캐시는 갱신이 드물고 읽기가 많은 데이터에 특히 유리하지만, 영속 저장소가 아니며 TTL과 일관성 정책이 필요하다.",
+      "trickySentenceExplanation": "여기서 `일관성`은 캐시 안의 사본과 DB 원본이 같은지의 문제다. 캐시를 쓰면 거의 항상 `빠름`과 `최신성` 사이의 긴장이 생긴다. 너무 짧은 TTL은 DB를 자주 치게 만들고, 너무 긴 TTL은 오래된 화면을 보여줄 가능성을 키운다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "일관성",
+          "korean": "원본과 사본이 같은 정도",
+          "explanation": "DB에 저장된 최신 값과 캐시에 남은 값이 얼마나 같은지의 문제다."
+        },
+        {
+          "term": "지속적 저장소",
+          "korean": "서버가 꺼져도 데이터가 남아야 하는 저장소",
+          "explanation": "DB, 객체 스토리지, 디스크 기반 저장소처럼 원본 데이터를 책임지는 곳이다."
+        }
+      ],
+      "devNote": "프론트에서는 이 문제가 `stale UI`로 보인다. 서버 캐시가 오래된 값을 주면 React는 그 값을 성실하게 렌더링할 뿐이다. 그래서 TanStack Query의 `staleTime`, `gcTime`, `invalidateQueries`, 서버 캐시의 `TTL`, `cache invalidation`은 서로 다른 층위지만 같은 질문을 공유한다. `이 데이터는 얼마나 오래 낡아도 되는가?`",
+      "recallQuestion": "TTL이 너무 짧을 때와 너무 길 때 각각 어떤 문제가 생기는지 설명하라.",
+      "speakingTransferPrompt": "프로필, 재고, 공지사항, 검색 추천어 중 어떤 것은 길게 캐시하고 어떤 것은 짧게 캐시할지 이유를 붙여 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-006",
+      "directTranslation": "캐시 서버 한 대만 있으면 그 캐시가 단일 장애 지점이 될 수 있으므로, SPOF를 피하려면 캐시도 분산해야 한다.",
+      "trickySentenceExplanation": "캐시는 성능을 올리려고 넣었는데, 잘못 넣으면 새 장애 지점이 된다. cache-aside 구조에서는 캐시가 죽어도 DB로 우회할 수 있지만 지연과 DB 부하가 급증한다. 반대로 모든 읽기가 캐시를 반드시 거치도록 짠 구조라면 캐시 장애가 곧 서비스 장애가 될 수 있다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "SPOF",
+          "korean": "단일 장애 지점",
+          "explanation": "한 곳이 고장 나면 전체 흐름이 멈추는 지점이다."
+        }
+      ],
+      "devNote": "프론트에서 비슷한 감각은 `API 게이트웨이 하나`, `인증 서버 하나`, `이미지 CDN 하나`가 장애 나면 화면 전체가 무너지는 상황이다. 캐시를 설계할 때도 `캐시가 없으면 느려지는가, 아니면 죽는가`를 구분해야 한다.",
+      "recallQuestion": "캐시가 장애 났을 때 서비스가 느려지는 경우와 완전히 죽는 경우를 구분해 설명하라.",
+      "speakingTransferPrompt": "Redis가 잠시 장애 났을 때 상품 상세 API가 어떤 fallback을 가져야 하는지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-007",
+      "directTranslation": "캐시 메모리가 작으면 eviction이 자주 일어나 성능이 떨어지므로, 여유 메모리와 방출 정책을 함께 설계해야 한다.",
+      "trickySentenceExplanation": "`캐시 메모리를 과할당한다`는 말은 모든 캐시에 똑같이 적용되는 직접 조작 버튼이 있다는 뜻이 아니다. Redis나 Memcached 같은 서버 측 캐시는 인스턴스 크기, maxmemory, shard 수처럼 용량을 운영자가 정한다. TanStack Query는 브라우저 메모리를 직접 할당하지 않고 `staleTime`, `gcTime`, query key 수, 페이지 수, persister 사용 여부로 캐시 생존과 재사용을 조절한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "eviction",
+          "korean": "캐시에서 기존 데이터를 내보냄",
+          "explanation": "캐시 공간이 부족할 때 새 데이터를 넣기 위해 기존 데이터를 제거하는 일이다."
+        },
+        {
+          "term": "LRU",
+          "korean": "가장 오래 안 쓴 데이터를 먼저 제거",
+          "explanation": "최근 사용 시점이 가장 오래된 항목을 내보내는 대표적인 eviction 정책이다."
+        },
+        {
+          "term": "LFU",
+          "korean": "사용 빈도가 낮은 데이터를 먼저 제거",
+          "explanation": "조회 빈도가 가장 낮은 항목을 내보내는 정책이다."
+        }
+      ],
+      "devNote": "TanStack Query에서 `메모리를 몇 GB로 잡는다`고 말하지는 않는다. 대신 오래 안 쓰는 query가 기본 5분 뒤 garbage collection되고, `staleTime`으로 refetch 빈도를 줄이며, infinite query의 page 보관 수나 persister를 조절한다. 서버 캐시 면접 답변과 프론트 캐시 면접 답변을 같은 말로 퉁치면 안 된다.",
+      "recallQuestion": "서버 캐시의 메모리 크기 조정과 TanStack Query의 gcTime/staleTime 조정 차이를 설명하라.",
+      "speakingTransferPrompt": "캐시 메모리가 작아 hit rate가 떨어지는 상황을 Redis와 TanStack Query 각각의 말로 바꿔 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-008",
+      "directTranslation": "CDN은 이미지, 비디오, CSS, JavaScript 같은 정적 콘텐츠를 사용자 가까운 서버에서 전달하기 위한 지리적 분산 캐시 네트워크다.",
+      "trickySentenceExplanation": "여기부터는 다음 절의 시작이다. CDN은 서버 측 DB 캐시와 다르다. 사용자가 다운로드하는 정적 자산을 엣지 서버에 두어 origin 서버와 사용자 사이의 거리와 부하를 줄인다. 프론트엔드에게는 번들 파일명 해시, Cache-Control, CDN invalidation, 이미지 최적화가 바로 연결된다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "CDN",
+          "korean": "콘텐츠 전송 네트워크",
+          "explanation": "사용자 가까운 여러 엣지 서버에 정적 파일을 캐시해 더 빠르게 내려주는 네트워크다."
+        }
+      ],
+      "devNote": "이번 배치는 p26에서 CDN 절이 시작되는 지점까지만 포함한다. 다음 캡처가 오면 CDN을 별도 배치로 이어 붙이되, 여기서는 캐시와 CDN이 모두 `저장해 두고 빨리 주는 기술`이지만 위치와 대상이 다르다는 연결만 잡는다.",
+      "recallQuestion": "서버 측 캐시와 CDN 캐시의 위치와 캐시 대상 차이를 설명하라.",
+      "speakingTransferPrompt": "React 앱의 JS 번들과 상품 상세 API 응답은 각각 어디에 캐시하는 것이 자연스러운지 말해 보자."
+    }
+  ]
+}

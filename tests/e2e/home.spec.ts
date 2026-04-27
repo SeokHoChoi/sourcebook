@@ -161,6 +161,7 @@ test.describe('home page', () => {
     await expect(
       page.getByRole('heading', { name: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' }),
     ).toBeVisible();
+    await expect(page.getByRole('heading', { name: '1장 · 24~26p 캐시와 CDN 도입' })).toBeVisible();
     await expect(page.getByText('전체 스터디 문서 펼치기')).toBeVisible();
     await expect(
       page.locator(
@@ -213,6 +214,10 @@ test.describe('home page', () => {
         .locator('a')
         .filter({ hasText: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' })
         .first(),
+    ).toBeVisible();
+    await expect(readingSection.getByText('캐시', { exact: true }).first()).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 24~26p 캐시와 CDN 도입' }).first(),
     ).toBeVisible();
     await expect(
       readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
@@ -334,6 +339,29 @@ test.describe('home page', () => {
     ).toBeVisible();
   });
 
+  test('renders the sixth system design reading batch with cache strategy feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp24-26-cache-and-cdn',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 24~26p 캐시와 CDN 도입$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/네트워크 왕복뿐 아니라/).first()).toBeVisible();
+    await expect(page.getByText(/실무에서는 데이터가 어떤 조건으로/).first()).toBeVisible();
+    await expect(page.getByText(/TanStack Query/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+    await expect(page.getByText(/캐싱 전략은 어떻게 잡으셨냐/).first()).toBeVisible();
+    await expect(
+      page
+        .getByText(/서버 캐시 면접 답변과 프론트 캐시 면접 답변을 같은 말로 퉁치면 안 된다/)
+        .first(),
+    ).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -362,6 +390,9 @@ test.describe('home page', () => {
     await expect(page.getByText(/같은 DTO면 차이 없음 오판/).first()).toBeVisible();
     await expect(page.getByText(/부하 분산 집합과 주-부 복제 용어 혼동/).first()).toBeVisible();
     await expect(page.getByText(/로컬 개발 DB와 운영 복제 토폴로지 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/캐시 계층과 액세스 패턴 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/질문 다듬기/).first()).toBeVisible();
+    await expect(page.getByText(/액세스 패턴에 맞는 캐시 전략/).first()).toBeVisible();
     await expect(page.getByText(/데이터 모델, 질의 패턴, 일관성 요구/).first()).toBeVisible();
     await expect(
       page

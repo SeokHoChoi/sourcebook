@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-24",
+  "generatedAt": "2026-04-27",
   "patterns": [
     {
       "label": "프론트 확장성 범위 오판",
@@ -72,6 +72,12 @@
       "count": 1,
       "pageSlugs": ["ch01-pp19-21-load-balancer-and-db-replication"],
       "representativeQuestion": "`지역적으로 떨어진 여러 장소에 다중화`는 로컬에서 개발용 DB를 띄우고 나중에 스테이징/프로덕션 DB를 두는 흐름을 말하는가, 아니면 운영 환경에서 리전/AZ를 나누는 복제 토폴로지를 말하는가?"
+    },
+    {
+      "label": "캐시 계층과 액세스 패턴 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp24-26-cache-and-cdn"],
+      "representativeQuestion": "DB 호출 비용은 네트워크보다 항상 큰가? 이 캐시는 브라우저 캐시가 아니라 서버와 DB 사이의 캐시인가? 액세스 패턴과 TanStack Query 캐시는 어떻게 연결해야 하는가?"
     }
   ]
 }

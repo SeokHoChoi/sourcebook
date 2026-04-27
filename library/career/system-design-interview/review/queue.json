@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-24",
+  "generatedAt": "2026-04-27",
   "items": [
     {
       "id": "review-system-design-001",
@@ -126,6 +126,24 @@
       "dueOn": "2026-04-26",
       "status": "scheduled",
       "sourceEventId": "system-design-event-012"
+    },
+    {
+      "id": "review-system-design-015",
+      "pageSlug": "ch01-pp24-26-cache-and-cdn",
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-001",
+      "prompt": "DB 호출 비용이 네트워크 왕복보다 항상 큰 것은 아니지만 대규모에서 병목이 되기 쉬운 이유를, 쿼리 처리·락·커넥션 풀·직렬화·p95/p99 관측 지표까지 포함해 설명하라.",
+      "dueOn": "2026-04-28",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-013"
+    },
+    {
+      "id": "review-system-design-016",
+      "pageSlug": "ch01-pp24-26-cache-and-cdn",
+      "segmentId": "ch01-pp24-26-cache-and-cdn-seg-003",
+      "prompt": "`액세스 패턴`을 상품 카테고리, 재고, 사용자 알림 중 하나로 풀어 설명하고, 서버 캐시의 TTL/key/invalidation과 TanStack Query의 staleTime/gcTime이 각각 어디에서 조정되는지 비교하라.",
+      "dueOn": "2026-04-29",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-013"
     }
   ]
 }
