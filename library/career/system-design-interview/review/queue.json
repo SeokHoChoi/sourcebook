@@ -144,6 +144,24 @@
       "dueOn": "2026-04-29",
       "status": "scheduled",
       "sourceEventId": "system-design-event-013"
+    },
+    {
+      "id": "review-system-design-017",
+      "pageSlug": "ch01-pp27-29-cdn-operation",
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-002",
+      "prompt": "S3+CloudFront 프론트 배포를 `브라우저 -> edge server -> origin` 흐름으로 설명하고, `지리적으로 분산된 서버의 네트워크`가 네트워크 요청 한 번이 아니라 CDN 인프라 묶음이라는 점을 말하라.",
+      "dueOn": "2026-04-30",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-014"
+    },
+    {
+      "id": "review-system-design-018",
+      "pageSlug": "ch01-pp27-29-cdn-operation",
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-005",
+      "prompt": "CloudFront invalidation과 URL/object versioning의 차이를 설명하고, React 빌드 파일의 content hash, `index.html` 짧은 캐시, JS/CSS 긴 immutable cache 전략을 연결해 말하라.",
+      "dueOn": "2026-05-01",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-014"
     }
   ]
 }

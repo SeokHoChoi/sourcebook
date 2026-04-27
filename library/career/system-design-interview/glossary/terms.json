@@ -507,6 +507,10 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        },
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-003", "ch01-pp27-29-cdn-operation-seg-004"]
         }
       ]
     },
@@ -519,6 +523,10 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        },
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-005"]
         }
       ]
     },
@@ -591,6 +599,10 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-004"]
+        },
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-001"]
         }
       ]
     },
@@ -603,6 +615,106 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-008"]
+        },
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-002", "ch01-pp27-29-cdn-operation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "cdn-network",
+      "term": "CDN network",
+      "korean": "여러 지역의 엣지 서버와 캐시/라우팅 정책 묶음",
+      "explanation": "CDN 사업자가 여러 지역에 둔 서버, DNS/라우팅, 캐시 저장소, origin 연결 규칙이 함께 동작하는 인프라. 네트워크 요청 한 번을 뜻하지 않는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "edge-server",
+      "term": "edge server",
+      "korean": "사용자 가까운 CDN 서버",
+      "explanation": "사용자와 지리적·네트워크적으로 가까운 지점에서 정적 파일을 내려주는 CDN 서버. CloudFront 문서의 edge location/POP와 연결해 이해하면 된다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-002", "ch01-pp27-29-cdn-operation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "amazon-s3",
+      "term": "Amazon S3",
+      "korean": "AWS 객체 저장소",
+      "explanation": "파일 같은 데이터를 bucket 안의 object로 저장하고 HTTP/API로 꺼내 쓰게 해 주는 관리형 저장소. CloudFront에서는 origin으로 자주 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "bucket",
+      "term": "bucket",
+      "korean": "S3 객체를 담는 최상위 그릇",
+      "explanation": "S3에서 object를 담는 논리적 컨테이너. 프론트 빌드 산출물이나 업로드 이미지를 bucket에 둘 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "dynamic-content-caching",
+      "term": "동적 콘텐츠 캐싱",
+      "korean": "요청 문맥에 따라 달라지는 응답을 캐시하는 방식",
+      "explanation": "HTML이 서버에서 사용자, 쿠키, 헤더, query string 등에 따라 다르게 생성될 수 있을 때 그 변형을 cache key로 나눠 캐시하는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "object-versioning",
+      "term": "object versioning",
+      "korean": "URL을 바꿔 새 버전 콘텐츠로 서비스하는 방식",
+      "explanation": "`image.png?v=2`나 `app.abc123.js`처럼 URL 또는 파일명을 바꿔 CDN이 새 object로 인식하게 하는 cache busting 방식. 책의 문맥에서는 S3 bucket versioning만을 뜻하지 않는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "content-hash",
+      "term": "content hash",
+      "korean": "파일 내용 기반 해시",
+      "explanation": "빌드 파일 내용으로 만든 식별자를 파일명에 붙이는 방식. 내용이 바뀌면 파일명도 바뀌어 긴 CDN/브라우저 캐시와 새 배포를 함께 쓰기 쉽다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "static-asset",
+      "term": "static asset",
+      "korean": "정적 자산",
+      "explanation": "빌드된 JS, CSS, 이미지, 폰트처럼 배포 전까지 내용이 거의 바뀌지 않고 모든 사용자에게 같은 bytes로 내려가는 파일.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-002", "ch01-pp27-29-cdn-operation-seg-006"]
         }
       ]
     },
@@ -723,6 +835,10 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-006", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        },
+        {
+          "pageSlug": "ch01-pp27-29-cdn-operation",
+          "segmentIds": ["ch01-pp27-29-cdn-operation-seg-005"]
         }
       ]
     },

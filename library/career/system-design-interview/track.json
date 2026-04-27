@@ -3,7 +3,7 @@
   "trackSlug": "system-design-interview",
   "title": "대규모 시스템 설계 기초",
   "status": "active",
-  "phase": "1장 p14~26 적재 완료",
+  "phase": "1장 p14~29 적재 완료",
   "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
   "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
   "studyGuide": {
@@ -22,7 +22,8 @@
       "1장 세 번째 배치인 17p는 로컬 OCR의 한국어 인식 한계를 고려해 수동 전사를 기준으로 삼고, 그림 레이블과 영문/숫자 표기는 OCR 보조 결과와 화면을 다시 대조했다.",
       "1장 네 번째 배치인 18p는 로컬 OCR 보조 결과가 한글을 충분히 인식하지 못해 수동 전사를 기준으로 삼고, NoSQL/scale up/scale out/failover/redundancy 같은 영문 용어와 줄바꿈은 화면과 OCR 결과를 다시 대조했다.",
       "1장 다섯 번째 배치인 19~21p는 19p 로드밸런서 화면과 21p 데이터베이스 다중화 화면을 한 배치로 묶고, 잘린 문장은 임의 보완하지 않은 채 도식 레이블과 핵심 문장을 화면 기준으로 수동 전사했다.",
-      "1장 여섯 번째 배치인 24~26p는 캐시, 캐시 계층, 캐시 사용 시 유의할 점, CDN 도입부를 한 배치로 묶고, p26에서 잘린 CDN 문장은 임의 보완하지 않았다."
+      "1장 여섯 번째 배치인 24~26p는 캐시, 캐시 계층, 캐시 사용 시 유의할 점, CDN 도입부를 한 배치로 묶고, p26에서 잘린 CDN 문장은 임의 보완하지 않았다.",
+      "1장 일곱 번째 배치인 27~29p는 CDN 동작, S3 origin, TTL, 장애 fallback, invalidation, object versioning을 한 배치로 묶고, p27의 이어진 문장은 이전 페이지의 잘림을 명시했다."
     ]
   },
   "intakeFlow": [
@@ -148,6 +149,25 @@
         "source": "pages/ch01-pp24-26-cache-and-cdn/source.md",
         "structure": "pages/ch01-pp24-26-cache-and-cdn/structure.json",
         "overlay": "pages/ch01-pp24-26-cache-and-cdn/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-pp27-29-cdn-operation",
+      "title": "1장 · 27~29p CDN 동작과 무효화",
+      "readOrder": 7,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "콘텐츠 전송 네트워크(CDN)",
+      "canonicalUrl": "전자책 캡처 27~29p",
+      "sourceRepoPath": "ebook-capture/ch01-pp27-29",
+      "files": {
+        "source": "pages/ch01-pp27-29-cdn-operation/source.md",
+        "structure": "pages/ch01-pp27-29-cdn-operation/structure.json",
+        "overlay": "pages/ch01-pp27-29-cdn-operation/overlay.ko.json"
       }
     }
   ]

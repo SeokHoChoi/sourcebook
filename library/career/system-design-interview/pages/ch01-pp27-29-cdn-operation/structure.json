@@ -1,0 +1,61 @@
+{
+  "pageSlug": "ch01-pp27-29-cdn-operation",
+  "pageTitle": "1장 · 27~29p CDN 동작과 무효화",
+  "lastStructuredAt": "2026-04-27",
+  "segments": [
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 9,
+        "endLine": 32
+      }
+    },
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 34,
+        "endLine": 47
+      }
+    },
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-004",
+      "order": 4,
+      "kind": "heading",
+      "source": {
+        "startLine": 49,
+        "endLine": 52
+      }
+    },
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-005",
+      "order": 5,
+      "kind": "list",
+      "source": {
+        "startLine": 53,
+        "endLine": 56
+      }
+    },
+    {
+      "id": "ch01-pp27-29-cdn-operation-seg-006",
+      "order": 6,
+      "kind": "diagram",
+      "source": {
+        "startLine": 58,
+        "endLine": 77
+      }
+    }
+  ]
+}
