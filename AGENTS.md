@@ -33,6 +33,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Sourcebook Formatting Contract
 
+- Before continuing the system-design study track in `library/career/system-design-interview`, read `library/career/system-design-interview/research/handoff.md` first.
 - `source.md` is a verbatim archive. Keep pasted source intact, including menu text, ads, footer, and surrounding chrome.
 - Raw source must not be dumped as a giant unformatted `pre`. Preserve content, but reorganize the view into readable blocks.
 - `structure.json` selects learning-worthy segments only. Do not turn every copied line into a study card.
