@@ -162,8 +162,12 @@ test.describe('home page', () => {
       page.getByRole('heading', { name: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' }),
     ).toBeVisible();
     await expect(page.getByRole('heading', { name: '1장 · 24~26p 캐시와 CDN 도입' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 27~29p CDN 동작과 무효화' }),
+    ).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
+    await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
     await expect(page.getByText('전체 스터디 문서 펼치기')).toBeVisible();
     await expect(
       page.locator(
@@ -220,6 +224,12 @@ test.describe('home page', () => {
     await expect(readingSection.getByText('캐시', { exact: true }).first()).toBeVisible();
     await expect(
       readingSection.locator('a').filter({ hasText: '1장 · 24~26p 캐시와 CDN 도입' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('콘텐츠 전송 네트워크(CDN)', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 27~29p CDN 동작과 무효화' }).first(),
     ).toBeVisible();
     await expect(
       readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
@@ -364,6 +374,30 @@ test.describe('home page', () => {
     ).toBeVisible();
   });
 
+  test('renders the seventh system design reading batch with CDN operation feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp27-29-cdn-operation',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 27~29p CDN 동작과 무효화$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/HTML은 정적인데 왜 동적 콘텐츠 캐싱이냐/).first()).toBeVisible();
+    await expect(
+      page.getByText(/S3를 origin으로 삼고 CloudFront의 edge network/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/React 빌드 파일 뒤에 붙는 난수나 content hash/).first(),
+    ).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+    await expect(
+      page.getByText(/CDN은.. 지리적으로 분산된 서버의 네트워크이다/).first(),
+    ).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -393,6 +427,7 @@ test.describe('home page', () => {
     await expect(page.getByText(/부하 분산 집합과 주-부 복제 용어 혼동/).first()).toBeVisible();
     await expect(page.getByText(/로컬 개발 DB와 운영 복제 토폴로지 혼동/).first()).toBeVisible();
     await expect(page.getByText(/캐시 계층과 액세스 패턴 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/CDN 정적\/동적 콘텐츠와 버저닝 범위 혼동/).first()).toBeVisible();
     await expect(page.getByText(/질문 다듬기/).first()).toBeVisible();
     await expect(page.getByText(/액세스 패턴에 맞는 캐시 전략/).first()).toBeVisible();
     await expect(page.getByText(/데이터 모델, 질의 패턴, 일관성 요구/).first()).toBeVisible();
@@ -413,6 +448,9 @@ test.describe('home page', () => {
     ).toBeVisible();
     await expect(
       page.getByText(/이런 비-관계형 데이터베이스는 일반적으로 조인 연산/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/CloudFront 같은 CDN에서 `edge server`, `origin`, `distribution`/).first(),
     ).toBeVisible();
     await expect(
       page

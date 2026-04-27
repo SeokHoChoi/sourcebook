@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(6);
+    expect(career?.counts.totalPages).toBe(7);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -164,12 +164,13 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 18p NoSQL 선택과 규모 확장 방식');
     expect(track.studyGuide?.markdown).toContain('1장 · 19~21p 로드밸런서와 데이터베이스 다중화');
     expect(track.studyGuide?.markdown).toContain('1장 · 24~26p 캐시와 CDN 도입');
-    expect(track.counts.totalPages).toBe(6);
-    expect(track.counts.capturedPages).toBe(6);
-    expect(track.counts.structuredPages).toBe(6);
-    expect(track.counts.overlayPages).toBe(6);
-    expect(track.counts.openConfusions).toBe(13);
-    expect(track.learnerEvents).toHaveLength(13);
+    expect(track.studyGuide?.markdown).toContain('1장 · 27~29p CDN 동작과 무효화');
+    expect(track.counts.totalPages).toBe(7);
+    expect(track.counts.capturedPages).toBe(7);
+    expect(track.counts.structuredPages).toBe(7);
+    expect(track.counts.overlayPages).toBe(7);
+    expect(track.counts.openConfusions).toBe(14);
+    expect(track.learnerEvents).toHaveLength(14);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
@@ -177,6 +178,9 @@ describe('sourcebook catalog loader', () => {
       '로컬 개발용 DB와 운영 복제 토폴로지는 다른 문제다',
     );
     expect(track.studyGuide?.markdown).toContain('캐시는 위치마다 목적과 조정 지점이 다르다');
+    expect(track.studyGuide?.markdown).toContain(
+      'CDN은 파일 저장소 하나가 아니라 edge와 origin의 배달 구조다',
+    );
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -324,6 +328,37 @@ describe('sourcebook catalog loader', () => {
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('cache hit ratio');
     expect(page?.learnerEvents).toHaveLength(1);
     expect(page?.learnerEvents[0]?.questionRevision).toContain('더 좋은 질문으로 다듬으면');
+    expect(page?.reviewItems).toHaveLength(2);
+  });
+
+  it('loads the seventh system design reading batch with CDN operation feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp27-29-cdn-operation',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('요청 경로(request path), 질의 문자열(query string)');
+    expect(page?.rawSource).toContain('아마존(Amazon) S3 같은 온라인 저장소');
+    expect(page?.rawSource).toContain('콘텐츠의 다른 버전을 서비스하도록 오브젝트 버저닝');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('콘텐츠 전송 네트워크(CDN)');
+    expect(page?.segmentCards).toHaveLength(6);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain(
+      'HTML은 정적인데 왜 동적 콘텐츠 캐싱이냐',
+    );
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain(
+      'S3를 origin으로 삼고 CloudFront의 edge network',
+    );
+    expect(page?.segmentCards[2]?.devNote).toContain('S3는 `컴퓨터 한 대에 접속해서 파일을 둔다`');
+    expect(page?.segmentCards[4]?.devNote).toContain(
+      'React 빌드 파일 뒤에 붙는 난수나 content hash',
+    );
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('Amazon S3');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('object versioning');
+    expect(page?.learnerEvents).toHaveLength(1);
+    expect(page?.learnerEvents[0]?.questionRevision).toContain('CloudFront 같은 CDN');
     expect(page?.reviewItems).toHaveLength(2);
   });
 
@@ -530,6 +565,11 @@ describe('sourcebook catalog loader', () => {
       categorySlug: 'career',
       trackSlug: 'system-design-interview',
       pageSlug: 'ch01-pp24-26-cache-and-cdn',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-pp27-29-cdn-operation',
     });
   });
 

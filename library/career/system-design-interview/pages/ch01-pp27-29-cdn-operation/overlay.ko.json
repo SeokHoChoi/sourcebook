@@ -1,0 +1,141 @@
+{
+  "pageSlug": "ch01-pp27-29-cdn-operation",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-001",
+      "directTranslation": "이 절은 CDN이 정적 콘텐츠를 다루는 흐름으로 들어가기 전에, 동적 콘텐츠 캐싱은 요청 문맥에 따라 HTML 캐시가 달라질 수 있다는 정도만 짚고 넘어간다.",
+      "trickySentenceExplanation": "`HTML 페이지를 캐시한다`는 말 때문에 HTML은 정적인데 왜 동적 콘텐츠 캐싱이냐고 헷갈릴 수 있다. 여기서 동적이라는 말은 브라우저 JavaScript가 DOM을 바꾼다는 뜻이 아니다. 같은 `/dashboard` HTML이라도 로그인 사용자, 쿠키, 언어, 기기, A/B 테스트, query string, request header에 따라 서버가 다른 HTML을 만들 수 있다는 뜻이다. CDN은 이런 요청 문맥을 cache key에 포함해 `같은 URL처럼 보여도 다른 버전의 응답`을 따로 캐시할 수 있다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "동적 콘텐츠 캐싱",
+          "korean": "요청 문맥에 따라 달라질 수 있는 응답을 캐시하는 방식",
+          "explanation": "HTML이 파일 확장자로는 `.html`이어도 서버가 매 요청마다 다르게 만들면 동적 콘텐츠다. CDN은 path, query, cookie, header 등을 기준으로 버전을 나눠 캐시할 수 있다."
+        },
+        {
+          "term": "cache key",
+          "korean": "캐시에서 같은 응답인지 구분하는 기준",
+          "explanation": "CDN이 `이 요청은 기존 캐시와 같은가?`를 판단할 때 쓰는 값이다. 정적 파일은 주로 URL만으로 충분하지만, 동적 HTML은 query, cookie, header가 key에 들어갈 수 있다."
+        }
+      ],
+      "devNote": "프론트엔드에서는 `HTML은 정적, JS가 동적`이라고만 외우면 위험하다. SSR/Next.js 페이지는 서버가 만든 HTML이므로 사용자별·헤더별·쿠키별로 달라질 수 있다. 그래서 HTML 캐싱은 `모든 사용자에게 같은 bytes인가?`, `사용자별 정보가 섞이는가?`, `cache key에 무엇을 포함해야 하는가?`를 먼저 물어야 한다.",
+      "recallQuestion": "왜 HTML 페이지도 동적 콘텐츠 캐싱 대상이 될 수 있는지 설명하라.",
+      "speakingTransferPrompt": "Next.js의 공개 랜딩 페이지와 로그인 후 대시보드 HTML을 비교해, 어느 쪽을 CDN에 길게 캐시하면 위험한지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-002",
+      "directTranslation": "CDN은 사용자 가까운 서버에서 정적 콘텐츠를 전달해 origin까지 가는 거리와 시간을 줄인다.",
+      "trickySentenceExplanation": "`지리적으로 분산된 서버의 네트워크`는 네트워크 요청 한 번을 말하는 표현이 아니다. CDN 사업자가 여러 지역의 edge location 또는 POP에 서버들을 두고, DNS/라우팅/캐시 정책으로 사용자를 가까운 서버에 연결하는 전체 인프라 묶음을 뜻한다. React 빌드 파일을 S3에 올리고 CloudFront distribution을 붙이는 행위는 `서버의 네트워크 행위`라기보다 `S3를 origin으로 삼고 CloudFront의 edge network가 그 파일을 대신 배달하도록 구성하는 일`이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "CDN network",
+          "korean": "여러 지역의 엣지 서버와 라우팅/캐시 정책 묶음",
+          "explanation": "하나의 서버가 아니라 전 세계 여러 위치의 서버, DNS/라우팅, 캐시 저장소, 원본 서버 연결 규칙이 함께 동작하는 시스템이다."
+        },
+        {
+          "term": "edge server",
+          "korean": "사용자 가까운 CDN 서버",
+          "explanation": "사용자와 가까운 지점에서 정적 파일을 내려주는 CDN 서버다. CloudFront 문서에서는 edge location이라는 표현도 쓴다."
+        },
+        {
+          "term": "origin",
+          "korean": "CDN이 원본 파일을 가져오는 서버나 저장소",
+          "explanation": "CloudFront 기준으로 S3 bucket, HTTP 서버, 로드밸런서 등이 origin이 될 수 있다. CDN에 파일이 없으면 origin으로 가서 가져온다."
+        }
+      ],
+      "devNote": "S3와 CloudFront를 붙인 프론트 배포를 흐름으로 쓰면 `브라우저 -> CloudFront edge -> S3 origin`이다. 첫 요청은 edge에 파일이 없을 수 있어 S3까지 가고, 이후 같은 edge 근처 사용자는 edge 캐시에서 받는다. React 빌드 파일은 사용자 기기에서 실행되지만, 그 파일을 내려주는 배달 경로는 CDN이 책임진다.",
+      "recallQuestion": "S3와 CloudFront를 함께 쓸 때 S3, CloudFront edge, 브라우저의 역할을 구분하라.",
+      "speakingTransferPrompt": "`React 앱을 S3+CloudFront에 배포했다`를 시스템 설계 문장으로 다시 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-003",
+      "directTranslation": "사용자가 CDN URL로 이미지를 요청하면, CDN은 캐시에 있으면 바로 주고 없으면 origin에서 가져와 TTL 동안 저장한다.",
+      "trickySentenceExplanation": "`아마존 S3 같은 온라인 저장소`는 서버 프로세스가 떠 있는 웹 서버라기보다 네트워크로 접근하는 객체 저장소다. 객체 저장소는 파일 같은 bytes와 metadata를 bucket 안의 object로 저장하고 HTTP/API로 꺼내 쓰게 한다. 프론트에서 이미지 업로드, 정적 파일 배포, 다운로드 링크를 만들 때 자주 쓰는 이유가 여기에 있다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "Amazon S3",
+          "korean": "AWS의 객체 저장소 서비스",
+          "explanation": "파일 같은 데이터를 object로 저장하고 HTTP/API로 접근하게 해 주는 관리형 저장소다. 정적 웹 파일, 이미지 업로드, 백업, 로그 저장 등에 쓰인다."
+        },
+        {
+          "term": "bucket",
+          "korean": "S3에서 객체를 담는 최상위 그릇",
+          "explanation": "S3 파일들은 bucket 안에 object로 저장된다. 프론트 배포에서는 빌드 산출물이나 업로드 이미지를 bucket에 둘 수 있다."
+        },
+        {
+          "term": "TTL",
+          "korean": "캐시가 응답을 유효하다고 보는 시간",
+          "explanation": "Time To Live의 줄임말이다. CDN이 origin에서 받은 파일을 얼마나 오래 캐시해도 되는지 판단하는 데 쓰인다."
+        }
+      ],
+      "devNote": "S3는 `컴퓨터 한 대에 접속해서 파일을 둔다`기보다, AWS가 운영하는 분산 객체 저장소에 object를 넣고 URL/API로 꺼내 쓰는 서비스다. CloudFront는 그 S3를 origin으로 삼아 edge cache를 만든다. 그래서 프론트 개발자는 S3의 `Content-Type`, `Cache-Control`, 공개/비공개 접근, CloudFront origin 설정을 함께 신경 써야 한다.",
+      "recallQuestion": "S3가 웹 서버와 다른 점을 `프로세스`, `객체 저장`, `origin` 관점에서 설명하라.",
+      "speakingTransferPrompt": "사용자가 `logo.jpg`를 요청했을 때 CDN cache miss와 cache hit 흐름을 각각 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-004",
+      "directTranslation": "CDN은 비용, 만료 시간, 신선도, 원본 서버 부하를 함께 고려해 써야 한다.",
+      "trickySentenceExplanation": "CDN은 항상 많이 붙일수록 좋은 무료 가속 장치가 아니다. 자주 쓰이지 않는 파일을 CDN에 올려도 cache hit가 낮으면 비용 대비 이득이 작다. TTL이 너무 길면 오래된 파일이 남고, 너무 짧으면 origin 요청이 많아져 CDN의 장점이 줄어든다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "time-sensitive content",
+          "korean": "시의성이 중요한 콘텐츠",
+          "explanation": "뉴스 속보, 가격, 재고, 이벤트 배너처럼 오래된 값이 사용자 피해나 오해로 이어질 수 있는 콘텐츠다."
+        },
+        {
+          "term": "data transfer",
+          "korean": "네트워크로 드나드는 데이터 전송량",
+          "explanation": "CDN은 보통 요청 수, 전송량, 무효화 요청 등에 따라 비용이 생긴다. 자주 쓰이지 않는 큰 파일은 캐시 이득보다 비용이 커질 수 있다."
+        }
+      ],
+      "devNote": "프론트 정적 자산은 보통 `파일명 해시 + 긴 Cache-Control`이 잘 맞는다. 반대로 `index.html`이나 사용자별 HTML은 짧게 캐시하거나 revalidate하게 둔다. 이유는 JS/CSS 해시 파일은 내용이 바뀌면 URL도 바뀌지만, HTML은 최신 번들 파일명을 가리키는 진입점이기 때문이다.",
+      "recallQuestion": "왜 JS/CSS 해시 파일은 길게 캐시하고 HTML 진입점은 짧게 캐시하는 경우가 많은가?",
+      "speakingTransferPrompt": "React 배포에서 `index.html`과 `app.[hash].js`의 TTL을 다르게 잡는 이유를 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-005",
+      "directTranslation": "CDN 장애가 나면 우회 경로를 고민해야 하고, 아직 TTL이 남은 파일도 무효화 API나 버전이 바뀐 URL로 교체할 수 있다.",
+      "trickySentenceExplanation": "여기서 `클라이언트`는 문맥상 콘텐츠를 요청하는 쪽을 넓게 말한다. 브라우저나 모바일 앱일 수도 있고, 서버가 CDN에서 파일을 가져오는 구조라면 서버일 수도 있다. 다만 프론트 정적 자산에서는 실제로 브라우저가 CDN URL을 요청하는 경우가 많다. 문제는 JS 번들 자체가 CDN에서 실패하면 React 코드가 실행되기 전일 수 있어, 모든 fallback을 앱 코드 안에서 해결할 수는 없다는 점이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "invalidation",
+          "korean": "캐시 무효화",
+          "explanation": "아직 TTL이 남아도 CDN 캐시에서 특정 파일을 제거해 다음 요청이 origin의 새 파일을 보게 만드는 작업이다. CloudFront invalidation이 대표 예다."
+        },
+        {
+          "term": "object versioning",
+          "korean": "URL을 바꿔 새 버전 파일로 보이게 하는 방식",
+          "explanation": "책의 예시는 `image.png?v=2`처럼 URL에 버전을 붙이는 방식이다. CDN은 URL이 달라지면 다른 캐시 대상으로 본다."
+        },
+        {
+          "term": "content hash",
+          "korean": "파일 내용 기반 해시",
+          "explanation": "React/Vite/Next 빌드에서 `app.a1b2c3.js`처럼 파일명에 붙는 값이다. 내용이 바뀌면 파일명도 바뀌므로 CDN에 새 파일로 배포하기 쉽다."
+        }
+      ],
+      "devNote": "네가 말한 CloudFront 무효화는 맞다. 다만 `오브젝트 버저닝`은 여기서 S3 bucket versioning만을 뜻한다기보다, CDN이 보는 object URL을 새 버전으로 바꾸는 cache busting 패턴이다. React 빌드 파일 뒤에 붙는 난수나 content hash는 이 계열의 대표 사례다. 프론트가 신경 쓸 것은 `빌드 파일은 immutable하게 길게 캐시`, `HTML은 새 해시 파일명을 빨리 받도록 짧게 캐시`, `기존 URL의 파일 내용을 덮어쓰지 않기`, `긴급 교체 때 CloudFront invalidation 쓰기`다.",
+      "recallQuestion": "CloudFront invalidation과 파일명 hash 방식의 차이를 설명하라.",
+      "speakingTransferPrompt": "`app.abc123.js`와 `image.png?v=2`가 왜 CDN 입장에서 새 캐시 대상이 되는지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp27-29-cdn-operation-seg-006",
+      "directTranslation": "그림 1-11은 CDN, 로드밸런서, 웹 계층, 캐시, 데이터베이스 다중화가 한 시스템 안에 함께 배치된 형태를 보여 준다.",
+      "trickySentenceExplanation": "이 그림을 보면 CDN과 캐시가 둘 다 있으므로 같은 것처럼 보일 수 있다. 하지만 CDN은 사용자 가까이에 있는 정적 콘텐츠 캐시이고, 그림의 CACHE는 웹 서버와 DB 사이에서 DB 읽기 부하를 줄이는 서버 측 캐시다. 위치와 캐시 대상이 다르다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "static asset",
+          "korean": "정적 자산",
+          "explanation": "빌드된 JS, CSS, 이미지, 폰트처럼 내용이 배포 전까지 거의 바뀌지 않고 모든 사용자에게 같은 bytes로 내려가는 파일이다."
+        },
+        {
+          "term": "server-side cache",
+          "korean": "서버 측 캐시",
+          "explanation": "웹 서버와 DB 사이 또는 서버 내부에 두는 캐시다. DB 호출이나 계산 비용을 줄이는 데 초점이 있다."
+        }
+      ],
+      "devNote": "프론트 관점의 한 문장 정리는 이렇다. `CDN은 내가 배포한 JS/CSS/이미지를 사용자 가까이에서 빠르게 내려주고, 서버 측 캐시는 API 서버가 DB를 덜 치게 만든다.` 둘 다 빠르게 해 주지만, 네가 조정하는 설정과 사고해야 할 장애 모드가 다르다.",
+      "recallQuestion": "CDN 캐시와 서버 측 DB 캐시를 위치, 대상, 장애 영향으로 나눠 설명하라.",
+      "speakingTransferPrompt": "쇼핑몰 상품 상세 페이지에서 이미지, JS 번들, 상품 API 응답, DB 조회 결과가 각각 어디에 캐시될 수 있는지 말해 보자."
+    }
+  ]
+}

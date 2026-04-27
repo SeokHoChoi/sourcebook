@@ -78,6 +78,12 @@
       "count": 1,
       "pageSlugs": ["ch01-pp24-26-cache-and-cdn"],
       "representativeQuestion": "DB 호출 비용은 네트워크보다 항상 큰가? 이 캐시는 브라우저 캐시가 아니라 서버와 DB 사이의 캐시인가? 액세스 패턴과 TanStack Query 캐시는 어떻게 연결해야 하는가?"
+    },
+    {
+      "label": "CDN 정적/동적 콘텐츠와 버저닝 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp27-29-cdn-operation"],
+      "representativeQuestion": "CDN이 말하는 서버의 네트워크는 정확히 무엇인가? HTML은 왜 동적 콘텐츠 캐싱 대상이 될 수 있으며, S3 origin과 CloudFront edge, invalidation, object versioning은 어떻게 구분해야 하는가?"
     }
   ]
 }
