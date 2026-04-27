@@ -1,0 +1,70 @@
+{
+  "pageSlug": "ch01-p18-nosql-and-scaling",
+  "pageTitle": "1장 · 18p NoSQL 선택과 규모 확장 방식",
+  "lastStructuredAt": "2026-04-23",
+  "segments": [
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 5,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 9,
+        "endLine": 13
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 15,
+        "endLine": 19
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-004",
+      "order": 4,
+      "kind": "heading",
+      "source": {
+        "startLine": 21,
+        "endLine": 21
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 23,
+        "endLine": 26
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-006",
+      "order": 6,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 28,
+        "endLine": 30
+      }
+    },
+    {
+      "id": "ch01-p18-nosql-and-scaling-seg-007",
+      "order": 7,
+      "kind": "list",
+      "source": {
+        "startLine": 32,
+        "endLine": 36
+      }
+    }
+  ]
+}

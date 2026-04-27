@@ -1,0 +1,43 @@
+{
+  "pageSlug": "ch01-p16-request-clients-and-http",
+  "pageTitle": "1장 · 16p 요청의 출발점과 클라이언트 종류",
+  "lastStructuredAt": "2026-04-22",
+  "segments": [
+    {
+      "id": "ch01-p16-request-clients-and-http-seg-001",
+      "order": 1,
+      "kind": "list",
+      "source": {
+        "startLine": 7,
+        "endLine": 9
+      }
+    },
+    {
+      "id": "ch01-p16-request-clients-and-http-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 11,
+        "endLine": 11
+      }
+    },
+    {
+      "id": "ch01-p16-request-clients-and-http-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 13,
+        "endLine": 14
+      }
+    },
+    {
+      "id": "ch01-p16-request-clients-and-http-seg-004",
+      "order": 4,
+      "kind": "code",
+      "source": {
+        "startLine": 16,
+        "endLine": 29
+      }
+    }
+  ]
+}

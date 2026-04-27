@@ -6,7 +6,17 @@ import { useEffect, useState } from 'react';
 import { InPageNav, type InPageNavItem } from '@/components/sourcebook/in-page-nav';
 import { cn } from '@/lib/utils';
 
-export function StudyGuideFloatingNav({ items, title }: { items: InPageNavItem[]; title: string }) {
+export function StudyGuideFloatingNav({
+  items,
+  title,
+  subtitle,
+  showOrdinal = true,
+}: {
+  items: InPageNavItem[];
+  title: string;
+  subtitle?: string;
+  showOrdinal?: boolean;
+}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -55,9 +65,11 @@ export function StudyGuideFloatingNav({ items, title }: { items: InPageNavItem[]
                     ebook nav
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
-                    문서 목차
+                    {title}
                   </h2>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{title}</p>
+                  {subtitle ? (
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{subtitle}</p>
+                  ) : null}
                 </div>
                 <button
                   type="button"
@@ -75,6 +87,7 @@ export function StudyGuideFloatingNav({ items, title }: { items: InPageNavItem[]
                 ariaLabel={`${title} 모바일 목차`}
                 items={items}
                 variant="compact"
+                showOrdinal={showOrdinal}
                 onNavigate={() => setOpen(false)}
               />
             </div>

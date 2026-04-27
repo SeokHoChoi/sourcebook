@@ -1493,7 +1493,7 @@ export default async function TrackDocPage({ params }: TrackDocPageProps) {
               )}
             >
               {isFullPageReader ? (
-                <aside className="hidden xl:sticky xl:top-6 xl:block xl:h-fit">
+                <aside className="hidden xl:sticky xl:top-6 xl:block xl:max-h-[calc(100svh-3rem)] xl:overflow-y-auto xl:overscroll-contain xl:pr-1">
                   <section className="rounded-[1.7rem] border border-black/8 bg-[#fbf7f0] px-4 py-5 shadow-[0_16px_40px_-34px_rgba(15,23,42,0.5)]">
                     <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
                       Get Started 목차

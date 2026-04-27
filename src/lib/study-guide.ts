@@ -19,6 +19,29 @@ export type ParsedStudyGuide = {
   stats: StudyGuideStats;
 };
 
+export type StudyGuideMarkdownSection = {
+  level: number;
+  text: string;
+  blockMarkdown: string;
+  contentMarkdown: string;
+};
+
+export type StudyGuideBookTocEntry = {
+  title: string;
+  pageNumber: number | null;
+  pageLabel: string | null;
+};
+
+export type StudyGuideBookTocChapter = StudyGuideBookTocEntry & {
+  chapterNumber: number | null;
+  sections: StudyGuideBookTocEntry[];
+};
+
+export type ParsedStudyGuideBookToc = {
+  frontMatter: StudyGuideBookTocEntry[];
+  chapters: StudyGuideBookTocChapter[];
+};
+
 type ParseState = {
   explicitAnchors: Map<string, string>;
   headings: StudyGuideHeading[];
@@ -626,5 +649,130 @@ export function parseStudyGuideMarkdown(markdown: string): ParsedStudyGuide {
       reflectionPromptCount: (normalized.match(/자기 설명 질문|회상 질문/g) ?? []).length,
       readingTimeMinutes: Math.max(1, Math.ceil(wordCount / 220)),
     },
+  };
+}
+
+export function splitMarkdownSections(markdown: string): StudyGuideMarkdownSection[] {
+  const normalized = markdown.replaceAll('\r\n', '\n');
+  const lines = normalized.split('\n');
+  const headings: Array<{ level: number; text: string; lineIndex: number }> = [];
+  let insideCodeFence = false;
+
+  for (const [lineIndex, line] of lines.entries()) {
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('```')) {
+      insideCodeFence = !insideCodeFence;
+      continue;
+    }
+
+    if (insideCodeFence) {
+      continue;
+    }
+
+    const match = trimmed.match(/^(#{1,6})\s+(.+?)\s*$/);
+
+    if (!match) {
+      continue;
+    }
+
+    const hashes = match[1] ?? '#';
+    const title = match[2] ?? '';
+
+    headings.push({
+      level: hashes.length,
+      text: normalizeTextLookup(title),
+      lineIndex,
+    });
+  }
+
+  return headings.map((heading, index) => {
+    const nextBoundary =
+      headings.find(
+        (candidate, candidateIndex) => candidateIndex > index && candidate.level <= heading.level,
+      )?.lineIndex ?? lines.length;
+    const blockMarkdown = lines.slice(heading.lineIndex, nextBoundary).join('\n').trim();
+    const contentMarkdown = lines
+      .slice(heading.lineIndex + 1, nextBoundary)
+      .join('\n')
+      .trim();
+
+    return {
+      level: heading.level,
+      text: heading.text,
+      blockMarkdown,
+      contentMarkdown,
+    };
+  });
+}
+
+function parseStudyGuideBookTocEntry(line: string): StudyGuideBookTocEntry | null {
+  const trimmed = line.trim();
+
+  if (!trimmed.startsWith('- ')) {
+    return null;
+  }
+
+  const value = trimmed.slice(2).trim();
+
+  if (!value) {
+    return null;
+  }
+
+  const match = value.match(/^(.*?)(?:\s+(\d+)p)?$/);
+
+  if (!match) {
+    return null;
+  }
+
+  const title = match[1]?.trim() ?? '';
+  const pageNumber = match[2] ? Number(match[2]) : null;
+
+  if (!title) {
+    return null;
+  }
+
+  return {
+    title,
+    pageNumber,
+    pageLabel: pageNumber ? `${pageNumber}p` : null,
+  };
+}
+
+export function parseBookTocMarkdown(markdown: string): ParsedStudyGuideBookToc {
+  const frontMatter: StudyGuideBookTocEntry[] = [];
+  const chapters: StudyGuideBookTocChapter[] = [];
+  let currentChapter: StudyGuideBookTocChapter | null = null;
+
+  for (const line of markdown.replaceAll('\r\n', '\n').split('\n')) {
+    const entry = parseStudyGuideBookTocEntry(line);
+
+    if (!entry) {
+      continue;
+    }
+
+    const chapterMatch = entry.title.match(/^(\d+)장\s+/);
+
+    if (chapterMatch) {
+      currentChapter = {
+        ...entry,
+        chapterNumber: Number(chapterMatch[1]),
+        sections: [],
+      };
+      chapters.push(currentChapter);
+      continue;
+    }
+
+    if (currentChapter) {
+      currentChapter.sections.push(entry);
+      continue;
+    }
+
+    frontMatter.push(entry);
+  }
+
+  return {
+    frontMatter,
+    chapters,
   };
 }

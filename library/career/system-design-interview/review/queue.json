@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-22",
+  "generatedAt": "2026-04-24",
   "items": [
     {
       "id": "review-system-design-001",
@@ -36,6 +36,96 @@
       "dueOn": "2026-04-25",
       "status": "scheduled",
       "sourceEventId": "system-design-event-004"
+    },
+    {
+      "id": "review-system-design-005",
+      "pageSlug": "ch01-p16-request-clients-and-http",
+      "segmentId": "ch01-p16-request-clients-and-http-seg-002",
+      "prompt": "왜 `웹 앱과 모바일 앱`을 가능한 모든 요청 발신자의 전체 목록으로 읽으면 안 되는지, 서버-서버 HTTP 예시까지 포함해 설명하라.",
+      "dueOn": "2026-04-24",
+      "status": "due",
+      "sourceEventId": "system-design-event-005"
+    },
+    {
+      "id": "review-system-design-006",
+      "pageSlug": "ch01-p16-request-clients-and-http",
+      "segmentId": "ch01-p16-request-clients-and-http-seg-003",
+      "prompt": "앞문장의 `웹 앱`과 bullet의 `웹 애플리케이션`이 왜 같은 범위가 아닌지, `요청 발신자`와 `시스템 전체 구현`을 구분해서 설명하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-006"
+    },
+    {
+      "id": "review-system-design-007",
+      "pageSlug": "ch01-p17-database-split-and-database-choice",
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-002",
+      "prompt": "서버를 극장으로 비유할 때 맞는 부분과 부족한 부분을 분리하고, `주장 -> 해법 -> 해법의 장점` 구조로 데이터베이스 분리 문단을 다시 설명하라.",
+      "dueOn": "2026-04-24",
+      "status": "due",
+      "sourceEventId": "system-design-event-007"
+    },
+    {
+      "id": "review-system-design-008",
+      "pageSlug": "ch01-p18-nosql-and-scaling",
+      "segmentId": "ch01-p18-nosql-and-scaling-seg-001",
+      "prompt": "`NoSQL은 관계가 없어서 조인이 없다`가 왜 틀린 설명인지, 데이터 사이의 관계·관계형 모델·SQL join 연산을 구분해서 설명하라.",
+      "dueOn": "2026-04-24",
+      "status": "due",
+      "sourceEventId": "system-design-event-008"
+    },
+    {
+      "id": "review-system-design-009",
+      "pageSlug": "ch01-p18-nosql-and-scaling",
+      "segmentId": "ch01-p18-nosql-and-scaling-seg-007",
+      "prompt": "수직적 확장이 왜 capacity는 키우지만 availability를 보장하지 않는지, failover와 redundancy가 무엇을 추가로 요구하는지 설명하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-008"
+    },
+    {
+      "id": "review-system-design-010",
+      "pageSlug": "ch01-p17-database-split-and-database-choice",
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-002",
+      "prompt": "문/차선 비유와 키오스크/식당 비유가 각각 어떤 병목을 설명하는지 구분하고, 서버 전체를 이해할 때 왜 키오스크/식당 비유가 더 좋은지 설명하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-009"
+    },
+    {
+      "id": "review-system-design-011",
+      "pageSlug": "ch01-p17-database-split-and-database-choice",
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-005",
+      "prompt": "데이터 모델, 질의 패턴, 일관성 요구, 확장 방식, 운영 난이도를 쇼핑몰 상품 상세 화면 예시로 풀어 설명하고, 왜 API 응답 모양과 프론트 상태 설계가 영향을 받는지 말하라.",
+      "dueOn": "2026-04-26",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-009"
+    },
+    {
+      "id": "review-system-design-012",
+      "pageSlug": "ch01-p18-nosql-and-scaling",
+      "segmentId": "ch01-p18-nosql-and-scaling-seg-002",
+      "prompt": "왜 `최종 DTO가 같아도 RDBMS join 방식과 문서형 저장소 방식은 다르다`고 말할 수 있는지, `백엔드 조합 단계`, `프론트 호출 수`, `stale UI 위험` 세 축으로 설명하라.",
+      "dueOn": "2026-04-26",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-010"
+    },
+    {
+      "id": "review-system-design-013",
+      "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+      "segmentId": "ch01-pp19-21-load-balancer-and-db-replication-seg-003",
+      "prompt": "`부하 분산 집합`을 로드밸런서 뒤의 healthy backend server 묶음으로 설명하고, 왜 웹 서버를 하나 더 넣으면 웹 계층의 가용성이 올라가는지 말하라. 이어서 `주-부 관계`가 임의 별명이 아니라 DB 복제 설정과 역할 차이라는 점까지 설명하라.",
+      "dueOn": "2026-04-25",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-011"
+    },
+    {
+      "id": "review-system-design-014",
+      "pageSlug": "ch01-pp19-21-load-balancer-and-db-replication",
+      "segmentId": "ch01-pp19-21-load-balancer-and-db-replication-seg-006",
+      "prompt": "`지역적으로 떨어진 여러 장소에 다중화`를 `로컬에서 개발용 DB를 띄우고 나중에 운영 DB를 배포한다`는 흐름과 구분해서 설명하라. 이어서 같은 리전 다른 AZ 복제와 다른 리전 read replica의 목적 차이도 비교하라.",
+      "dueOn": "2026-04-26",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-012"
     }
   ]
 }

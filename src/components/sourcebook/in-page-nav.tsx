@@ -18,6 +18,7 @@ type InPageNavProps = {
   ariaLabel: string;
   items: InPageNavItem[];
   variant?: 'default' | 'compact';
+  showOrdinal?: boolean;
   onNavigate?: ((targetId: string) => void) | null;
 };
 
@@ -25,6 +26,7 @@ export function InPageNav({
   ariaLabel,
   items,
   variant = 'default',
+  showOrdinal = true,
   onNavigate = null,
 }: InPageNavProps) {
   const activeCandidates = useMemo(
@@ -114,14 +116,18 @@ export function InPageNav({
                 className="flex min-w-0 items-center gap-2"
                 style={{ paddingLeft: depth > 0 ? `${depth * 0.8}rem` : undefined }}
               >
-                <span
-                  className={cn(
-                    'shrink-0 text-[0.65rem] font-semibold tracking-[0.16em] uppercase transition-colors',
-                    isSelected ? 'text-white/55' : 'text-slate-400 group-hover/nav:text-slate-600',
-                  )}
-                >
-                  {String(index + 1).padStart(2, '0')}
-                </span>
+                {showOrdinal ? (
+                  <span
+                    className={cn(
+                      'shrink-0 text-[0.65rem] font-semibold tracking-[0.16em] uppercase transition-colors',
+                      isSelected
+                        ? 'text-white/55'
+                        : 'text-slate-400 group-hover/nav:text-slate-600',
+                    )}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                ) : null}
                 <span className="truncate">{item.label}</span>
               </span>
             </span>

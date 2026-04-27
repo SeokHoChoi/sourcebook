@@ -1,0 +1,154 @@
+{
+  "pageSlug": "ch01-p17-database-split-and-database-choice",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-001",
+      "directTranslation": "이 절은 단일 서버 다음 단계로, 웹/API를 처리하는 서버와 데이터를 보관하는 서버를 분리하는 장면이다.",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-002",
+      "directTranslation": "사용자가 많아지면 한 서버 안에서 웹 요청 처리와 데이터베이스 작업을 모두 감당하기 어려우므로, 웹/모바일 트래픽을 받는 웹 계층과 데이터를 맡는 데이터 계층을 먼저 분리한다는 뜻이다.",
+      "trickySentenceExplanation": "네가 떠올린 `문이 좁다`, `차선이 줄어드는 교통 병목`, `입장 인원이 정해진 극장` 비유는 완전히 틀린 비유가 아니다. 특히 네트워크 대역폭, connection accept, 로드 밸런서 앞단처럼 입구 자체가 막히는 상황에는 꽤 맞다. 하지만 서버 전체를 이해하는 주 비유로는 부족하다. 문 비유는 병목이 하나이고 모두가 같은 작업을 기다린다고 착각하게 만든다. 실제 서버는 CPU, 메모리, 디스크 I/O, 네트워크, DB 연결 수, 락 경합 같은 여러 병목이 동시에 있는 작업장이다. 그래서 더 좋은 기본 비유는 `주문을 받는 키오스크/카운터, 요리하는 주방, 창고, 결제 단말, 재고 조회가 한 공간에 있는 작은 식당`이다. 손님이 늘면 줄만 길어지는 것이 아니라 주문 입력, 조리, 결제, 재고 확인 중 어디가 먼저 막히는지가 달라진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "웹 계층",
+          "korean": "web tier",
+          "explanation": "브라우저나 모바일 앱에서 들어온 요청을 먼저 받고, 화면/API 응답을 만들기 위해 비즈니스 로직을 실행하는 서버 쪽 계층."
+        },
+        {
+          "term": "데이터 계층",
+          "korean": "data tier",
+          "explanation": "데이터베이스나 저장소처럼 데이터를 보관하고 읽기/쓰기 요청을 처리하는 계층."
+        },
+        {
+          "term": "독립적 확장",
+          "korean": "independent scaling",
+          "explanation": "모든 구성요소를 한꺼번에 키우지 않고, 병목이 생긴 계층만 따로 키울 수 있게 만드는 것."
+        }
+      ],
+      "devNote": "네 독해는 꽤 좋았다. 다만 비유를 고를 때는 `무엇을 설명하는 비유인가`를 먼저 제한해야 한다. 문이나 차선 비유는 `입구 처리량`을 설명한다. 키오스크/식당 비유는 `여러 자원 중 어디가 병목인지 계속 바뀐다`를 설명한다. 시스템 설계에서는 보통 두 번째가 더 중요하다. 같은 1,000명이 몰려도 로그인은 DB connection pool이 막힐 수 있고, 이미지 업로드는 네트워크와 object storage가 막힐 수 있고, 검색은 CPU나 검색 인덱스가 막힐 수 있다. 이 문단은 `왜 서버 하나가 부족한지 증명하는 설명`이라기보다 `부족해진 뒤의 첫 분리 방법`을 말한다. 읽을 때는 1) 주장: 서버 하나로는 부족하다. 2) 해법: 웹 계층과 데이터 계층을 분리한다. 3) 해법의 장점: 각각 따로 확장할 수 있다로 표시하라. 네가 잡은 `필요한 부분만 확장하므로 자원을 아낄 수 있다`는 맞지만, 분리는 비용 절감뿐 아니라 장애 격리, 보안 경계, 운영 책임 분리, DB의 내구성 관리, 웹 서버의 수평 확장을 쉽게 만드는 효과도 있다.",
+      "recallQuestion": "문/차선 비유와 키오스크/식당 비유가 각각 어떤 병목을 설명하는지 나누고, 서버 확장성에서는 왜 후자가 더 좋은 기본 모델인지 설명하라.",
+      "speakingTransferPrompt": "로그인, 이미지 업로드, 검색 요청에서 각각 어느 병목이 먼저 막힐 수 있는지 식당 비유로 설명해보자."
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-003",
+      "directTranslation": "그림 1-3은 웹 브라우저와 모바일 앱이 웹 서버에 요청하고, 웹 서버가 데이터베이스에 read/write/update를 수행한 뒤 데이터를 받아 사용자에게 돌려주는 흐름을 보여 준다.",
+      "trickySentenceExplanation": "그림에서 브라우저나 모바일 앱이 데이터베이스에 직접 붙지 않는다는 점을 꼭 봐야 한다. 프론트엔드는 보통 API 서버를 통해 데이터에 접근한다. DB 연결 정보와 권한을 클라이언트에 직접 주면 보안, 제어, 검증, 관측이 무너진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "read/write/update",
+          "korean": "읽기/쓰기/수정",
+          "explanation": "웹 서버가 데이터베이스에 데이터를 조회하거나 새로 저장하거나 기존 값을 바꾸는 작업."
+        },
+        {
+          "term": "데이터 반환",
+          "korean": "data return",
+          "explanation": "데이터베이스가 웹 서버의 요청 결과를 다시 웹 서버로 돌려주는 흐름."
+        }
+      ],
+      "devNote": "프론트엔드 관점에서 이 그림의 핵심은 `브라우저 -> DB`가 아니라 `브라우저 -> 웹/API 서버 -> DB`라는 경계다. 예를 들어 React 앱이 `/api/posts`를 호출하면, React는 SQL을 실행하지 않는다. API 서버가 인증, 권한, 입력 검증, 비즈니스 규칙을 적용한 뒤 DB에 접근한다. 그래서 프론트에서 보이는 데이터 지연은 네트워크, API 서버 처리, DB query, DB connection pool, 캐시 적중 여부가 합쳐진 결과다.",
+      "recallQuestion": "왜 브라우저나 모바일 앱이 데이터베이스에 직접 접근하지 않고 웹/API 서버를 거치는가?",
+      "speakingTransferPrompt": "React 화면에서 게시글 목록을 불러올 때 그림 1-3의 어느 화살표들이 실제로 일어나는지 설명해보자."
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-004",
+      "directTranslation": "다음 소주제는 관계형 데이터베이스와 비관계형 데이터베이스 중 무엇을 선택할지다.",
+      "trickySentenceExplanation": "",
+      "selectiveVocabGlosses": [],
+      "devNote": "",
+      "recallQuestion": "",
+      "speakingTransferPrompt": ""
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-005",
+      "directTranslation": "데이터베이스는 크게 관계형과 비관계형 중에서 고를 수 있고, 이제 그 차이를 설명하겠다는 도입 문장이다.",
+      "trickySentenceExplanation": "여기서 `고를 수 있다`는 말은 아무거나 취향으로 고른다는 뜻이 아니다. `데이터 모델`은 도메인 이름만 말하는 것도 아니고, 최종 JSON 응답 모양만 말하는 것도 아니다. 데이터를 DB 안에서 어떤 단위와 관계로 저장할지 정하는 방식이다. 예를 들어 사용자, 주문, 상품, 리뷰를 각각 테이블로 나눌지, 주문 문서 안에 배송지와 상품 요약을 함께 넣을지, `USER#1`과 `ORDER#9` 같은 키 설계로 한 번에 읽히게 둘지의 문제다. `질의 패턴`은 앱이 자주 던질 질문의 모양이다. `사용자별 최근 주문 20개`, `상품 상세와 리뷰 상위 3개`, `재고 차감`, `친구의 친구 추천`처럼 어떤 조건으로 얼마나 자주 읽고 쓰는지다. `일관성 요구`는 같은 사실이 여러 위치에 있을 때 얼마나 즉시 같아야 하는가다. 재고 수량은 즉시 맞아야 하지만 추천 상품 목록은 조금 오래돼도 된다. `확장 방식`은 데이터와 요청을 어떻게 여러 서버/파티션으로 나눌 수 있느냐다. `운영 난이도`는 백업, 장애 복구, 인덱스, 샤딩 키, 마이그레이션, 중복 데이터 보정, 모니터링까지 포함한 실제 유지 비용이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "관계형 데이터베이스",
+          "korean": "relational database",
+          "explanation": "데이터를 테이블과 관계로 모델링하고 SQL로 조회하는 데이터베이스 계열."
+        },
+        {
+          "term": "비-관계형 데이터베이스",
+          "korean": "non-relational database",
+          "explanation": "테이블 관계 모델을 중심으로 하지 않는 데이터베이스 계열. 흔히 NoSQL이라고 부른다."
+        },
+        {
+          "term": "데이터 모델",
+          "korean": "data model",
+          "explanation": "데이터를 DB 안에서 어떤 단위, 필드, 관계, 중복 구조로 저장할지 정한 모양."
+        },
+        {
+          "term": "질의 패턴",
+          "korean": "query pattern / access pattern",
+          "explanation": "애플리케이션이 자주 묻는 질문의 모양. 어떤 조건으로, 얼마나 자주, 얼마나 많은 데이터를 읽고 쓰는지까지 포함한다."
+        },
+        {
+          "term": "일관성 요구",
+          "korean": "consistency requirement",
+          "explanation": "같은 사실을 읽는 여러 위치가 언제까지 같은 값을 보여야 하는지에 대한 요구 수준."
+        },
+        {
+          "term": "운영 난이도",
+          "korean": "operational complexity",
+          "explanation": "시스템을 실제로 운영하며 겪는 백업, 복구, 장애 대응, 인덱스 관리, 샤딩, 마이그레이션, 모니터링의 어려움."
+        }
+      ],
+      "devNote": "네 말처럼 백엔드는 최종적으로 약속된 JSON 모양을 만들어 내려줄 수 있다. 그래서 `DB가 어떻든 프론트는 같은 DTO를 받으면 되는 거 아닌가?`라는 생각은 절반은 맞다. 하지만 이것을 `DB 모델은 프론트와 무관하다`로 결론 내리면 틀린다. 같은 JSON을 만들 수는 있어도 비용, 지연, stale 가능성, 페이지네이션 방식, 부분 업데이트 방식이 달라진다. RDBMS는 정규화된 데이터를 join해 `PostDetailDTO`를 만들기 쉽지만, 트래픽이 커지면 join 비용과 인덱스 튜닝이 중요해진다. 문서형 DB는 게시글 문서에 작성자 이름과 댓글 일부를 함께 넣어 상세 화면을 빠르게 만들 수 있지만, 작성자 이름이 바뀌었을 때 여러 문서의 중복 값을 갱신해야 해서 일관성 문제가 생긴다. DynamoDB 같은 키-값/문서 계열은 `사용자별 최근 주문`처럼 미리 정한 접근 패턴에는 매우 빠르지만, 갑자기 `모든 상품을 가격대와 평점으로 임의 필터링` 같은 새 질의를 추가하면 별도 인덱스나 다른 저장소가 필요할 수 있다. 프론트 입장에서는 이것이 API가 한 번에 내려오느냐, 여러 번 호출해야 하느냐, optimistic UI를 써도 안전하냐, stale 표시가 필요하냐, cursor pagination을 써야 하느냐로 나타난다.",
+      "recallQuestion": "데이터 모델, 질의 패턴, 일관성 요구, 확장 방식, 운영 난이도를 각각 쇼핑몰 예시로 정의하라.",
+      "speakingTransferPrompt": "같은 `상품 상세 화면` JSON을 RDBMS, 문서형 DB, DynamoDB 스타일로 만들 때 백엔드 비용과 프론트 상태 설계가 어떻게 달라지는지 말해보자."
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-006",
+      "directTranslation": "관계형 데이터베이스는 RDBMS라고도 부르며, MySQL, Oracle Database, PostgreSQL 같은 제품이 대표적이다. 데이터를 테이블, 행, 열로 표현하고 SQL의 join으로 여러 테이블의 데이터를 관계에 따라 합칠 수 있다.",
+      "trickySentenceExplanation": "캡처의 `테이블과 열, 칼럼` 표현은 엄밀하게는 조금 어색하다. 보통 관계형 데이터베이스는 테이블, 행(row), 열(column)로 설명한다. 여기서는 원문을 보존하되, 개념 이해에서는 `테이블/행/열`로 잡는 것이 정확하다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "RDBMS",
+          "korean": "관계형 데이터베이스 관리 시스템",
+          "explanation": "관계형 데이터베이스를 만들고 조회하고 관리하는 시스템. MySQL, PostgreSQL, Oracle Database 등이 있다."
+        },
+        {
+          "term": "join",
+          "korean": "조인",
+          "explanation": "서로 다른 테이블의 행을 관련 키를 기준으로 합쳐서 하나의 결과처럼 조회하는 연산."
+        },
+        {
+          "term": "SQL",
+          "korean": "구조화 질의 언어",
+          "explanation": "관계형 데이터베이스에서 데이터를 정의하고 조회하고 변경하는 데 쓰는 언어."
+        }
+      ],
+      "devNote": "예를 들어 `users` 테이블과 `orders` 테이블이 따로 있을 때, 주문 목록 화면에는 사용자 이름과 주문 금액이 함께 필요할 수 있다. 이때 SQL join으로 `orders.user_id = users.id`를 기준으로 합친 결과를 만들 수 있다. 프론트에서는 그냥 JSON 배열을 받지만, 그 뒤에서는 이런 조인 비용과 인덱스 설계가 API 지연 시간에 영향을 준다.",
+      "recallQuestion": "RDBMS에서 join이 필요한 상황을 프론트 화면 예시로 설명하라.",
+      "speakingTransferPrompt": "사용자 목록과 주문 목록을 한 화면에 보여줄 때 SQL join이 어떻게 쓰일 수 있는지 설명해보자."
+    },
+    {
+      "segmentId": "ch01-p17-database-split-and-database-choice-seg-007",
+      "directTranslation": "비관계형 데이터베이스는 NoSQL이라고도 부르며, CouchDB, Neo4j, Cassandra, HBase, Amazon DynamoDB 등이 예시다. 캡처는 NoSQL의 네 부류를 말하다가 `키-값 저장소, 그래프 저...`에서 다음 페이지로 이어진다.",
+      "trickySentenceExplanation": "현재 캡처는 문장 끝이 잘려 있다. 따라서 `그래프 저` 뒤의 단어를 임의로 보완하지 않고, 다음 캡처를 받아 이어서 확정해야 한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "NoSQL",
+          "korean": "비관계형 데이터베이스 계열",
+          "explanation": "관계형 테이블 모델만을 중심으로 하지 않는 데이터베이스 계열. 키-값, 문서, 그래프, 컬럼 패밀리 같은 여러 모델이 있다."
+        },
+        {
+          "term": "key-value store",
+          "korean": "키-값 저장소",
+          "explanation": "키 하나로 값을 빠르게 저장하고 조회하는 데이터 저장 모델. 캐시, 세션, 설정값 저장 등에 자주 쓰인다."
+        }
+      ],
+      "devNote": "다음 페이지에서 NoSQL 분류가 이어질 가능성이 높다. 지금은 제품명을 외우기보다 `관계형은 관계와 조인을 강하게 지원하고, NoSQL은 특정 접근 패턴과 확장 특성에 맞춰 여러 모델로 갈라진다` 정도로 잡으면 된다.",
+      "recallQuestion": "NoSQL을 하나의 제품명처럼 외우면 왜 위험한가?",
+      "speakingTransferPrompt": "NoSQL이 단일 기술이 아니라 여러 데이터 모델의 묶음이라는 점을 설명해보자."
+    }
+  ]
+}

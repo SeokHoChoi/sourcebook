@@ -125,25 +125,98 @@ test.describe('home page', () => {
     page,
   }) => {
     await page.goto('/categories/career/tracks/system-design-interview/study');
+    const tocSection = page
+      .getByRole('heading', { name: '책 차례를 그대로 고정한 탐색판' })
+      .locator('xpath=ancestor::section[1]');
 
     await expect(
       page.getByRole('heading', { name: /^대규모 시스템 설계 기초 스터디$/ }).first(),
     ).toBeVisible();
     await expect(
-      page.getByText(/프론트엔드 개발자인 네가 시스템 설계를 공부하는 이유는/),
+      page.getByText(/책 차례를 그대로 기준점으로 삼고, 지금까지 적재된 배치만/),
     ).toBeVisible();
     await expect(
-      page.getByRole('link', { name: /PART 2\. 차례 원문 아카이브/ }).first(),
+      page.getByRole('heading', { name: '책 차례를 그대로 고정한 탐색판' }),
     ).toBeVisible();
-    await expect(page.locator('h2', { hasText: '2. 차례' })).toBeVisible();
-    await expect(page.getByText('1장 사용자 수에 따른 규모 확장성 14p')).toBeVisible();
-    await expect(page.getByText('14장 유튜브 설계 260p')).toBeVisible();
-    await expect(page.getByText('15장 구글 드라이브 설계 290p')).toBeVisible();
+    await expect(
+      tocSection.locator('h3', { hasText: '1장 사용자 수에 따른 규모 확장성' }).first(),
+    ).toBeVisible();
+    await expect(tocSection.getByText('단일 서버', { exact: true }).first()).toBeVisible();
+    await expect(tocSection.locator('h3', { hasText: '14장 유튜브 설계' }).first()).toBeVisible();
+    await expect(
+      tocSection.locator('h3', { hasText: '15장 구글 드라이브 설계' }).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('link', { name: '1장 · 14~15p 도입과 단일 서버', exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 16p 요청의 출발점과 클라이언트 종류' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 17p 데이터베이스 분리와 선택' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 18p NoSQL 선택과 규모 확장 방식' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' }),
+    ).toBeVisible();
+    await expect(page.getByText('전체 스터디 문서 펼치기')).toBeVisible();
     await expect(
       page.locator(
         'a[href="/categories/career/tracks/system-design-interview/pages/get-started-full"]',
       ),
     ).toHaveCount(0);
+  });
+
+  test('renders the system design track overview as a TOC-style file explorer', async ({
+    page,
+  }) => {
+    await page.goto('/categories/career/tracks/system-design-interview');
+    const readingSection = page
+      .getByRole('heading', { name: '읽을 문서' })
+      .locator('xpath=ancestor::section[1]');
+
+    await expect(
+      page.getByRole('heading', { name: /^대규모 시스템 설계 기초$/ }).first(),
+    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: '읽을 문서' })).toBeVisible();
+    await expect(page.getByText(/파일 탐색기처럼 장과 절을 접고 펼칠 수 있게/)).toBeVisible();
+    await expect(
+      readingSection.getByText('1장 사용자 수에 따른 규모 확장성', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(readingSection.getByText('단일 서버', { exact: true }).first()).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 14~15p 도입과 단일 서버' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection
+        .locator('a')
+        .filter({ hasText: '1장 · 16p 요청의 출발점과 클라이언트 종류' })
+        .first(),
+    ).toBeVisible();
+    await expect(readingSection.getByText('데이터베이스', { exact: true }).first()).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 17p 데이터베이스 분리와 선택' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('수직적 규모 확장 vs 수평적 규모 확장', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection
+        .locator('a')
+        .filter({ hasText: '1장 · 18p NoSQL 선택과 규모 확장 방식' })
+        .first(),
+    ).toBeVisible();
+    await expect(
+      readingSection
+        .locator('a')
+        .filter({ hasText: '1장 · 19~21p 로드밸런서와 데이터베이스 다중화' })
+        .first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
+    ).toBeVisible();
   });
 
   test('renders the first system design reading batch as a real reader page', async ({ page }) => {
@@ -164,15 +237,110 @@ test.describe('home page', () => {
     ).toBeVisible();
   });
 
+  test('renders the second system design reading batch with request-source clarifications', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p16-request-clients-and-http',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 16p 요청의 출발점과 클라이언트 종류$/ }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/가능한 모든 요청 발신자를 전부 나열하는 문장은 아니다/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/서버에서 서버로 요청하는 것도 HTTP 요청 아닌가/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/실제 웹 프론트도 JSON API를 많이 쓴다/)).toBeVisible();
+  });
+
+  test('renders the third system design reading batch with database split feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p17-database-split-and-database-choice',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 17p 데이터베이스 분리와 선택$/ }),
+    ).toBeVisible();
+    const reader = page.locator('article').first();
+
+    await expect(reader.getByText(/입장 인원이 정해진 극장/).first()).toBeVisible();
+    await expect(reader.getByText(/차선이 줄어드는 교통 병목/).first()).toBeVisible();
+    await expect(reader.getByText(/도메인 이름만 말하는 것도 아니고/).first()).toBeVisible();
+    await expect(reader.getByText(/같은 JSON을 만들 수는 있어도/).first()).toBeVisible();
+    await expect(reader.getByText(/문장 끝이 잘려 있다/).first()).toBeVisible();
+  });
+
+  test('renders the fourth system design reading batch with NoSQL and scaling feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p18-nosql-and-scaling',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 18p NoSQL 선택과 규모 확장 방식$/ }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/NoSQL은 데이터 사이에 관계가 없다는 뜻이 아니다/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/`API가 더 단순하다`는 말은/).first()).toBeVisible();
+    await expect(
+      page
+        .getByText(
+          /중복 데이터의 최신성 관리가 실패하면, 그 결과가 프론트에서는 stale UI로 드러날 수 있다/,
+        )
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/정의에서 함의를 뽑아내는 연습이 부족했던 것/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/capacity를 키우는 이야기/).first()).toBeVisible();
+    await expect(
+      page.getByText(/이런 비-관계형 데이터베이스는 일반적으로 조인 연산/).first(),
+    ).toBeVisible();
+  });
+
+  test('renders the fifth system design reading batch with load balancer and replication feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp19-21-load-balancer-and-db-replication',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 19~21p 로드밸런서와 데이터베이스 다중화$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/backend pool 또는 target group에 가깝다/).first()).toBeVisible();
+    await expect(page.getByText(/웹 서버 한 대가 죽어도/).first()).toBeVisible();
+    await expect(page.getByText(/공개 IP 주소/).first()).toBeVisible();
+    await expect(
+      page.getByText(/로컬 개발에서 네가 PostgreSQL 하나를 띄워서 개발하는 것과/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/같은 리전 안의 다른 AZ에 standby를 자동으로/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/로컬 DB, 스테이징 DB, 프로덕션 DB는 환경 구분이고/).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByText(/데이터를 지역적으로 떨어진 여러 장소에 다중화시켜 놓을 수 있기 때문이다/)
+        .first(),
+    ).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
     await page.goto('/categories/career/tracks/system-design-interview/journal');
 
     await expect(page.getByRole('heading', { name: /^학습 기록$/ })).toBeVisible();
-    await expect(
-      page.getByRole('heading', { name: /프론트 확장성 범위 오판/ }).first(),
-    ).toBeVisible();
+    await expect(page.getByText(/프론트 확장성 범위 오판/).first()).toBeVisible();
     await expect(
       page
         .getByText(/웹 앱과 데이터베이스, 캐시가 서버 한 대에서 실행된다는 말이 정확히 무엇인가/)
@@ -182,6 +350,48 @@ test.describe('home page', () => {
       page
         .locator(
           'a[href="/categories/career/tracks/system-design-interview/pages/ch01-pp14-15-intro-single-server#ch01-pp14-15-intro-single-server-seg-004"]',
+        )
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/서버에서 서버로 요청하는 것도 HTTP 요청 아닌가/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/확장 이유와 해법 전개 구분/).first()).toBeVisible();
+    await expect(page.getByText(/생략된 이유 추론과 관계 개념 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/비유 선택과 DB 선택 기준 추상어 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/같은 DTO면 차이 없음 오판/).first()).toBeVisible();
+    await expect(page.getByText(/부하 분산 집합과 주-부 복제 용어 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/로컬 개발 DB와 운영 복제 토폴로지 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/데이터 모델, 질의 패턴, 일관성 요구/).first()).toBeVisible();
+    await expect(
+      page
+        .getByText(
+          /RDBMS는 정규화된 여러 테이블을 서버에서 join해 화면용 JSON으로 만들어 줄 수 있다/,
+        )
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/부하 분산 집합에 또 하나의 웹 서버를 추가하고 나면/).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByText(/데이터를 지역적으로 떨어진 여러 장소에 다중화시켜 놓을 수 있기 때문이다/)
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/이런 비-관계형 데이터베이스는 일반적으로 조인 연산/).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator(
+          'a[href="/categories/career/tracks/system-design-interview/pages/ch01-p16-request-clients-and-http#ch01-p16-request-clients-and-http-seg-003"]',
+        )
+        .first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .locator(
+          'a[href="/categories/career/tracks/system-design-interview/pages/ch01-pp19-21-load-balancer-and-db-replication#ch01-pp19-21-load-balancer-and-db-replication-seg-006"]',
         )
         .first(),
     ).toBeVisible();

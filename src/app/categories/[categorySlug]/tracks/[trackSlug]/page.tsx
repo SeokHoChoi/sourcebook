@@ -1,4 +1,4 @@
-import { ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, ChevronRight, ExternalLink, FileText, FolderTree } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -13,7 +13,9 @@ import {
   type PageType,
   resolvePageTarget,
   type TrackPageRecord,
+  type TrackRecord,
 } from '@/lib/sourcebook';
+import { parseBookTocMarkdown } from '@/lib/study-guide';
 import { cn } from '@/lib/utils';
 
 type TrackPageProps = {
@@ -45,6 +47,27 @@ type PageGroup = {
   order: number;
   primaryPage: TrackPageRecord;
   sectionPages: TrackPageRecord[];
+};
+
+type TocExplorerSection = {
+  title: string;
+  pageLabel: string | null;
+  pages: TrackPageRecord[];
+  openQuestionCount: number;
+};
+
+type TocExplorerChapter = {
+  title: string;
+  pageLabel: string | null;
+  sections: TocExplorerSection[];
+  loadedBatchCount: number;
+  loadedSectionCount: number;
+  openQuestionCount: number;
+};
+
+type TocExplorer = {
+  frontMatter: Array<{ title: string; pageLabel: string | null }>;
+  chapters: TocExplorerChapter[];
 };
 
 function buildPageGroups(pages: TrackPageRecord[]): PageGroup[] {
@@ -91,6 +114,55 @@ function buildPageGroups(pages: TrackPageRecord[]): PageGroup[] {
     );
 }
 
+function buildTocExplorer(track: TrackRecord): TocExplorer | null {
+  const tocMarkdown = track.studyGuide?.tocMarkdown;
+
+  if (!tocMarkdown) {
+    return null;
+  }
+
+  const toc = parseBookTocMarkdown(tocMarkdown);
+
+  return {
+    frontMatter: toc.frontMatter.map((entry) => ({
+      title: entry.title,
+      pageLabel: entry.pageLabel,
+    })),
+    chapters: toc.chapters.map((chapter) => {
+      const chapterPages = track.pages
+        .filter((page) => page.chapterLabel === chapter.title)
+        .sort((left, right) => left.readOrder - right.readOrder);
+      const sections = chapter.sections.map((section) => {
+        const pages = chapterPages.filter((page) => page.sectionLabel === section.title);
+        const openQuestionCount = pages.reduce(
+          (count, page) =>
+            count + page.learnerEvents.filter((event) => event.status === 'open').length,
+          0,
+        );
+
+        return {
+          title: section.title,
+          pageLabel: section.pageLabel,
+          pages,
+          openQuestionCount,
+        };
+      });
+
+      return {
+        title: chapter.title,
+        pageLabel: chapter.pageLabel,
+        sections,
+        loadedBatchCount: sections.reduce((count, section) => count + section.pages.length, 0),
+        loadedSectionCount: sections.filter((section) => section.pages.length > 0).length,
+        openQuestionCount: sections.reduce(
+          (count, section) => count + section.openQuestionCount,
+          0,
+        ),
+      };
+    }),
+  };
+}
+
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -120,6 +192,9 @@ export default async function TrackPage({ params }: TrackPageProps) {
   }
 
   const pageGroups = buildPageGroups(track.pages);
+  const tocExplorer = buildTocExplorer(track);
+  const firstLoadedChapterIndex =
+    tocExplorer?.chapters.findIndex((chapter) => chapter.loadedBatchCount > 0) ?? -1;
   const pageEmptyState =
     track.manifest.status === 'planned'
       ? {
@@ -255,12 +330,200 @@ export default async function TrackPage({ params }: TrackPageProps) {
                   읽을 문서
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">
-                  원문이 한 페이지로 묶인 경우에는 전문을 먼저 보여주고, 하위 섹션이나 이어 읽을
-                  배치는 아래에 묶어서 보여준다.
+                  책 차례가 있는 트랙은 파일 탐색기처럼 장과 절을 접고 펼칠 수 있게 보여준다. 적재된
+                  배치는 해당 절 아래 파일처럼 붙고, 아직 안 온 절도 전체 구조 안에서 미리 보인다.
                 </p>
               </div>
 
-              {pageGroups.length > 0 ? (
+              {tocExplorer ? (
+                <div className="mt-5 space-y-4">
+                  {tocExplorer.frontMatter.length > 0 ? (
+                    <details className="rounded-[1.7rem] border border-black/8 bg-white/78 px-5 py-4">
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                        <div className="flex min-w-0 items-center gap-3">
+                          <FolderTree className="size-4 shrink-0 text-slate-400" />
+                          <div className="min-w-0">
+                            <p className="text-lg font-semibold tracking-tight text-slate-950">
+                              앞부분
+                            </p>
+                            <p className="text-sm leading-6 text-slate-600">
+                              표지, 차례, 옮긴이의 글, 지은이의 글
+                            </p>
+                          </div>
+                        </div>
+                        <span className="shrink-0 rounded-full border border-black/10 bg-white px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                          {tocExplorer.frontMatter.length}개
+                        </span>
+                      </summary>
+
+                      <div className="mt-4 space-y-2 border-l border-black/8 pl-4">
+                        {tocExplorer.frontMatter.map((entry) => (
+                          <div
+                            key={entry.title}
+                            className="flex items-center justify-between gap-3 rounded-xl border border-black/8 bg-white px-3 py-3 text-sm text-slate-700"
+                          >
+                            <span className="min-w-0">{entry.title}</span>
+                            <span className="shrink-0 text-[0.66rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
+                              {entry.pageLabel}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  ) : null}
+
+                  {tocExplorer.chapters.map((chapter, chapterIndex) => (
+                    <details
+                      key={chapter.title}
+                      open={chapterIndex === firstLoadedChapterIndex}
+                      className="group rounded-[1.7rem] border border-black/8 bg-white/78 px-5 py-4"
+                    >
+                      <summary className="flex cursor-pointer list-none items-start justify-between gap-4">
+                        <div className="flex min-w-0 items-start gap-3">
+                          <ChevronRight className="mt-1 size-4 shrink-0 text-slate-400 transition-transform group-open:rotate-90" />
+                          <div className="min-w-0">
+                            <p className="text-xl font-semibold tracking-tight text-slate-950">
+                              {chapter.title}
+                            </p>
+                            <p className="mt-1 text-sm leading-6 text-slate-600">
+                              절 {chapter.sections.length}개 중 {chapter.loadedSectionCount}개 절에
+                              실제 배치가 연결되어 있다.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                          {chapter.pageLabel ? (
+                            <span className="rounded-full border border-black/10 bg-white px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                              {chapter.pageLabel}
+                            </span>
+                          ) : null}
+                          <span
+                            className={cn(
+                              'rounded-full border px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] uppercase',
+                              chapter.loadedBatchCount > 0
+                                ? 'border-emerald-500/18 bg-emerald-500/10 text-emerald-800'
+                                : 'border-dashed border-black/10 bg-slate-50 text-slate-500',
+                            )}
+                          >
+                            {chapter.loadedBatchCount > 0
+                              ? `적재 ${chapter.loadedBatchCount}개`
+                              : '미적재'}
+                          </span>
+                          {chapter.openQuestionCount > 0 ? (
+                            <span className="rounded-full border border-amber-500/18 bg-amber-500/10 px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-amber-800 uppercase">
+                              질문 {chapter.openQuestionCount}개
+                            </span>
+                          ) : null}
+                        </div>
+                      </summary>
+
+                      <div className="mt-4 space-y-3 border-l border-black/8 pl-4">
+                        {chapter.sections.map((section) => {
+                          if (section.pages.length === 0) {
+                            return (
+                              <div
+                                key={`${chapter.title}-${section.title}`}
+                                className="rounded-2xl border border-dashed border-black/10 bg-slate-50/70 px-4 py-3"
+                              >
+                                <div className="flex items-center justify-between gap-3">
+                                  <div className="min-w-0">
+                                    <p className="text-sm font-medium text-slate-800">
+                                      {section.title}
+                                    </p>
+                                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                                      아직 이 절 아래 적재된 읽기 배치가 없다.
+                                    </p>
+                                  </div>
+                                  <div className="flex shrink-0 items-center gap-2">
+                                    {section.pageLabel ? (
+                                      <span className="text-[0.66rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
+                                        {section.pageLabel}
+                                      </span>
+                                    ) : null}
+                                    <span className="rounded-full border border-dashed border-black/10 bg-white px-2.5 py-1 text-[0.66rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                                      미적재
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <details
+                              key={`${chapter.title}-${section.title}`}
+                              open
+                              className="group/section rounded-2xl border border-emerald-700/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(240,253,244,0.92))] px-4 py-3"
+                            >
+                              <summary className="flex cursor-pointer list-none items-start justify-between gap-3">
+                                <div className="flex min-w-0 items-start gap-3">
+                                  <ChevronRight className="mt-1 size-4 shrink-0 text-slate-400 transition-transform group-open/section:rotate-90" />
+                                  <div className="min-w-0">
+                                    <p className="text-sm font-semibold text-slate-900">
+                                      {section.title}
+                                    </p>
+                                    <p className="mt-1 text-xs leading-5 text-slate-600">
+                                      이 절 아래 배치 {section.pages.length}개가 연결되어 있다.
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="flex shrink-0 items-center gap-2">
+                                  {section.pageLabel ? (
+                                    <span className="text-[0.66rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
+                                      {section.pageLabel}
+                                    </span>
+                                  ) : null}
+                                  {section.openQuestionCount > 0 ? (
+                                    <span className="rounded-full border border-amber-500/18 bg-amber-500/10 px-2.5 py-1 text-[0.66rem] font-semibold tracking-[0.14em] text-amber-800 uppercase">
+                                      질문 {section.openQuestionCount}
+                                    </span>
+                                  ) : null}
+                                </div>
+                              </summary>
+
+                              <div className="mt-3 space-y-2 border-l border-emerald-700/12 pl-4">
+                                {section.pages.map((page) => {
+                                  const target = resolvePageTarget(track, page);
+                                  const href = `/categories/${categorySlug}/tracks/${trackSlug}/pages/${target.pageSlug}${
+                                    target.hash ? `#${target.hash}` : ''
+                                  }`;
+
+                                  return (
+                                    <Link
+                                      key={page.slug}
+                                      href={href}
+                                      className="group/file flex items-center justify-between gap-3 rounded-xl border border-black/8 bg-white px-3 py-3 text-sm text-slate-700 transition-colors hover:border-black/15 hover:bg-slate-50 hover:text-slate-950 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
+                                    >
+                                      <span className="flex min-w-0 items-start gap-3">
+                                        <FileText className="mt-0.5 size-4 shrink-0 text-slate-400" />
+                                        <span className="min-w-0">
+                                          <span className="block font-medium text-slate-900">
+                                            {page.title}
+                                          </span>
+                                          <span className="mt-1 block text-xs leading-5 text-slate-500">
+                                            {page.canonicalUrl}
+                                          </span>
+                                        </span>
+                                      </span>
+                                      <div className="flex shrink-0 items-center gap-2">
+                                        <span className="rounded-full border border-black/10 px-2.5 py-1 text-[0.66rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                                          {captureModeLabels[page.captureMode]}
+                                        </span>
+                                        <ArrowRight className="size-4 text-slate-400 transition-transform group-hover/file:translate-x-0.5" />
+                                      </div>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </details>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              ) : pageGroups.length > 0 ? (
                 <div className="mt-4 divide-y divide-black/8">
                   {pageGroups.map((group) => {
                     const page = group.primaryPage;
@@ -364,83 +627,126 @@ export default async function TrackPage({ params }: TrackPageProps) {
             </section>
           </section>
 
-          <aside className="mt-8 space-y-6 lg:mt-0 xl:sticky xl:top-5 xl:h-fit">
-            <section className="rounded-[1.6rem] border border-black/8 bg-white/80 p-5">
-              <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-                진행 상태
-              </p>
-              <div className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
-                <div className="flex items-center justify-between gap-4">
-                  <span>전체 문서</span>
-                  <strong>{track.counts.totalPages}</strong>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span>원문 수집</span>
-                  <strong>{track.counts.capturedPages}</strong>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span>구조화</span>
-                  <strong>{track.counts.structuredPages}</strong>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span>오버레이</span>
-                  <strong>{track.counts.overlayPages}</strong>
-                </div>
-              </div>
-            </section>
-
-            <section className="rounded-[1.6rem] border border-black/8 bg-white/80 p-5">
-              <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-                반복되는 막힘
-              </p>
-              {track.confusionPatterns.length > 0 ? (
-                <div className="mt-4 space-y-4">
-                  {track.confusionPatterns.map((pattern) => (
-                    <article
-                      key={pattern.label}
-                      className="border-b border-black/8 pb-4 last:border-b-0 last:pb-0"
+          <aside className="mt-8 lg:mt-0">
+            <div className="space-y-4 xl:sticky xl:top-5 xl:max-h-[calc(100svh-2.5rem)] xl:overflow-y-auto xl:overscroll-contain xl:pr-2">
+              <section className="rounded-[1.6rem] border border-black/8 bg-white/86 p-5 shadow-[0_18px_54px_-44px_rgba(15,23,42,0.32)]">
+                <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                  진행 상태
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950">
+                  현재 적재 현황
+                </h2>
+                <div className="mt-4 grid grid-cols-2 gap-2 text-sm leading-6 text-slate-700">
+                  {[
+                    ['전체 문서', track.counts.totalPages],
+                    ['원문 수집', track.counts.capturedPages],
+                    ['구조화', track.counts.structuredPages],
+                    ['오버레이', track.counts.overlayPages],
+                  ].map(([label, value]) => (
+                    <div
+                      key={label}
+                      className="rounded-2xl border border-black/7 bg-[#fbfaf7] px-3 py-3"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <h3 className="text-sm font-semibold text-slate-900">{pattern.label}</h3>
-                        <span className="text-xs tracking-[0.16em] text-slate-400 uppercase">
-                          {pattern.count}x
-                        </span>
-                      </div>
-                      <p className="mt-2 text-sm leading-7 text-slate-600">
-                        {pattern.representativeQuestion}
+                      <p className="text-[0.64rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
+                        {label}
                       </p>
-                    </article>
+                      <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-950">
+                        {value}
+                      </p>
+                    </div>
                   ))}
-                  <Link
-                    href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
-                    className="inline-flex items-center rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-slate-950 hover:text-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
-                  >
-                    전체 학습 기록 보기
-                  </Link>
                 </div>
-              ) : (
-                <div className="mt-4">
-                  <EmptyState
-                    title="아직 패턴이 없습니다"
-                    description="질문 기록이 쌓이면 여기서 반복 이유를 다시 볼 수 있다."
-                  />
-                </div>
-              )}
-            </section>
+              </section>
 
-            <section className="rounded-[1.6rem] border border-black/8 bg-white/80 p-5">
-              <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-                수집 순서
-              </p>
-              <ol className="mt-4 space-y-3 text-sm leading-7 text-slate-600">
-                {track.manifest.intakeFlow.map((step, index) => (
-                  <li key={step}>
-                    <span className="mr-2 text-slate-400">{index + 1}.</span>
-                    {step}
-                  </li>
-                ))}
-              </ol>
-            </section>
+              <details className="group/rail rounded-[1.6rem] border border-black/8 bg-white/78 p-5">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-3">
+                  <span className="min-w-0">
+                    <span className="block text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                      학습 기록
+                    </span>
+                    <span className="mt-2 block text-xl font-semibold tracking-tight text-slate-950">
+                      막힌 지점 모아보기
+                    </span>
+                    <span className="mt-2 block text-sm leading-6 text-slate-600">
+                      반복 질문은 필요할 때만 열어 확인한다.
+                    </span>
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2">
+                    <span className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[0.62rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                      {track.confusionPatterns.length}개
+                    </span>
+                    <ChevronRight className="mt-1 size-4 text-slate-400 transition-transform group-open/rail:rotate-90" />
+                  </span>
+                </summary>
+
+                {track.confusionPatterns.length > 0 ? (
+                  <div className="mt-4 max-h-[38svh] space-y-3 overflow-y-auto overscroll-contain pr-1">
+                    {track.confusionPatterns.map((pattern) => (
+                      <article
+                        key={pattern.label}
+                        className="rounded-2xl border border-black/7 bg-[#fbfaf7] px-3 py-3"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <h3 className="text-sm font-semibold text-slate-900">{pattern.label}</h3>
+                          <span className="text-xs tracking-[0.16em] text-slate-400 uppercase">
+                            {pattern.count}x
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-7 text-slate-600">
+                          {pattern.representativeQuestion}
+                        </p>
+                      </article>
+                    ))}
+                    <Link
+                      href={`/categories/${categorySlug}/tracks/${trackSlug}/journal`}
+                      className="inline-flex items-center rounded-full border border-black/10 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-slate-950 hover:text-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
+                    >
+                      전체 학습 기록 보기
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="mt-4">
+                    <EmptyState
+                      title="아직 패턴이 없습니다"
+                      description="질문 기록이 쌓이면 여기서 반복 이유를 다시 볼 수 있다."
+                    />
+                  </div>
+                )}
+              </details>
+
+              <details className="group/rules rounded-[1.6rem] border border-black/8 bg-white/72 p-5">
+                <summary className="flex cursor-pointer list-none items-start justify-between gap-3">
+                  <span className="min-w-0">
+                    <span className="block text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                      운영 규칙
+                    </span>
+                    <span className="mt-2 block text-xl font-semibold tracking-tight text-slate-950">
+                      캡처 수집 순서
+                    </span>
+                    <span className="mt-2 block text-sm leading-6 text-slate-600">
+                      OCR, 교차검증, 해설 반영 흐름을 접어 둔다.
+                    </span>
+                  </span>
+                  <span className="flex shrink-0 items-center gap-2">
+                    <span className="rounded-full border border-black/10 bg-white px-2.5 py-1 text-[0.62rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                      {track.manifest.intakeFlow.length}단계
+                    </span>
+                    <ChevronRight className="mt-1 size-4 text-slate-400 transition-transform group-open/rules:rotate-90" />
+                  </span>
+                </summary>
+                <ol className="mt-4 max-h-[34svh] space-y-3 overflow-y-auto overscroll-contain pr-1 text-sm leading-7 text-slate-600">
+                  {track.manifest.intakeFlow.map((step, index) => (
+                    <li
+                      key={step}
+                      className="rounded-2xl border border-black/7 bg-[#fbfaf7] px-3 py-3"
+                    >
+                      <span className="mr-2 text-slate-400">{index + 1}.</span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            </div>
           </aside>
         </div>
       </div>

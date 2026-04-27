@@ -1,4 +1,4 @@
-import { ChevronRight, ExternalLink } from 'lucide-react';
+import { ChevronRight, ExternalLink, FileText, FolderTree } from 'lucide-react';
 import Link from 'next/link';
 
 import type { LearningStage, PageType, TrackPageRecord, TrackRecord } from '@/lib/sourcebook';
@@ -43,6 +43,99 @@ type SidebarPageGroup = {
   primaryPage: TrackPageRecord;
   sectionPages: TrackPageRecord[];
 };
+
+type SidebarBookSection = {
+  order: number;
+  title: string;
+  pages: TrackPageRecord[];
+  openQuestionCount: number;
+};
+
+type SidebarBookChapter = {
+  order: number;
+  title: string;
+  sections: SidebarBookSection[];
+  loadedPageCount: number;
+  openQuestionCount: number;
+};
+
+function buildSidebarBookChapters(track: TrackRecord): SidebarBookChapter[] {
+  const chapterBuckets = new Map<
+    string,
+    {
+      order: number;
+      sections: Map<
+        string,
+        {
+          order: number;
+          pages: TrackPageRecord[];
+        }
+      >;
+    }
+  >();
+
+  for (const page of track.pages) {
+    if (!page.chapterLabel && !page.sectionLabel) {
+      continue;
+    }
+
+    if (page.captureMode === 'pending') {
+      continue;
+    }
+
+    const chapterTitle = page.chapterLabel ?? '기타';
+    const sectionTitle = page.sectionLabel ?? '미분류';
+    const chapter = chapterBuckets.get(chapterTitle) ?? {
+      order: page.readOrder,
+      sections: new Map<string, { order: number; pages: TrackPageRecord[] }>(),
+    };
+    const section = chapter.sections.get(sectionTitle) ?? {
+      order: page.readOrder,
+      pages: [],
+    };
+
+    chapter.order = Math.min(chapter.order, page.readOrder);
+    section.order = Math.min(section.order, page.readOrder);
+    section.pages.push(page);
+    chapter.sections.set(sectionTitle, section);
+    chapterBuckets.set(chapterTitle, chapter);
+  }
+
+  return [...chapterBuckets.entries()]
+    .map(([title, chapter]) => {
+      const sections = [...chapter.sections.entries()]
+        .map(([sectionTitle, section]) => {
+          const pages = section.pages.sort((left, right) => left.readOrder - right.readOrder);
+          const openQuestionCount = pages.reduce(
+            (count, page) =>
+              count + page.learnerEvents.filter((event) => event.status === 'open').length,
+            0,
+          );
+
+          return {
+            order: section.order,
+            title: sectionTitle,
+            pages,
+            openQuestionCount,
+          };
+        })
+        .sort((left, right) => left.order - right.order || left.title.localeCompare(right.title));
+      const loadedPageCount = sections.reduce((count, section) => count + section.pages.length, 0);
+      const openQuestionCount = sections.reduce(
+        (count, section) => count + section.openQuestionCount,
+        0,
+      );
+
+      return {
+        order: chapter.order,
+        title,
+        sections,
+        loadedPageCount,
+        openQuestionCount,
+      };
+    })
+    .sort((left, right) => left.order - right.order || left.title.localeCompare(right.title));
+}
 
 function buildSidebarPageGroups(track: TrackRecord): Array<[string, SidebarPageGroup[]]> {
   const buckets = new Map<string, TrackPageRecord[]>();
@@ -107,6 +200,17 @@ function buildSidebarPageGroups(track: TrackRecord): Array<[string, SidebarPageG
 }
 
 function buildStudyQuickLinks(track: TrackRecord) {
+  const hasBookHierarchy = track.pages.some((page) =>
+    Boolean(page.chapterLabel ?? page.sectionLabel),
+  );
+
+  if (hasBookHierarchy) {
+    return track.pages
+      .filter((page) => page.captureMode !== 'pending')
+      .sort((left, right) => left.readOrder - right.readOrder)
+      .slice(0, 6);
+  }
+
   const preferredOrder = ['get-started-full', 'useform', 'register', 'controller'];
 
   const preferredMatches = preferredOrder
@@ -150,6 +254,7 @@ function SidebarContent({
   className,
 }: SidebarContentProps) {
   const groupedPages = buildSidebarPageGroups(track);
+  const bookChapters = buildSidebarBookChapters(track);
   const studyQuickLinks = buildStudyQuickLinks(track);
   const isStudyNavigation = navigationMode === 'study';
 
@@ -276,10 +381,133 @@ function SidebarContent({
         </div>
       </div>
 
-      {isStudyNavigation ? (
+      {bookChapters.length > 0 ? (
+        <nav className="space-y-4" aria-label={`${track.manifest.title} 책 위치 네비게이션`}>
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
+                책 위치
+              </p>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                지금 적재된 캡처를 장과 절 아래 파일처럼 묶었다.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full border border-black/10 bg-white px-2.5 py-1 text-[0.62rem] font-semibold tracking-[0.14em] text-slate-500 uppercase">
+              {bookChapters.reduce((count, chapter) => count + chapter.loadedPageCount, 0)}개
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            {bookChapters.map((chapter, chapterIndex) => {
+              const hasActivePage = chapter.sections.some((section) =>
+                section.pages.some((page) => {
+                  const target = resolvePageTarget(track, page);
+                  return page.slug === currentPageSlug || target.pageSlug === currentPageSlug;
+                }),
+              );
+
+              return (
+                <details
+                  key={chapter.title}
+                  open={hasActivePage || chapterIndex === 0}
+                  className="group/chapter rounded-2xl border border-black/8 bg-white/76 px-3 py-3"
+                >
+                  <summary className="flex cursor-pointer list-none items-start justify-between gap-3 rounded-xl focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none">
+                    <span className="flex min-w-0 items-start gap-2.5">
+                      <ChevronRight className="mt-0.5 size-4 shrink-0 text-slate-400 transition-transform group-open/chapter:rotate-90" />
+                      <span className="min-w-0">
+                        <span className="block text-sm leading-6 font-semibold text-slate-950">
+                          {chapter.title}
+                        </span>
+                        <span className="mt-0.5 block text-xs leading-5 text-slate-500">
+                          절 {chapter.sections.length}개 · 배치 {chapter.loadedPageCount}개
+                        </span>
+                      </span>
+                    </span>
+                    <FolderTree className="mt-1 size-4 shrink-0 text-slate-300" />
+                  </summary>
+
+                  <div className="mt-3 space-y-3 border-l border-black/8 pl-3">
+                    {chapter.sections.map((section) => (
+                      <div key={`${chapter.title}-${section.title}`} className="space-y-1.5">
+                        <div className="flex items-center justify-between gap-2 px-1">
+                          <p className="min-w-0 text-xs leading-5 font-semibold text-slate-600">
+                            {section.title}
+                          </p>
+                          {section.openQuestionCount > 0 ? (
+                            <span className="shrink-0 rounded-full border border-amber-500/18 bg-amber-500/10 px-2 py-0.5 text-[0.58rem] font-semibold tracking-[0.12em] text-amber-800 uppercase">
+                              질문 {section.openQuestionCount}
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <div className="space-y-1">
+                          {section.pages.map((page) => {
+                            const target = resolvePageTarget(track, page);
+                            const href = `/categories/${categorySlug}/tracks/${trackSlug}/pages/${target.pageSlug}${
+                              target.hash ? `#${target.hash}` : ''
+                            }`;
+                            const isActive =
+                              page.slug === currentPageSlug || target.pageSlug === currentPageSlug;
+
+                            return (
+                              <Link
+                                key={page.slug}
+                                href={href}
+                                aria-current={isActive ? 'page' : undefined}
+                                data-clickable="true"
+                                className={cn(
+                                  'group/file flex items-start justify-between gap-2 rounded-xl border px-3 py-2.5 text-xs leading-5 transition-all focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px',
+                                  isActive
+                                    ? 'border-slate-900 bg-slate-900 text-white shadow-[0_14px_28px_-24px_rgba(15,23,42,0.7)]'
+                                    : 'border-black/7 bg-white/75 text-slate-700 hover:-translate-y-px hover:border-black/15 hover:bg-white hover:text-slate-950',
+                                )}
+                              >
+                                <span className="flex min-w-0 items-start gap-2">
+                                  <FileText
+                                    className={cn(
+                                      'mt-0.5 size-3.5 shrink-0',
+                                      isActive ? 'text-white/60' : 'text-slate-300',
+                                    )}
+                                  />
+                                  <span className="min-w-0">
+                                    <span className="block font-semibold">{page.title}</span>
+                                    <span
+                                      className={cn(
+                                        'mt-0.5 block',
+                                        isActive ? 'text-white/60' : 'text-slate-400',
+                                      )}
+                                    >
+                                      {page.canonicalUrl}
+                                    </span>
+                                  </span>
+                                </span>
+                                <ChevronRight
+                                  className={cn(
+                                    'mt-0.5 size-3.5 shrink-0 transition-transform group-hover/file:translate-x-0.5',
+                                    isActive ? 'text-white/60' : 'text-slate-300',
+                                  )}
+                                />
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+
+          <p className="rounded-2xl border border-black/7 bg-white/55 px-3 py-3 text-xs leading-6 text-slate-500">
+            전체 목차와 아직 미적재된 절은 트랙 개요의 읽을 문서 영역에서 관리한다.
+          </p>
+        </nav>
+      ) : isStudyNavigation ? (
         <section className="space-y-3">
           <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-slate-400 uppercase">
-            빠른 왕복
+            현재 적재 배치
           </p>
           <div className="space-y-1.5">
             {studyQuickLinks.map((page) => {
@@ -293,9 +521,16 @@ function SidebarContent({
                   key={page.slug}
                   href={href}
                   data-clickable="true"
-                  className="flex items-center justify-between gap-3 rounded-xl border border-black/8 bg-white/75 px-3 py-3 text-sm text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-white hover:text-slate-950 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
+                  className="flex items-start justify-between gap-3 rounded-xl border border-black/8 bg-white/75 px-3 py-3 text-sm text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-white hover:text-slate-950 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
                 >
-                  <span className="min-w-0">{page.title}</span>
+                  <span className="min-w-0">
+                    {page.chapterLabel || page.sectionLabel ? (
+                      <span className="block text-[0.68rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
+                        {[page.chapterLabel, page.sectionLabel].filter(Boolean).join(' / ')}
+                      </span>
+                    ) : null}
+                    <span className="mt-1 block">{page.title}</span>
+                  </span>
                   <span className="shrink-0 text-[0.62rem] font-semibold tracking-[0.14em] text-slate-400 uppercase">
                     리더
                   </span>
@@ -304,13 +539,13 @@ function SidebarContent({
             })}
           </div>
           <p className="text-xs leading-6 text-slate-500">
-            전체 원문 목록은 트랙 개요 화면에서 보고, 스터디 화면에서는 지금 막힌 지점만 바로
-            왕복하는 쪽이 덜 복잡하다.
+            스터디 화면에서는 책의 장과 절 흐름을 유지한 채, 지금 적재된 배치만 빠르게 왕복하는 쪽이
+            덜 복잡하다.
           </p>
         </section>
       ) : null}
 
-      {!isStudyNavigation ? (
+      {!isStudyNavigation && bookChapters.length === 0 ? (
         <nav className="space-y-7" aria-label={`${track.manifest.title} 문서 네비게이션`}>
           {groupedPages.map(([stage, pages]) => (
             <section key={stage} className="space-y-3">
@@ -433,7 +668,7 @@ export function TrackSidebar(props: TrackSidebarProps) {
       </div>
 
       <aside className="hidden lg:block">
-        <div className="lg:sticky lg:top-6">
+        <div className="lg:sticky lg:top-6 lg:max-h-[calc(100svh-3rem)] lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
           <SidebarContent {...props} />
         </div>
       </aside>
