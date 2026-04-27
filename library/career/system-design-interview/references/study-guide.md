@@ -648,6 +648,68 @@ TanStack Query는 다르다. 개발자가 브라우저 메모리를 `몇 GB`로 
 예시 답변:
 `상품 카테고리와 공지사항은 변경이 드물고 읽기가 많아서 서버 캐시와 CDN 캐시를 길게 잡았습니다. 반면 재고와 결제 상태는 stale하면 사용자 피해가 커서 길게 캐시하지 않았고, mutation 이후 관련 query를 무효화했습니다. 프론트에서는 TanStack Query의 staleTime으로 탭 이동 시 불필요한 refetch를 줄이고, 장바구니 변경 후에는 관련 query를 invalidate했습니다. 효과는 API p95 latency와 DB read QPS, cache hit ratio로 확인했습니다.`
 
+이 답변은 방향은 맞지만 아직 너무 교과서적이다. 실무형으로 바꾸려면 캐시 위치를 먼저 나누고, 각 위치마다 `무엇/왜/어디/key/TTL/무효화/stale/fallback/지표`를 따로 말해야 한다. 아래 예시는 Google web.dev, Meta Relay 문서와 GitHub, TanStack Query 문서와 GitHub, Netflix EVCache 문서와 GitHub를 확인해 만든 실전형 답변 틀이다. 숫자가 명시된 부분은 출처가 공개한 숫자만 사용하고, 공개 지표가 없는 부분은 면접에서 측정해야 할 지표로만 둔다. 숫자를 지어내면 안 된다.
+
+#### 캐싱 전략 면접 답변 예시 A. 프론트 정적 자산 HTTP 캐시
+
+Google의 `stale-while-revalidate` 사례처럼, 프론트 캐시는 단순히 `이미지는 CDN에 올렸습니다`에서 끝나지 않는다. 실제 답변은 이렇게 말할 수 있다.
+
+`사용자가 매번 받는 정적 스크립트와 이미지 중 변경 빈도가 낮고 rollback 위험이 낮은 파일을 브라우저 HTTP 캐시와 CDN에 캐시했습니다. 목적은 origin 요청과 다운로드 대기 시간을 줄이는 것이었습니다. key는 URL과 파일명 hash를 기준으로 잡았고, 내용이 바뀌면 hash가 바뀌도록 했습니다. 오래된 파일이 치명적이지 않은 자산은 Cache-Control에 max-age와 stale-while-revalidate를 함께 두어, 사용자는 즉시 캐시된 파일을 쓰고 브라우저가 뒤에서 새 버전을 확인하게 했습니다. 다만 API 응답이나 권한별 HTML처럼 사용자별로 달라지는 데이터는 같은 방식으로 길게 캐시하지 않았습니다. 효과는 cache hit ratio, transferred bytes, LCP, script load time, origin request 감소로 봤고, 배포 직후 문제를 줄이기 위해 versioned asset과 rollback 가능성을 같이 확인했습니다.`
+
+여기서 중요한 점은 `stale-while-revalidate`가 프론트에도 진짜 실무 전략이라는 것이다. Google 사례에서는 GPT 광고 스크립트에 짧은 `max-age`와 더 긴 `stale-while-revalidate` 창을 적용해, 캐시된 스크립트를 즉시 쓰고 백그라운드에서 갱신하도록 했다. 공개 사례는 수십억 요청 샘플에서 early script load와 광고 노출/수익 지표가 개선됐다고 보고한다. 이 예시는 면접에서 `TTL을 왜 그렇게 잡았나?`에 답하기 좋다. 최신 파일을 매번 강제하면 안전해 보이지만 로딩이 느려지고, 너무 길게 잡으면 rollback과 버전 꼬임이 위험해진다. 그래서 `빠른 로딩을 위해 stale을 어느 정도 허용하되, 파일명 hash와 배포 정책으로 위험을 줄였다`라고 설명해야 한다. [SRC-SD-044]
+
+#### 캐싱 전략 면접 답변 예시 B. 프론트 서버 상태 캐시
+
+Meta의 Relay와 TanStack Query 같은 클라이언트 데이터 라이브러리는 `프론트에서도 캐싱 전략이 있다`는 가장 좋은 예시다. 여기서 캐시는 CDN이나 Redis가 아니라 브라우저 메모리 안의 서버 상태 캐시다.
+
+`상품 목록, 상품 상세, 사용자 프로필처럼 여러 화면에서 반복해서 읽는 서버 상태는 프론트의 query cache에 저장했습니다. 목적은 라우트 이동, 탭 전환, 컴포넌트 remount 때 같은 데이터를 다시 받아오느라 빈 화면과 중복 요청이 생기는 것을 줄이는 것이었습니다. key는 resource 이름과 id, filter, sort, page cursor를 포함해 설계했습니다. 예를 들어 product detail은 ['product', productId], 검색 결과는 ['products', { keyword, sort, cursor }]처럼 구분했습니다. staleTime은 데이터 성격에 맞춰 다르게 잡았습니다. 카테고리나 공지처럼 잘 안 바뀌는 데이터는 길게 두고, 재고·알림 수·장바구니처럼 사용자 행동 직후 바뀌는 데이터는 mutation 후 invalidate하거나 optimistic update를 적용했습니다. fallback은 캐시가 있으면 stale 값을 먼저 보여 주고 background refetch를 돌리되, 결제·재고처럼 틀리면 안 되는 화면은 submit 전에 서버 재검증을 하도록 했습니다. 효과는 화면 이동 시 중복 request 수, skeleton 노출 시간, API p95, query cache hit, mutation 후 stale UI 발생률로 확인했습니다.`
+
+Relay 문서에서는 같은 데이터를 다시 방문할 때 store에 있는 데이터를 재사용하고, 부족하거나 오래된 데이터는 fetch policy에 따라 네트워크로 보충하는 흐름을 설명한다. Relay Environment의 Store는 normalized data cache로 소개된다. 이것은 프론트 캐시가 `그냥 메모리에 저장`이 아니라, 같은 엔티티가 목록과 상세에 동시에 등장할 때 한 레코드로 연결해 업데이트 일관성을 유지하려는 설계라는 뜻이다. TanStack Query는 normalized cache보다는 query key 단위 캐시에 가깝지만, `staleTime`, `gcTime`, `invalidateQueries`, optimistic update 같은 질문은 동일하게 나온다. [SRC-SD-039] [SRC-SD-040] [SRC-SD-045] [SRC-SD-046] [SRC-SD-047] [SRC-SD-048] [SRC-SD-049]
+
+냉정하게 말하면, 프론트 캐시 답변에서 `TanStack Query 썼습니다`만 말하면 약하다. 라이브러리 이름은 전략이 아니다. 면접관이 듣고 싶은 것은 `왜 그 데이터는 stale을 허용했고, 왜 그 데이터는 mutation 후 즉시 무효화했으며, key가 틀리면 어떤 버그가 생기고, 실패했을 때 사용자는 무엇을 보게 되는가`다.
+
+#### 캐싱 전략 면접 답변 예시 C. 서버 측 DB 캐시
+
+서버 측 캐시는 면접에서 Redis/Memcached를 말할 때 가장 자주 나오는 형태다. Netflix EVCache처럼 대규모 서비스에서는 캐시가 단순 보조 저장소가 아니라 지역성, 복제, fallback, 짧은 TTL, 클라이언트 재시도 정책까지 포함한 운영 대상이 된다.
+
+`읽기 요청이 많고 계산 비용이 큰 추천 결과, 상품 상세의 일부 파생 데이터, 공개 설정값을 Redis/Memcached 계층에 캐시했습니다. 목적은 DB read QPS와 계산 비용을 줄이고 p95 latency를 낮추는 것이었습니다. key는 도메인과 버전, 식별자, 파라미터를 포함했습니다. 예를 들어 product:v2:{productId}:summary처럼 버전을 넣어 스키마 변경 시 기존 key와 충돌하지 않게 했습니다. TTL은 데이터 변경 빈도와 stale 허용 범위로 나눴습니다. 공지·카테고리는 길게, 재고·가격은 짧게 또는 캐시하지 않게 했습니다. write가 발생하면 관련 key를 삭제하거나 이벤트로 invalidation했습니다. cache miss는 DB를 읽고 캐시에 채우는 cache-aside로 처리했고, 캐시 장애 시에는 짧은 timeout 후 DB fallback을 하되 트래픽 폭주를 막기 위해 request coalescing이나 rate limit을 함께 두었습니다. 효과는 cache hit ratio, DB read QPS, p95/p99 latency, eviction rate, Redis CPU/memory, timeout/error rate로 확인했습니다.`
+
+Netflix EVCache 문서는 짧은 TTL, 지역적으로 가까운 캐시 읽기, 실패 시 다른 복제본 fallback, 일시적 불일치 가능성을 전제로 한 설계를 설명한다. 이 사례가 중요한 이유는 `캐시는 빠르게 하기 위한 것`에서 끝나지 않고, `캐시가 장애 나면 어디로 우회할지`, `복제본끼리 값이 잠깐 달라도 되는지`, `어느 지역의 캐시를 먼저 읽을지`까지 캐싱 전략에 포함된다는 점을 보여 주기 때문이다. [SRC-SD-050] [SRC-SD-051] [SRC-SD-052]
+
+면접에서 가장 안전한 결론은 이것이다. `캐싱 전략은 cache-aside냐 read-through냐를 외우는 문제가 아니라, 데이터가 얼마나 자주 읽히고 쓰이는지, stale이 사용자 피해로 이어지는지, 캐시가 실패했을 때 느려질 뿐인지 서비스가 죽는지, 그리고 그 판단을 어떤 지표로 검증했는지 말하는 문제다.`
+
+#### 이 예시에서 쓰인 용어 풀이
+
+이 섹션은 앞으로 예시 바로 아래에 반드시 붙인다. 용어를 모르면 답변을 외워도 실전에서 다시 무너진다. 특히 약어는 처음 볼 때 뜻을 풀고, 그 다음 문맥에서 어떻게 쓰이는지 연결해야 한다.
+
+- TTL: Time To Live의 줄임말. 캐시에 저장된 값을 얼마나 오래 유효하다고 볼지 정한 시간이다. 예를 들어 TTL 5분이면 5분 동안은 캐시 값을 믿고, 이후에는 다시 가져오거나 갱신 대상으로 본다.
+- key 또는 cache key: 캐시에 값을 저장하고 다시 찾기 위한 이름이다. `product:v2:123:summary`처럼 도메인, 버전, 식별자, 파라미터를 넣어야 서로 다른 데이터를 잘못 공유하지 않는다.
+- origin: CDN이나 브라우저 캐시가 최종적으로 원본 파일을 가져오는 원래 서버 또는 원본 저장소다. CDN cache hit이면 origin까지 가지 않고, cache miss이면 origin에 요청이 간다.
+- Cache-Control: HTTP 응답 헤더 중 하나다. 브라우저나 CDN이 이 응답을 캐시해도 되는지, 얼마나 오래 보관해도 되는지 알려준다.
+- max-age: `Cache-Control` 안에서 쓰는 지시어다. `max-age=60`이면 응답을 60초 동안 fresh한 캐시로 보겠다는 뜻이다.
+- stale: 캐시에 있긴 하지만 최신이라고 확신하기 어려운 오래된 상태다. stale이 항상 나쁜 것은 아니다. 공지 목록처럼 조금 늦게 바뀌어도 괜찮은 데이터는 stale을 잠깐 허용할 수 있다.
+- stale-while-revalidate: 오래된 캐시를 일단 즉시 보여 주고, 뒤에서 새 데이터를 다시 가져와 다음 요청부터 갱신된 값을 쓰게 하는 HTTP 캐시 전략이다. 사용자는 빠르게 보지만, 아주 최신값은 잠시 늦게 반영될 수 있다.
+- rollback: 새 배포나 변경이 문제를 만들었을 때 이전 버전으로 되돌리는 일이다. 정적 파일을 너무 길게 캐시하면 rollback해도 사용자의 브라우저가 오래된 파일을 계속 들고 있을 수 있다.
+- 파일명 hash: 파일 내용으로 만든 짧은 식별자를 파일명에 붙이는 방식이다. 예를 들어 `app.a1b2c3.js`처럼 만들면 내용이 바뀔 때 파일명도 바뀌므로 긴 캐시와 새 배포를 함께 쓰기 쉬워진다.
+- versioned asset: 버전이 붙은 정적 자산이다. 파일명 hash가 대표적인 방식이고, 브라우저나 CDN이 예전 파일과 새 파일을 구분하게 해 준다.
+- cache hit ratio: 전체 요청 중 캐시가 처리한 비율이다. 100번 요청 중 80번을 캐시에서 처리했다면 hit ratio는 80%다. 캐시를 넣은 효과를 볼 때 가장 먼저 확인하는 지표 중 하나다.
+- transferred bytes: 실제 네트워크로 내려받은 데이터 양이다. 캐시가 잘 작동하면 같은 파일을 다시 다운로드하지 않으므로 이 값이 줄어든다.
+- LCP: Largest Contentful Paint의 줄임말. 사용자가 보는 화면에서 큰 콘텐츠가 표시되기까지 걸린 시간이다. 이미지, 큰 텍스트, hero 영역이 늦게 뜨면 LCP가 나빠진다.
+- server state: 서버가 원본으로 관리하는 데이터의 프론트 표현이다. 상품 목록, 사용자 프로필, 장바구니처럼 브라우저가 직접 소유하지 않고 서버에서 받아오는 상태를 말한다.
+- query key: TanStack Query 같은 라이브러리에서 서버 상태 캐시를 구분하는 키다. key가 너무 뭉뚱그려지면 다른 필터의 검색 결과가 섞이고, 너무 잘게 쪼개지면 재사용이 줄어든다.
+- invalidate 또는 invalidation: 캐시된 값을 더 이상 믿지 않겠다고 표시하거나 삭제하는 일이다. 예를 들어 장바구니 수량을 바꾼 뒤 `cart` query를 invalidate하면 다음에는 새 값을 다시 가져온다.
+- optimistic update: 서버 응답을 기다리기 전에 성공할 것이라고 가정하고 UI를 먼저 바꾸는 방식이다. 좋아요 버튼을 누르자마자 숫자를 올렸다가 실패하면 되돌리는 식이다.
+- fallback: 기본 경로가 실패했을 때 쓰는 대체 경로다. 캐시 서버가 죽으면 DB를 직접 읽거나, stale 캐시를 임시로 보여 주거나, 일부 기능을 숨기는 방식이 fallback이다.
+- normalized data cache: 같은 엔티티를 여러 화면에서 중복 저장하지 않고 하나의 레코드처럼 관리하는 프론트 데이터 캐시 방식이다. 예를 들어 상품 목록과 상품 상세가 같은 상품 `id=123`을 가리키면 한 곳의 변경이 여러 화면에 반영되기 쉬워진다.
+- fetch policy: 캐시를 먼저 볼지, 네트워크를 먼저 볼지, 캐시가 없을 때만 네트워크를 갈지 정하는 규칙이다. Relay의 `store-or-network` 같은 설정이 여기에 해당한다.
+- background refetch: 화면에는 기존 캐시 데이터를 보여 주면서 뒤에서 새 데이터를 다시 요청하는 방식이다. 사용자는 빈 화면을 덜 보고, 데이터는 점진적으로 갱신된다.
+- p95와 p99 latency: 요청 지연 시간을 빠른 순서대로 줄 세웠을 때 95번째 백분위, 99번째 백분위에 해당하는 값이다. 평균보다 느린 사용자 경험을 더 잘 보여 준다.
+- QPS: Queries Per Second의 줄임말. 초당 처리되는 요청 또는 질의 수다. DB read QPS가 줄었다는 말은 DB가 받는 읽기 요청 수가 줄었다는 뜻이다.
+- eviction: 캐시 공간이 부족할 때 기존 값을 내보내는 일이다. 자주 쓰는 값이 계속 eviction되면 cache miss가 늘고 성능이 떨어진다.
+- eviction rate: 일정 시간 동안 캐시에서 값이 얼마나 자주 밀려나는지 나타내는 지표다. 이 값이 높으면 캐시 용량, TTL, key 설계, 데이터 크기를 다시 봐야 한다.
+- request coalescing: 같은 데이터에 대한 cache miss가 동시에 많이 발생했을 때, DB 요청을 여러 번 보내지 않고 하나만 보내도록 합치는 방식이다. 캐시가 비었을 때 갑자기 DB가 두들겨 맞는 상황을 줄인다.
+- rate limit: 일정 시간 동안 허용할 요청 수를 제한하는 장치다. 캐시 장애나 miss 폭증 때 DB나 외부 API가 무너지는 것을 막는 안전장치로 함께 쓴다.
+
 독해 훈련 포인트:
 
 1. `캐시`라는 단어를 보면 먼저 `어느 위치의 캐시인가`를 묻는다.

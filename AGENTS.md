@@ -44,3 +44,4 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - `devNote` should stay short and explain the programming meaning or worked-example role of the snippet, not restate every line.
 - `trickySentenceExplanation` should only be used for genuinely confusing phrasing, syntax, or reasoning jumps.
 - `selectiveVocabGlosses` should stay selective. Only annotate terms that materially improve comprehension.
+- When a study note or example introduces technical terms such as `TTL`, `origin`, `fallback`, or `p95`, add a nearby `용어 풀이` section or inline glossary entry. Do not assume the learner already knows abbreviations.
