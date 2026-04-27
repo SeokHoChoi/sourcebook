@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(5);
+    expect(career?.counts.totalPages).toBe(6);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -163,18 +163,20 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 17p 데이터베이스 분리와 선택');
     expect(track.studyGuide?.markdown).toContain('1장 · 18p NoSQL 선택과 규모 확장 방식');
     expect(track.studyGuide?.markdown).toContain('1장 · 19~21p 로드밸런서와 데이터베이스 다중화');
-    expect(track.counts.totalPages).toBe(5);
-    expect(track.counts.capturedPages).toBe(5);
-    expect(track.counts.structuredPages).toBe(5);
-    expect(track.counts.overlayPages).toBe(5);
-    expect(track.counts.openConfusions).toBe(12);
-    expect(track.learnerEvents).toHaveLength(12);
+    expect(track.studyGuide?.markdown).toContain('1장 · 24~26p 캐시와 CDN 도입');
+    expect(track.counts.totalPages).toBe(6);
+    expect(track.counts.capturedPages).toBe(6);
+    expect(track.counts.structuredPages).toBe(6);
+    expect(track.counts.overlayPages).toBe(6);
+    expect(track.counts.openConfusions).toBe(13);
+    expect(track.learnerEvents).toHaveLength(13);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
     expect(track.studyGuide?.markdown).toContain(
       '로컬 개발용 DB와 운영 복제 토폴로지는 다른 문제다',
     );
+    expect(track.studyGuide?.markdown).toContain('캐시는 위치마다 목적과 조정 지점이 다르다');
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -297,6 +299,29 @@ describe('sourcebook catalog loader', () => {
       '로컬 DB, 스테이징 DB, 프로덕션 DB는 환경 구분',
     );
     expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.reviewItems).toHaveLength(2);
+  });
+
+  it('loads the sixth system design reading batch with cache strategy feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp24-26-cache-and-cdn',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain(
+      '애플리케이션의 성능은 데이터베이스를 얼마나 자주 호출하느냐',
+    );
+    expect(page?.rawSource).toContain('캐시 메모리가 너무 작으면');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('캐시');
+    expect(page?.segmentCards).toHaveLength(8);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('네트워크 왕복뿐 아니라');
+    expect(page?.segmentCards[2]?.trickySentenceExplanation).toContain('액세스 패턴');
+    expect(page?.segmentCards[6]?.devNote).toContain('TanStack Query');
+    expect(page?.learnerEvents).toHaveLength(1);
+    expect(page?.learnerEvents[0]?.questionRevision).toContain('더 좋은 질문으로 다듬으면');
     expect(page?.reviewItems).toHaveLength(2);
   });
 
@@ -498,6 +523,11 @@ describe('sourcebook catalog loader', () => {
       categorySlug: 'career',
       trackSlug: 'system-design-interview',
       pageSlug: 'ch01-pp19-21-load-balancer-and-db-replication',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-pp24-26-cache-and-cdn',
     });
   });
 

@@ -193,7 +193,7 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
                               <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">
                                 {String(index + 1).padStart(2, '0')} · {target.scopeLabel}
                               </p>
-                              <p className="mt-1 text-sm leading-6 font-semibold text-slate-950">
+                              <p className="mt-1 text-sm leading-6 font-semibold whitespace-pre-line text-slate-950">
                                 {event.question}
                               </p>
                               <p className="mt-1 text-xs leading-5 text-slate-500">
@@ -305,7 +305,7 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
                             {pattern.count}x
                           </span>
                         </div>
-                        <p className="mt-2 text-sm leading-7 text-slate-600">
+                        <p className="mt-2 text-sm leading-7 whitespace-pre-line text-slate-600">
                           {pattern.representativeQuestion}
                         </p>
                         {getPatternHref(pattern.label) ? (
@@ -412,7 +412,7 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
                       {studyEvents.length}
                     </p>
                     {focusStudyEvents[0] ? (
-                      <p className="mt-2 text-sm leading-6 text-slate-600">
+                      <p className="mt-2 text-sm leading-6 whitespace-pre-line text-slate-600">
                         {focusStudyEvents[0].question}
                       </p>
                     ) : null}
@@ -428,7 +428,7 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
                       {officialDocEvents.length}
                     </p>
                     {focusOfficialDocEvents[0] ? (
-                      <p className="mt-2 text-sm leading-6 text-slate-600">
+                      <p className="mt-2 text-sm leading-6 whitespace-pre-line text-slate-600">
                         {focusOfficialDocEvents[0].question}
                       </p>
                     ) : null}
@@ -448,7 +448,7 @@ export default async function TrackJournalPage({ params }: TrackJournalPageProps
                     <Link
                       key={event.id}
                       href={`#${journalEventId(event.id)}`}
-                      className="block rounded-[1rem] border border-black/8 bg-[#fbfaf7] px-3 py-3 text-sm leading-6 text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
+                      className="block rounded-[1rem] border border-black/8 bg-[#fbfaf7] px-3 py-3 text-sm leading-6 whitespace-pre-line text-slate-700 transition-all hover:-translate-y-px hover:border-black/15 hover:bg-white focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none active:translate-y-px"
                     >
                       {event.question}
                     </Link>

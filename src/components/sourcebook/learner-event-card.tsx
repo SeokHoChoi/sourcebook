@@ -9,6 +9,32 @@ const learnerStatusLabels: Record<string, string> = {
   resolved: '해결',
 };
 
+function EventTextBlock({
+  children,
+  label,
+  tone = 'default',
+}: {
+  children: string;
+  label: string;
+  tone?: 'default' | 'question' | 'revision';
+}) {
+  const toneClassName =
+    tone === 'question'
+      ? 'border-amber-500/18 bg-amber-50/70 text-slate-950'
+      : tone === 'revision'
+        ? 'border-emerald-600/16 bg-emerald-50/70 text-slate-800'
+        : 'border-black/7 bg-white/72 text-slate-700';
+
+  return (
+    <section className={cn('mt-3 rounded-2xl border px-4 py-3', toneClassName)}>
+      <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">
+        {label}
+      </p>
+      <p className="mt-2 text-sm leading-7 whitespace-pre-line">{children}</p>
+    </section>
+  );
+}
+
 export function LearnerEventCard({
   articleId,
   className,
@@ -47,13 +73,16 @@ export function LearnerEventCard({
         <span className="text-[0.72rem] text-slate-500">{target.targetLabel}</span>
       </div>
 
-      <p className="mt-3 text-base leading-8 font-semibold text-slate-950">{event.question}</p>
-      <p className="mt-3 text-sm leading-7 text-slate-600">
-        <strong className="font-semibold text-slate-900">왜 막혔나:</strong> {event.confusionReason}
-      </p>
-      <p className="mt-2 text-sm leading-7 text-slate-700">
-        <strong className="font-semibold text-slate-900">정리:</strong> {event.answerSummary}
-      </p>
+      <EventTextBlock label="질문 원문" tone="question">
+        {event.question}
+      </EventTextBlock>
+      {event.questionRevision ? (
+        <EventTextBlock label="질문 다듬기" tone="revision">
+          {event.questionRevision}
+        </EventTextBlock>
+      ) : null}
+      <EventTextBlock label="왜 막혔나">{event.confusionReason}</EventTextBlock>
+      <EventTextBlock label="정리">{event.answerSummary}</EventTextBlock>
 
       <div className="mt-4 flex flex-wrap gap-3">
         {target.href ? (

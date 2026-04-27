@@ -156,6 +156,7 @@ export type LearnerEvent = {
   targetAnchorId?: string | null;
   targetLabel?: string | null;
   question: string;
+  questionRevision?: string;
   confusionReason: string;
   answerSummary: string;
   patternLabel: string;

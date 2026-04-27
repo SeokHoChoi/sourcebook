@@ -29,11 +29,28 @@ export function InlineLearnerEventNotice({
         <span className="text-[0.72rem] text-slate-500">{event.createdAt}</span>
       </div>
 
-      <p className="mt-3 text-sm leading-7 font-semibold text-slate-950">{event.question}</p>
-      <p className="mt-2 text-sm leading-7 text-slate-700">
+      <div className="mt-3 rounded-2xl border border-amber-500/18 bg-amber-50/70 px-4 py-3">
+        <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">
+          질문 원문
+        </p>
+        <p className="mt-2 text-sm leading-7 font-semibold whitespace-pre-line text-slate-950">
+          {event.question}
+        </p>
+      </div>
+      {event.questionRevision ? (
+        <div className="mt-3 rounded-2xl border border-emerald-600/16 bg-emerald-50/70 px-4 py-3">
+          <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">
+            질문 다듬기
+          </p>
+          <p className="mt-2 text-sm leading-7 whitespace-pre-line text-slate-800">
+            {event.questionRevision}
+          </p>
+        </div>
+      ) : null}
+      <p className="mt-3 text-sm leading-7 whitespace-pre-line text-slate-700">
         <strong className="font-semibold text-slate-900">막힌 이유:</strong> {event.confusionReason}
       </p>
-      <p className="mt-2 text-sm leading-7 text-slate-700">
+      <p className="mt-2 text-sm leading-7 whitespace-pre-line text-slate-700">
         <strong className="font-semibold text-slate-900">짧은 정리:</strong> {event.answerSummary}
       </p>
 

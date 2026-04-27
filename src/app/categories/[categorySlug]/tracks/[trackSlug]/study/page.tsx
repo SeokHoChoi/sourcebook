@@ -133,6 +133,7 @@ function escapeRegExp(value: string): string {
 function renderStudyLearnerEventNoticeHtml({
   createdAt,
   question,
+  questionRevision,
   confusionReason,
   answerSummary,
   journalHref,
@@ -140,11 +141,21 @@ function renderStudyLearnerEventNoticeHtml({
 }: {
   createdAt: string;
   question: string;
+  questionRevision: string | undefined;
   confusionReason: string;
   answerSummary: string;
   journalHref: string;
   status: string;
 }) {
+  const revisionHtml = questionRevision
+    ? `<div class="mt-3 rounded-2xl border border-emerald-600/16 bg-emerald-50/70 px-4 py-3">
+        <p class="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">질문 다듬기</p>
+        <p class="mt-2 whitespace-pre-line text-sm leading-7 text-slate-800">${escapeHtml(
+          questionRevision,
+        )}</p>
+      </div>`
+    : '';
+
   return `<aside class="mt-5 rounded-[1.35rem] border border-amber-300/45 bg-[linear-gradient(180deg,rgba(255,251,235,0.98),rgba(255,255,255,0.94))] px-4 py-4 shadow-[0_16px_36px_-30px_rgba(180,83,9,0.4)]">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div class="flex flex-wrap items-center gap-2">
@@ -155,11 +166,17 @@ function renderStudyLearnerEventNoticeHtml({
       </div>
       <span class="text-[0.72rem] text-slate-500">${escapeHtml(createdAt)}</span>
     </div>
-    <p class="mt-3 text-sm leading-7 font-semibold text-slate-950">${escapeHtml(question)}</p>
-    <p class="mt-2 text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">막힌 이유:</strong> ${escapeHtml(
+    <div class="mt-3 rounded-2xl border border-amber-500/18 bg-amber-50/70 px-4 py-3">
+      <p class="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">질문 원문</p>
+      <p class="mt-2 whitespace-pre-line text-sm leading-7 font-semibold text-slate-950">${escapeHtml(
+        question,
+      )}</p>
+    </div>
+    ${revisionHtml}
+    <p class="mt-3 whitespace-pre-line text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">막힌 이유:</strong> ${escapeHtml(
       confusionReason,
     )}</p>
-    <p class="mt-2 text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">짧은 정리:</strong> ${escapeHtml(
+    <p class="mt-2 whitespace-pre-line text-sm leading-7 text-slate-700"><strong class="font-semibold text-slate-900">짧은 정리:</strong> ${escapeHtml(
       answerSummary,
     )}</p>
     <div class="mt-4 flex flex-wrap gap-3">
@@ -203,6 +220,7 @@ function injectStudyLearnerEventNotices({
         renderStudyLearnerEventNoticeHtml({
           createdAt: event.createdAt,
           question: event.question,
+          questionRevision: event.questionRevision,
           confusionReason: event.confusionReason,
           answerSummary: event.answerSummary,
           journalHref: getLearnerEventJournalHref(categorySlug, trackSlug, event),

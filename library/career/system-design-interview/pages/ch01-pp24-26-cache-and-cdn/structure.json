@@ -1,0 +1,79 @@
+{
+  "pageSlug": "ch01-pp24-26-cache-and-cdn",
+  "pageTitle": "1장 · 24~26p 캐시와 CDN 도입",
+  "lastStructuredAt": "2026-04-27",
+  "segments": [
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-001",
+      "order": 1,
+      "kind": "heading",
+      "source": {
+        "startLine": 3,
+        "endLine": 5
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-002",
+      "order": 2,
+      "kind": "heading",
+      "source": {
+        "startLine": 7,
+        "endLine": 18
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-003",
+      "order": 3,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 20,
+        "endLine": 22
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-004",
+      "order": 4,
+      "kind": "code",
+      "source": {
+        "startLine": 24,
+        "endLine": 28
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-005",
+      "order": 5,
+      "kind": "heading",
+      "source": {
+        "startLine": 30,
+        "endLine": 36
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-006",
+      "order": 6,
+      "kind": "list",
+      "source": {
+        "startLine": 37,
+        "endLine": 47
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-007",
+      "order": 7,
+      "kind": "list",
+      "source": {
+        "startLine": 48,
+        "endLine": 49
+      }
+    },
+    {
+      "id": "ch01-pp24-26-cache-and-cdn-seg-008",
+      "order": 8,
+      "kind": "heading",
+      "source": {
+        "startLine": 51,
+        "endLine": 55
+      }
+    }
+  ]
+}

@@ -451,6 +451,138 @@
       ]
     },
     {
+      "id": "cache-tier",
+      "term": "캐시 계층",
+      "korean": "cache tier",
+      "explanation": "웹 서버와 원본 저장소 사이 또는 시스템의 특정 위치에 둔 빠른 임시 저장 계층. 이 책의 그림에서는 웹 서버가 DB를 보기 전에 먼저 확인하는 서버 측 캐시를 가리킨다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-001", "ch01-pp24-26-cache-and-cdn-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "cache-hit",
+      "term": "cache hit",
+      "korean": "캐시 적중",
+      "explanation": "요청한 데이터가 캐시에 이미 있어 원본 DB나 저장소를 보지 않고 바로 응답할 수 있는 상태.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "cache-miss",
+      "term": "cache miss",
+      "korean": "캐시 미스",
+      "explanation": "요청한 데이터가 캐시에 없어 원본 DB나 저장소에서 읽고, 필요하면 그 결과를 캐시에 채워야 하는 상태.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "access-pattern",
+      "term": "액세스 패턴",
+      "korean": "access pattern",
+      "explanation": "데이터가 실제로 어떤 키와 조건으로, 얼마나 자주, 읽기와 쓰기 중 무엇 위주로, 어느 정도 최신성을 요구하며 사용되는지의 모양.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "ttl",
+      "term": "TTL",
+      "korean": "time to live",
+      "explanation": "캐시에 저장한 데이터를 얼마나 오래 유효한 것으로 볼지 정한 수명. 너무 짧으면 원본을 자주 읽고, 너무 길면 오래된 값을 보여줄 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-004", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "cache-invalidation",
+      "term": "캐시 무효화",
+      "korean": "cache invalidation",
+      "explanation": "원본 데이터가 바뀌었을 때 오래된 캐시를 삭제하거나 갱신해 더 이상 사용하지 않게 만드는 처리.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-003", "ch01-pp24-26-cache-and-cdn-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "eviction",
+      "term": "eviction",
+      "korean": "캐시 방출",
+      "explanation": "캐시 공간이 부족할 때 새 데이터를 넣기 위해 기존 캐시 데이터를 제거하는 일.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "lru",
+      "term": "LRU",
+      "korean": "Least Recently Used",
+      "explanation": "가장 오래 사용되지 않은 데이터를 먼저 캐시에서 내보내는 eviction 정책.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "lfu",
+      "term": "LFU",
+      "korean": "Least Frequently Used",
+      "explanation": "사용 빈도가 가장 낮은 데이터를 먼저 캐시에서 내보내는 eviction 정책.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "tanstack-query-staletime",
+      "term": "TanStack Query staleTime",
+      "korean": "프론트 서버 상태를 신선하다고 보는 시간",
+      "explanation": "TanStack Query에서 캐시된 query data를 fresh로 취급하는 시간. 이 시간 동안은 기본적으로 다시 가져오지 않아도 되는 데이터로 본다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-005", "ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "tanstack-query-gctime",
+      "term": "TanStack Query gcTime",
+      "korean": "비활성 query cache를 메모리에서 치우기 전까지의 시간",
+      "explanation": "더 이상 쓰이지 않는 TanStack Query 캐시가 garbage collection 되기 전까지 남아 있는 시간. 서버 캐시의 메모리 용량을 직접 늘리는 것과는 다른 조정 지점이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp24-26-cache-and-cdn",
+          "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-007"]
+        }
+      ]
+    },
+    {
       "id": "terminal-client",
       "term": "단말",
       "korean": "request sender",
