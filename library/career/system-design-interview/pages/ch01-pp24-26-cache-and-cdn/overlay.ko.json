@@ -63,7 +63,7 @@
           "explanation": "얼마나 지나면 캐시를 오래된 것으로 보고 버릴지 정하는 시간이다."
         }
       ],
-      "devNote": "좋은 면접 답변은 암기한 전략 이름을 나열하는 것이 아니라 도메인에서 시작한다. 예를 들어 `상품 카테고리 목록은 변경이 드물어 CDN/서버 캐시 TTL을 길게 잡고, 재고는 stale하면 주문 실패가 나므로 짧게 잡거나 캐시하지 않으며, 사용자 알림 수는 사용자별 키와 짧은 TTL 또는 이벤트 기반 invalidation을 쓴다`처럼 말한다.",
+      "devNote": "좋은 면접 답변은 암기한 전략 이름을 나열하는 것이 아니라 도메인에서 시작한다. 실무형 답변은 캐시 위치를 먼저 나눈다. 정적 JS/이미지는 브라우저 HTTP 캐시와 CDN에서 `Cache-Control`, 파일명 hash, stale-while-revalidate를 말하고, 서버 상태는 TanStack Query나 Relay 같은 브라우저 메모리 캐시에서 query key, staleTime, invalidation을 말하며, DB 읽기 부하는 Redis/Memcached 같은 서버 캐시에서 key, TTL, miss 처리, 장애 fallback, hit ratio를 말한다.",
       "recallQuestion": "`액세스 패턴`을 쇼핑몰, 대시보드, 채팅 중 하나의 예로 풀어 설명하라.",
       "speakingTransferPrompt": "캐싱 전략을 물어보는 면접 질문에 `무엇을 캐시했고 왜 그렇게 했는지` 중심으로 답해 보자."
     },
