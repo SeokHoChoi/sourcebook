@@ -84,6 +84,24 @@
       "count": 1,
       "pageSlugs": ["ch01-pp27-29-cdn-operation"],
       "representativeQuestion": "CDN이 말하는 서버의 네트워크는 정확히 무엇인가? HTML은 왜 동적 콘텐츠 캐싱 대상이 될 수 있으며, S3 origin과 CloudFront edge, invalidation, object versioning은 어떻게 구분해야 하는가?"
+    },
+    {
+      "label": "세션 상태와 웹 계층 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp30-32-stateless-web-tier"],
+      "representativeQuestion": "세션 데이터는 로그인 세션 방식만 뜻하는가? 상태 정보를 웹 계층에서 제거한다는 말은 브라우저 상태를 없앤다는 뜻인가, 백엔드 웹 서버 로컬 상태를 외부 저장소로 빼는 뜻인가?"
+    },
+    {
+      "label": "고정 세션과 단일 서버 문제 구분",
+      "count": 1,
+      "pageSlugs": ["ch01-pp30-32-stateless-web-tier"],
+      "representativeQuestion": "같은 클라이언트 요청이 같은 서버로 가야 한다는 문제는 서버가 여러 대일 때의 문제인가? 단일 서버에서는 이 문제가 없더라도 어떤 한계가 남는가?"
+    },
+    {
+      "label": "무상태와 오토스케일링 관계 절대화",
+      "count": 1,
+      "pageSlugs": ["ch01-pp30-32-stateless-web-tier"],
+      "representativeQuestion": "AWS의 오토스케일링은 어떤 이름의 기능인가? 무상태가 아니면 autoscaling이 불가능한가, 아니면 가능하지만 복잡하고 위험한가?"
     }
   ]
 }

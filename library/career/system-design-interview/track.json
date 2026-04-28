@@ -3,7 +3,7 @@
   "trackSlug": "system-design-interview",
   "title": "대규모 시스템 설계 기초",
   "status": "active",
-  "phase": "1장 p14~29 적재 완료",
+  "phase": "1장 p14~32 적재 완료",
   "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
   "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
   "studyGuide": {
@@ -12,7 +12,7 @@
     "description": "책 OCR 텍스트 아카이브, 프론트엔드 중심 학습 포인트, 향후 캡처/해석 기록 규칙, 외부 근거 레지스트리를 한곳에 모은 스터디 문서.",
     "file": "references/study-guide.md",
     "tocFile": "references/table-of-contents-archive.md",
-    "updatedAt": "2026-04-27",
+    "updatedAt": "2026-04-28",
     "verificationNotes": [
       "목차는 2026-04-22에 전달된 전자책 캡처 8장을 기준으로 OCR 가능한 화면 텍스트와 페이지 번호만 전사했다.",
       "학습 운영 원칙은 retrieval practice, distributed practice, worked example, metacognitive scaffolding 연구를 참고해 구성했다.",
@@ -23,7 +23,8 @@
       "1장 네 번째 배치인 18p는 로컬 OCR 보조 결과가 한글을 충분히 인식하지 못해 수동 전사를 기준으로 삼고, NoSQL/scale up/scale out/failover/redundancy 같은 영문 용어와 줄바꿈은 화면과 OCR 결과를 다시 대조했다.",
       "1장 다섯 번째 배치인 19~21p는 19p 로드밸런서 화면과 21p 데이터베이스 다중화 화면을 한 배치로 묶고, 잘린 문장은 임의 보완하지 않은 채 도식 레이블과 핵심 문장을 화면 기준으로 수동 전사했다.",
       "1장 여섯 번째 배치인 24~26p는 캐시, 캐시 계층, 캐시 사용 시 유의할 점, CDN 도입부를 한 배치로 묶고, p26에서 잘린 CDN 문장은 임의 보완하지 않았다.",
-      "1장 일곱 번째 배치인 27~29p는 CDN 동작, S3 origin, TTL, 장애 fallback, invalidation, object versioning을 한 배치로 묶고, p27의 이어진 문장은 이전 페이지의 잘림을 명시했다."
+      "1장 일곱 번째 배치인 27~29p는 CDN 동작, S3 origin, TTL, 장애 fallback, invalidation, object versioning을 한 배치로 묶고, p27의 이어진 문장은 이전 페이지의 잘림을 명시했다.",
+      "1장 여덟 번째 배치인 30~32p는 무상태 웹 계층, 상태 정보 의존 아키텍처, sticky session, 공유 저장소, autoscaling을 한 배치로 묶고, p32 하단의 잘린 문장은 임의 보완하지 않았다."
     ]
   },
   "intakeFlow": [
@@ -168,6 +169,25 @@
         "source": "pages/ch01-pp27-29-cdn-operation/source.md",
         "structure": "pages/ch01-pp27-29-cdn-operation/structure.json",
         "overlay": "pages/ch01-pp27-29-cdn-operation/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-pp30-32-stateless-web-tier",
+      "title": "1장 · 30~32p 무상태 웹 계층",
+      "readOrder": 8,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "무상태(stateless) 웹 계층",
+      "canonicalUrl": "전자책 캡처 30~32p",
+      "sourceRepoPath": "ebook-capture/ch01-pp30-32",
+      "files": {
+        "source": "pages/ch01-pp30-32-stateless-web-tier/source.md",
+        "structure": "pages/ch01-pp30-32-stateless-web-tier/structure.json",
+        "overlay": "pages/ch01-pp30-32-stateless-web-tier/overlay.ko.json"
       }
     }
   ]

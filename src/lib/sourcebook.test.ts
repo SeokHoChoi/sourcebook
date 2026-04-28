@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(7);
+    expect(career?.counts.totalPages).toBe(8);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -165,12 +165,13 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 19~21p 로드밸런서와 데이터베이스 다중화');
     expect(track.studyGuide?.markdown).toContain('1장 · 24~26p 캐시와 CDN 도입');
     expect(track.studyGuide?.markdown).toContain('1장 · 27~29p CDN 동작과 무효화');
-    expect(track.counts.totalPages).toBe(7);
-    expect(track.counts.capturedPages).toBe(7);
-    expect(track.counts.structuredPages).toBe(7);
-    expect(track.counts.overlayPages).toBe(7);
-    expect(track.counts.openConfusions).toBe(14);
-    expect(track.learnerEvents).toHaveLength(14);
+    expect(track.studyGuide?.markdown).toContain('1장 · 30~32p 무상태 웹 계층');
+    expect(track.counts.totalPages).toBe(8);
+    expect(track.counts.capturedPages).toBe(8);
+    expect(track.counts.structuredPages).toBe(8);
+    expect(track.counts.overlayPages).toBe(8);
+    expect(track.counts.openConfusions).toBe(17);
+    expect(track.learnerEvents).toHaveLength(17);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
@@ -180,6 +181,9 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('캐시는 위치마다 목적과 조정 지점이 다르다');
     expect(track.studyGuide?.markdown).toContain(
       'CDN은 파일 저장소 하나가 아니라 edge와 origin의 배달 구조다',
+    );
+    expect(track.studyGuide?.markdown).toContain(
+      '무상태는 상태가 없다는 뜻이 아니라 웹 서버에 묶지 않는다는 뜻이다',
     );
   });
 

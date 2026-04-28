@@ -1,0 +1,61 @@
+{
+  "pageSlug": "ch01-pp30-32-stateless-web-tier",
+  "pageTitle": "1장 · 30~32p 무상태 웹 계층",
+  "lastStructuredAt": "2026-04-28",
+  "segments": [
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-001",
+      "order": 1,
+      "kind": "list",
+      "source": {
+        "startLine": 3,
+        "endLine": 8
+      }
+    },
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 10,
+        "endLine": 12
+      }
+    },
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-003",
+      "order": 3,
+      "kind": "diagram",
+      "source": {
+        "startLine": 14,
+        "endLine": 36
+      }
+    },
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-004",
+      "order": 4,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 38,
+        "endLine": 38
+      }
+    },
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-005",
+      "order": 5,
+      "kind": "diagram",
+      "source": {
+        "startLine": 40,
+        "endLine": 56
+      }
+    },
+    {
+      "id": "ch01-pp30-32-stateless-web-tier-seg-006",
+      "order": 6,
+      "kind": "diagram",
+      "source": {
+        "startLine": 58,
+        "endLine": 82
+      }
+    }
+  ]
+}
