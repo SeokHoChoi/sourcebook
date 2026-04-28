@@ -1,0 +1,151 @@
+{
+  "pageSlug": "ch01-pp30-32-stateless-web-tier",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-001",
+      "directTranslation": "CDN은 정적 자산 배달을 웹 서버 밖으로 빼고, 캐시는 DB 읽기 부하를 줄인다. 다음 단계는 웹 서버 자체를 여러 대로 늘리기 쉽게 만드는 것이다.",
+      "trickySentenceExplanation": "앞 문단은 `웹 서버가 해야 하던 일`을 줄이는 흐름이다. 정적 파일은 CDN으로, 반복 조회는 캐시로 빼냈다. 이제 남은 질문은 `웹 서버가 여러 대가 되어도 아무 서버나 요청을 처리할 수 있는가?`다. 그래서 다음 절이 무상태 웹 계층으로 이어진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "웹 계층",
+          "korean": "요청을 받아 비즈니스 로직과 API 응답을 처리하는 서버 계층",
+          "explanation": "여기서 웹 계층은 브라우저 UI가 아니라 로드밸런서 뒤에서 HTTP 요청을 처리하는 애플리케이션 서버 묶음이다."
+        }
+      ],
+      "devNote": "이 흐름은 `부하 줄이기 -> 병목 분리 -> 여러 대로 늘리기` 순서다. 프론트 자산은 CDN, DB 반복 조회는 캐시, 웹 요청 처리는 무상태 서버 풀로 분리한다.",
+      "recallQuestion": "CDN과 캐시를 추가한 다음 왜 무상태 웹 계층이 필요한지 설명하라.",
+      "speakingTransferPrompt": "`정적 자산`, `DB 조회 결과`, `세션 상태`를 각각 어느 계층 밖으로 빼는지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-002",
+      "directTranslation": "웹 서버를 수평 확장하려면 사용자별 상태를 특정 웹 서버 안에 붙잡아 두지 말고, 외부 저장소에서 필요할 때 읽게 해야 한다.",
+      "trickySentenceExplanation": "`세션 데이터`는 로그인 방식 중 `서버 세션 방식`에서 가장 자주 보이는 예지만, 여기서는 그보다 넓다. 사용자의 로그인 상태, 사용자 id, 권한, 장바구니, 임시 폼 진행 상태처럼 여러 요청 사이에 이어져야 하는 사용자별 정보를 말한다. `상태 정보를 웹 계층에서 제거한다`는 말은 브라우저에서 상태를 없앤다는 뜻이 아니라, 로드밸런서 뒤의 개별 웹 서버 메모리나 로컬 디스크에 사용자 상태를 보관하지 말라는 뜻이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "상태 정보",
+          "korean": "요청 사이에 이어져야 하는 사용자별 또는 업무별 정보",
+          "explanation": "HTTP 요청 하나만 보고는 알 수 없고, 이전 요청에서 만들어진 로그인 여부, 세션 id, 장바구니, 임시 작업 상태 같은 정보를 뜻한다."
+        },
+        {
+          "term": "세션 데이터",
+          "korean": "사용자의 연속된 이용 맥락을 식별하고 유지하기 위한 데이터",
+          "explanation": "로그인 세션이 대표적이지만, 반드시 로그인만 뜻하지는 않는다. 서버가 `이 요청이 누구의 이어진 요청인가`를 판단하는 데 쓰는 값과 그에 연결된 정보를 포함한다."
+        },
+        {
+          "term": "무상태 웹 계층",
+          "korean": "개별 웹 서버가 사용자별 상태를 직접 들고 있지 않은 웹 서버 계층",
+          "explanation": "상태가 아예 없다는 뜻이 아니다. 상태는 DB, Redis, NoSQL, 토큰 같은 외부 위치에 있고, 웹 서버는 필요할 때 조회한다."
+        },
+        {
+          "term": "지속성 저장소",
+          "korean": "프로세스가 재시작되어도 데이터를 잃지 않도록 보관하는 저장소",
+          "explanation": "관계형 DB, NoSQL, 객체 저장소 등이 대표적이다. Redis도 설정에 따라 persistence를 둘 수 있지만, Memcached처럼 순수 캐시에 가까운 저장소는 유실 가능성을 따로 고려해야 한다."
+        }
+      ],
+      "devNote": "네가 든 `프론트에서 하드코딩하지 않고 API 응답으로 가져온다`는 비유는 출발점으로는 괜찮지만 정확한 대응은 아니다. 여기서는 프론트 코드의 데이터 소스 문제가 아니라, 백엔드 웹 서버 A의 메모리에만 있는 상태 때문에 웹 서버 B가 같은 요청을 처리하지 못하는 문제다. 프론트 관점에서는 `어느 서버가 받든 같은 인증/권한/장바구니 결과가 나와야 한다`가 핵심이다.",
+      "recallQuestion": "무상태 웹 계층이 `상태가 어디에도 없다`는 뜻이 아닌 이유를 설명하라.",
+      "speakingTransferPrompt": "로그인한 사용자의 요청이 서버 1, 서버 2, 서버 3 중 아무 곳으로 가도 동작하려면 세션 상태를 어디에 둬야 하는지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-003",
+      "directTranslation": "상태 정보 의존적인 아키텍처에서는 사용자 A의 상태가 서버 1에 있으면 사용자 A 요청도 서버 1로 가야 한다.",
+      "trickySentenceExplanation": "그림의 `프로파일 이미지`는 현대 실무 기준으로는 웹 서버 로컬 디스크보다 객체 저장소와 CDN에 두는 것이 자연스럽다. 책은 정확한 이미지 저장 설계보다 `사용자별 데이터가 특정 서버에 붙어 있으면 그 서버로만 가야 한다`는 문제를 보여 주기 위해 예시를 단순화했다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "상태 정보 의존적인 아키텍처",
+          "korean": "특정 사용자의 요청이 특정 서버의 로컬 상태에 의존하는 구조",
+          "explanation": "서버 하나가 사용자의 세션이나 임시 데이터를 자기 메모리/디스크에 들고 있어, 다른 서버가 같은 요청을 처리하기 어려운 구조다."
+        },
+        {
+          "term": "로컬 상태",
+          "korean": "특정 서버 안에만 있는 상태",
+          "explanation": "서버 1 메모리나 로컬 디스크에는 있지만 서버 2에는 없는 데이터다. 수평 확장에서 가장 먼저 걸림돌이 된다."
+        }
+      ],
+      "devNote": "프론트에서 보이는 증상은 `가끔 로그아웃됨`, `장바구니가 사라짐`, `업로드 진행 상태가 초기화됨`, `A 서버에서는 되는데 B 서버에서는 안 됨`처럼 나타날 수 있다. 사용자는 서버를 모른다. 그래서 이런 문제는 프론트 버그처럼 보이지만 실제 원인은 서버 상태 배치일 수 있다.",
+      "recallQuestion": "사용자 A의 세션 데이터가 서버 1에만 있으면 서버 2가 사용자 A 요청을 처리할 때 왜 실패할 수 있는가?",
+      "speakingTransferPrompt": "세션 상태가 로컬 서버 메모리에만 있을 때 사용자 경험에 어떤 증상이 나타날지 예를 들어 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-004",
+      "directTranslation": "상태 의존 구조에서는 같은 클라이언트 요청을 항상 같은 서버로 보내야 하므로 sticky session이 필요해지고, 서버 추가·제거·장애 처리가 어려워진다.",
+      "trickySentenceExplanation": "`단일 서버라면 상관 없는 문제겠네?`라는 생각은 절반만 맞다. 서버가 한 대뿐이면 `어느 서버로 보낼지`를 고르는 문제는 없다. 하지만 그 대신 그 한 대가 병목이고 단일 장애점이며, 그 서버가 재시작되면 로컬 세션이 날아갈 수 있다. 여러 대로 늘리는 순간에는 같은 사용자를 같은 서버에 붙이는 sticky session 또는 외부 세션 저장소가 필요해진다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "sticky session",
+          "korean": "같은 사용자의 요청을 같은 서버로 계속 보내는 로드밸런서 기능",
+          "explanation": "session affinity라고도 부른다. 쿠키나 다른 기준으로 사용자를 특정 target에 묶어 로컬 세션 상태를 계속 쓰게 한다."
+        },
+        {
+          "term": "session affinity",
+          "korean": "세션 친화성",
+          "explanation": "로드밸런서가 요청을 완전히 독립적으로 분배하지 않고, 같은 세션의 요청을 같은 서버로 보내려는 성질이다."
+        },
+        {
+          "term": "target",
+          "korean": "로드밸런서가 요청을 보낼 실제 서버 또는 서비스",
+          "explanation": "AWS ALB 문맥에서는 target group 안의 EC2 instance, IP, Lambda 등이 target이 될 수 있다."
+        }
+      ],
+      "devNote": "AWS Application Load Balancer도 sticky session을 제공한다. 공식 문서 기준으로 ALB는 기본적으로 각 요청을 독립적으로 라우팅하지만, sticky session을 켜면 사용자의 세션을 특정 target에 묶을 수 있다. 이 기능은 상태를 가진 서버에는 도움이 되지만, scale-in, rolling deploy, 장애 복구를 복잡하게 만든다.",
+      "recallQuestion": "sticky session이 왜 수평 확장의 단순성을 떨어뜨리는지 설명하라.",
+      "speakingTransferPrompt": "`단일 서버에서는 sticky session 문제가 없다`와 `그래도 단일 서버가 좋은 구조는 아니다`를 동시에 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-005",
+      "directTranslation": "무상태 아키텍처에서는 요청이 어떤 웹 서버로 가도 되고, 웹 서버는 필요한 상태를 공유 저장소에서 읽는다.",
+      "trickySentenceExplanation": "`공유 저장소`는 모든 서버가 접근할 수 있는 외부 저장 위치다. 반드시 RDBMS만 뜻하지 않는다. Redis 같은 세션 저장소, NoSQL, 관계형 DB, 경우에 따라 객체 저장소가 될 수 있다. 중요한 것은 상태가 `서버 1 안에만 있음`이 아니라 `서버 풀 밖에 있음`으로 바뀐다는 점이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "공유 저장소",
+          "korean": "여러 웹 서버가 공통으로 접근하는 외부 저장소",
+          "explanation": "웹 서버들이 같은 세션/사용자 상태를 읽고 쓸 수 있게 하는 저장소다. DB, Redis, NoSQL 등이 들어갈 수 있다."
+        },
+        {
+          "term": "물리적으로 분리",
+          "korean": "상태 저장 책임이 개별 웹 서버의 메모리/디스크 밖으로 나감",
+          "explanation": "반드시 다른 건물에 있다는 뜻이 아니라, 웹 서버 프로세스와 같은 로컬 자원에만 묶이지 않는다는 뜻이다."
+        }
+      ],
+      "devNote": "실무에서는 세션 저장소를 Redis에 두는 일이 많지만, Redis가 항상 정답은 아니다. 세션을 서버에 저장하는 방식, signed cookie/JWT처럼 클라이언트가 들고 다니는 방식, DB 세션 저장 방식은 각각 보안, 무효화, 용량, 장애 모드가 다르다.",
+      "recallQuestion": "공유 저장소를 두면 왜 어떤 웹 서버도 같은 사용자의 요청을 처리할 수 있는가?",
+      "speakingTransferPrompt": "로그인 세션을 웹 서버 메모리에 두는 방식과 Redis 같은 공유 저장소에 두는 방식을 비교해 보자."
+    },
+    {
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-006",
+      "directTranslation": "상태를 웹 서버 밖으로 빼면 웹 서버를 트래픽에 따라 자동으로 추가·삭제하기 쉬워진다.",
+      "trickySentenceExplanation": "`오토스케일링이 무상태가 아니면 못하는가?`는 좋은 질문이지만 답은 `못한다`가 아니라 `복잡하고 위험해진다`다. AWS EC2 Auto Scaling의 Auto Scaling group은 수요에 따라 EC2 인스턴스를 늘리거나 줄일 수 있다. 하지만 서버 로컬 메모리에 세션이 있으면 새 서버는 기존 세션을 모르고, 삭제되는 서버에 붙어 있던 사용자는 세션을 잃을 수 있다. 그래서 상태를 외부 저장소로 빼거나 sticky session, scale-in protection, draining 같은 추가 장치를 써야 한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "autoscaling",
+          "korean": "부하나 정책에 따라 서버 수를 자동으로 조절하는 기능",
+          "explanation": "AWS에서 EC2 웹 서버를 늘리고 줄이는 경우 보통 Amazon EC2 Auto Scaling의 Auto Scaling group을 말한다. ECS, DynamoDB, ElastiCache 같은 리소스에는 Application Auto Scaling도 쓰인다."
+        },
+        {
+          "term": "Auto Scaling group",
+          "korean": "자동 확장과 관리를 위해 묶은 EC2 인스턴스 집합",
+          "explanation": "최소/희망/최대 인스턴스 수를 정하고, 정책에 따라 인스턴스를 시작하거나 종료해 수요에 맞춘다."
+        },
+        {
+          "term": "scale-in",
+          "korean": "서버 수를 줄이는 작업",
+          "explanation": "트래픽이 줄었을 때 인스턴스를 종료해 비용을 줄이는 방향의 자동 확장이다. 로컬 세션이 있으면 사용자 상태가 함께 사라질 수 있다."
+        },
+        {
+          "term": "scale-out",
+          "korean": "서버 수를 늘리는 작업",
+          "explanation": "트래픽이 늘었을 때 같은 역할의 서버를 더 추가해 요청을 나눠 처리하는 방식이다."
+        },
+        {
+          "term": "draining",
+          "korean": "종료할 서버에 새 요청을 보내지 않고 기존 요청이 끝나길 기다리는 절차",
+          "explanation": "배포나 scale-in 때 사용자 요청을 중간에 끊지 않기 위해 로드밸런서나 오케스트레이션 계층에서 쓰는 방식이다."
+        }
+      ],
+      "devNote": "프론트에 직접 보이는 영향은 꽤 현실적이다. 무상태가 제대로 안 되어 있으면 오토스케일링이나 롤링 배포 중 사용자가 갑자기 로그아웃되거나, 결제 단계가 초기화되거나, 업로드 진행 상태가 사라지거나, WebSocket/SSE 연결이 끊긴 뒤 복구가 어색해질 수 있다. 프론트는 특정 서버에 붙어 있다는 가정을 하지 말고, 401/419 처리, idempotent retry, 업로드 재개, WebSocket 재연결, optimistic update rollback을 서버 상태 설계와 맞춰야 한다.",
+      "recallQuestion": "무상태 웹 계층이 autoscaling을 쉽게 만드는 이유와, 상태 의존 구조에서도 autoscaling이 완전히 불가능하지는 않은 이유를 함께 설명하라.",
+      "speakingTransferPrompt": "AWS에서 ALB + Target Group + EC2 Auto Scaling Group으로 웹 서버를 늘리는 구조를, 세션 저장소가 있을 때와 없을 때로 나눠 설명해 보자."
+    }
+  ]
+}

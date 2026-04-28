@@ -162,6 +162,33 @@
       "dueOn": "2026-05-01",
       "status": "scheduled",
       "sourceEventId": "system-design-event-014"
+    },
+    {
+      "id": "review-system-design-019",
+      "pageSlug": "ch01-pp30-32-stateless-web-tier",
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-002",
+      "prompt": "`세션 데이터`가 로그인 세션만이 아니라 요청 사이에 이어져야 하는 사용자별 상태라는 점을 설명하고, `상태 정보를 웹 계층에서 제거한다`가 브라우저 상태 제거가 아닌 이유를 말하라.",
+      "dueOn": "2026-04-30",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-015"
+    },
+    {
+      "id": "review-system-design-020",
+      "pageSlug": "ch01-pp30-32-stateless-web-tier",
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-004",
+      "prompt": "단일 서버에서는 sticky session 문제가 없지만 병목, 단일 장애점, 로컬 세션 유실 문제가 남는다는 점을 설명하고, 여러 서버에서는 왜 sticky session이 scale-in과 장애 복구를 어렵게 만드는지 말하라.",
+      "dueOn": "2026-05-01",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-016"
+    },
+    {
+      "id": "review-system-design-021",
+      "pageSlug": "ch01-pp30-32-stateless-web-tier",
+      "segmentId": "ch01-pp30-32-stateless-web-tier-seg-006",
+      "prompt": "AWS의 `Amazon EC2 Auto Scaling`과 `Auto Scaling group`을 책의 autoscaling 개념과 연결하고, 무상태가 아니어도 autoscaling은 가능하지만 왜 복잡하고 위험한지 프론트 증상까지 포함해 설명하라.",
+      "dueOn": "2026-05-02",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-017"
     }
   ]
 }

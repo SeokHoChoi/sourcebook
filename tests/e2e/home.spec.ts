@@ -165,6 +165,7 @@ test.describe('home page', () => {
     await expect(
       page.getByRole('heading', { name: '1장 · 27~29p CDN 동작과 무효화' }),
     ).toBeVisible();
+    await expect(page.getByRole('heading', { name: '1장 · 30~32p 무상태 웹 계층' })).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
@@ -230,6 +231,12 @@ test.describe('home page', () => {
     ).toBeVisible();
     await expect(
       readingSection.locator('a').filter({ hasText: '1장 · 27~29p CDN 동작과 무효화' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('무상태(stateless) 웹 계층', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 30~32p 무상태 웹 계층' }).first(),
     ).toBeVisible();
     await expect(
       readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
@@ -398,6 +405,28 @@ test.describe('home page', () => {
     ).toBeVisible();
   });
 
+  test('renders the eighth system design reading batch with stateless tier feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp30-32-stateless-web-tier',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 30~32p 무상태 웹 계층$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
+    await expect(
+      page.getByText(/서버가 한 대뿐이면 모든 요청이 그 한 대로 가므로/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/자동 규모 확장\(autoscaling\)은 트래픽 양에 따라/).first(),
+    ).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+    await expect(page.getByText(/웹 계층에서 제거하여야 한다/).first()).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -452,6 +481,11 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/CloudFront 같은 CDN에서 `edge server`, `origin`, `distribution`/).first(),
     ).toBeVisible();
+    await expect(page.getByText(/세션 상태와 웹 계층 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/고정 세션과 단일 서버 문제 구분/).first()).toBeVisible();
+    await expect(page.getByText(/무상태와 오토스케일링 관계 절대화/).first()).toBeVisible();
+    await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
+    await expect(page.getByText(/Amazon EC2 Auto Scaling/).first()).toBeVisible();
     await expect(
       page
         .locator(
