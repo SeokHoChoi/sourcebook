@@ -1,0 +1,126 @@
+{
+  "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-001",
+      "directTranslation": "로그는 문제가 생겼을 때 `무슨 일이 있었는지`를 시간 순서와 맥락으로 남기는 기록이다. 규모가 커지면 서버마다 흩어진 로그를 한곳에 모아 검색하고 경고를 걸 수 있어야 한다.",
+      "trickySentenceExplanation": "로그는 원문을 그대로 아무렇게나 저장하는 것이 아니다. 실무에서는 사람이 읽을 메시지와 기계가 검색할 필드를 함께 남기는 structured log가 기본에 가깝다. 예를 들어 `level`, `timestamp`, `service`, `route`, `requestId`, `userIdHash`, `errorCode`, `durationMs`, `message`, `stack` 같은 필드를 JSON으로 남긴다. 원문 stack trace는 보존할 수 있지만, 비밀번호, 토큰, 주민번호, 결제 정보 같은 민감정보는 절대 그대로 남기면 안 된다. 백엔드는 pino/winston/logback 같은 로거로 stdout 또는 로그 수집기로 보내고, CloudWatch Logs, ELK/OpenSearch, Loki, Datadog 같은 곳에서 모은다. 프론트는 브라우저 콘솔만으로는 운영 로그가 되지 않으므로 Sentry 같은 error monitoring, OpenTelemetry JS, RUM SDK, `window.onerror`, `unhandledrejection`, React Error Boundary, Next.js instrumentation 등을 통해 에러와 성능 신호를 수집한다. 사용자의 클릭·스크롤·전환 이벤트 수집은 로그와 겹칠 수 있지만 목적이 다르다. 로그는 문제 추적, analytics는 행동과 비즈니스 판단, replay/heatmap은 UX 관찰에 가깝다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "로그",
+          "korean": "시스템에서 일어난 사건 기록",
+          "explanation": "에러, 요청 처리, 배포, 인증 실패처럼 나중에 원인을 찾기 위해 남기는 시간순 기록이다."
+        },
+        {
+          "term": "structured log",
+          "korean": "구조화 로그",
+          "explanation": "자유로운 문장만 남기는 것이 아니라 JSON처럼 필드가 있는 형태로 남긴 로그다. 검색, 필터링, 집계가 쉽다."
+        },
+        {
+          "term": "PII",
+          "korean": "개인 식별 정보",
+          "explanation": "이름, 이메일, 전화번호, 주소, 주민번호처럼 개인을 식별할 수 있는 정보다. 로그에 그대로 남기면 보안 사고가 된다."
+        },
+        {
+          "term": "error monitoring",
+          "korean": "운영 중 발생한 에러를 수집·분류·알림하는 도구",
+          "explanation": "브라우저나 서버에서 발생한 예외, stack trace, release version, 사용자 환경을 모아 원인 분석을 돕는다. Sentry가 대표적이다."
+        },
+        {
+          "term": "RUM",
+          "korean": "Real User Monitoring",
+          "explanation": "실제 사용자 브라우저에서 로딩 시간, 에러, 지역, 기기, 네트워크 상태를 수집해 체감 품질을 관측하는 방식이다."
+        }
+      ],
+      "devNote": "프론트에서 당장 도입한다면 1) Sentry로 JS 에러와 unhandled promise rejection 수집, 2) Web Vitals를 GA4 또는 자체 endpoint로 전송, 3) 중요한 API 실패는 requestId와 함께 로깅, 4) GA4/GTM으로 비즈니스 이벤트 수집, 5) Hotjar류 도구는 개인정보 마스킹을 켠 뒤 heatmap/session replay 용도로 제한하는 식이 현실적이다. 로그와 analytics를 한 바구니에 넣지 말고 `장애 원인`, `사용자 행동`, `체감 성능`을 분리해서 본다.",
+      "recallQuestion": "프론트 운영에서 console.log와 Sentry error monitoring, GA4 이벤트, Hotjar session replay는 각각 어떤 목적이 다른가?",
+      "speakingTransferPrompt": "회원가입 버튼 클릭 후 500 에러가 났을 때 프론트와 백엔드가 어떤 로그 필드와 requestId를 남겨야 추적 가능한지 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-002",
+      "directTranslation": "메트릭은 시스템이나 비즈니스 상태를 숫자로 계속 측정한 값이다. CPU, 메모리 같은 서버 숫자도 있고, DB 지연 시간, 캐시 적중률, DAU, 매출, 재방문율 같은 숫자도 있다.",
+      "trickySentenceExplanation": "메트릭은 `좋아 보인다/느리다`가 아니라 숫자로 관측 가능한 값이다. 보통 이름, 값, 시간, label 또는 dimension을 가진 time series로 저장된다. 프론트와 백엔드 모두 메트릭을 가진다. 백엔드는 request rate, error rate, latency, queue depth, DB connection, cache hit ratio를 본다. 프론트는 Core Web Vitals, JS error rate, API failure rate, hydration time, route transition time, checkout conversion을 본다. 책의 호스트 단위 메트릭은 서버/인프라에 가깝고, 종합 메트릭은 DB·캐시·API 계층처럼 여러 인스턴스를 합친 상태다. 핵심 비즈니스 메트릭은 GA4 같은 제품 분석 도구와 연결된다. GA4도 넓게 보면 메트릭을 다루지만, Prometheus/CloudWatch와 같은 운영 메트릭 도구를 대체하지 않는다. 둘 중 하나만 고르는 문제가 아니라 목적별로 함께 쓴다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "메트릭",
+          "korean": "시간에 따라 수집하는 숫자 지표",
+          "explanation": "CPU 사용률, API p95 지연 시간, 에러율, DAU처럼 시스템이나 비즈니스 상태를 수치로 나타낸 값이다."
+        },
+        {
+          "term": "time series",
+          "korean": "시간 순서로 저장되는 숫자 데이터",
+          "explanation": "예를 들어 `api_latency_ms`가 10:00에는 120, 10:01에는 180처럼 시간에 따라 이어진 값이다."
+        },
+        {
+          "term": "label / dimension",
+          "korean": "메트릭을 쪼개 보는 기준",
+          "explanation": "route, region, browser, status_code처럼 같은 메트릭을 여러 관점으로 필터링하거나 그룹화하는 꼬리표다."
+        },
+        {
+          "term": "Core Web Vitals",
+          "korean": "Google이 정의한 핵심 웹 사용자 경험 지표",
+          "explanation": "LCP, INP, CLS 같은 지표로 로딩, 상호작용 반응성, 레이아웃 안정성을 측정한다."
+        },
+        {
+          "term": "GA4",
+          "korean": "Google Analytics 4",
+          "explanation": "사용자 행동 이벤트, 전환, 유입, 재방문 같은 제품/비즈니스 분석에 강한 도구다. 운영 장애 원인 분석 도구와는 목적이 다르다."
+        }
+      ],
+      "devNote": "실무 대답은 `GA4 하나면 됨`도, `Prometheus 하나면 됨`도 아니다. GA4는 사용자가 어떤 행동을 했는지, Sentry/RUM은 사용자가 어떤 에러와 성능을 겪었는지, CloudWatch/Prometheus는 서버와 인프라가 어떤 상태인지 본다. 좋은 시스템은 이 세 층을 requestId, release version, route, region 같은 공통 차원으로 연결한다.",
+      "recallQuestion": "호스트 단위 메트릭, 종합 메트릭, 핵심 비즈니스 메트릭을 각각 프론트와 백엔드 예시로 설명하라.",
+      "speakingTransferPrompt": "검색 페이지가 느리다는 이슈를 Core Web Vitals, API latency, DB latency, 검색 전환율 메트릭으로 나누어 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-003",
+      "directTranslation": "자동화는 사람이 매번 손으로 하던 검증, 빌드, 테스트, 배포를 반복 가능하게 만들고, 시스템이 커질수록 실수를 줄인다.",
+      "trickySentenceExplanation": "책은 CI를 예시로 들지만 자동화는 CI 하나로 끝나지 않는다. lint, type-check, unit/e2e test, build, security scan, deploy, rollback, DB migration, feature flag, canary release, alert routing까지 포함될 수 있다. 핵심은 `사람이 기억해서 하는 절차`를 `기계가 같은 방식으로 반복하는 절차`로 바꾸는 것이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "CI",
+          "korean": "Continuous Integration / 지속적 통합",
+          "explanation": "코드 변경이 들어올 때마다 테스트, 린트, 빌드 같은 검증을 자동으로 돌려 문제를 빠르게 찾는 방식이다."
+        },
+        {
+          "term": "CD",
+          "korean": "Continuous Delivery 또는 Continuous Deployment",
+          "explanation": "검증된 코드를 배포 가능한 상태로 유지하거나, 정책에 따라 자동 배포하는 흐름이다."
+        },
+        {
+          "term": "canary release",
+          "korean": "일부 사용자나 일부 서버에 먼저 배포하는 방식",
+          "explanation": "전체 배포 전에 작은 범위에서 에러율, latency, 비즈니스 지표를 확인해 위험을 줄인다."
+        }
+      ],
+      "devNote": "프론트 실무에서는 PR마다 lint/type/test/build를 돌리고, 배포 후 Sentry release와 sourcemap을 연결하고, Web Vitals와 error rate가 튀면 알림을 받는 흐름까지 자동화하는 것이 좋다. `배포했는데 어느 커밋부터 에러가 늘었는지 모름`은 자동화와 관측성 연결이 약한 신호다.",
+      "recallQuestion": "자동화가 단순히 편한 도구가 아니라 대규모 시스템에서 필수에 가까워지는 이유를 설명하라.",
+      "speakingTransferPrompt": "프론트 배포 파이프라인에 lint, type-check, test, build, sourcemap upload, canary, rollback을 어떤 순서로 넣을지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-004",
+      "directTranslation": "그림 1-19는 기존 설계에 메시지 큐, worker, 로그/모니터링/메트릭/자동화 도구가 추가된 모습을 보여 준다. 책은 공간 때문에 데이터 센터 하나만 그렸지만, 실제로는 이런 도구도 여러 데이터 센터와 배포 환경에 맞춰 설계해야 한다.",
+      "trickySentenceExplanation": "그림을 그냥 쓱 보는 습관은 고쳐야 한다. 시스템 설계 그림은 미술 감상이 아니라 사고 지도다. 먼저 1) 경계선을 찾는다. 여기서는 DC1이 하나의 데이터 센터 경계다. 2) 요청 흐름을 따라간다. 사용자 -> CDN/로드밸런서 -> 웹 서버. 3) 비동기 선을 찾는다. 웹 서버 -> 메시지 큐 -> 작업 서버. 4) 저장소를 찾는다. DB, 캐시, NoSQL. 5) 관측/운영 도구를 찾는다. 로그, 모니터링, 메트릭, 자동화. 6) 빠진 것을 묻는다. 다중 데이터 센터 그림에서는 각 데이터 센터마다 큐와 worker가 있을 수도 있고, 전역 로그/메트릭 수집 파이프라인이 별도로 있을 수도 있다. 책 그림은 개념을 보여 주기 위해 단순화한 것이지, 모든 운영 토폴로지를 완성한 설계도가 아니다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "observability",
+          "korean": "관측성",
+          "explanation": "로그, 메트릭, 트레이스 등을 통해 시스템 내부 상태를 외부에서 추론할 수 있는 능력이다."
+        },
+        {
+          "term": "trace",
+          "korean": "하나의 요청이 여러 서비스와 DB를 지나간 경로 기록",
+          "explanation": "로그가 사건 기록이고 메트릭이 숫자라면, trace는 `요청 하나가 어디를 거쳐 얼마나 걸렸는지`를 이어 붙여 보여 준다."
+        },
+        {
+          "term": "failure domain",
+          "korean": "같이 장애 영향을 받을 수 있는 범위",
+          "explanation": "한 데이터 센터, 한 리전, 한 큐 클러스터처럼 같은 원인으로 함께 영향을 받을 수 있는 묶음이다."
+        }
+      ],
+      "devNote": "면접에서 그림을 그릴 때는 박스를 많이 그리는 것보다 선의 의미를 말하는 것이 중요하다. `이 선은 동기 HTTP`, `이 선은 비동기 큐`, `여기는 캐시 miss 때 DB`, `이 도구는 에러율과 큐 길이를 감시`처럼 읽어야 한다.",
+      "recallQuestion": "그림 1-19를 볼 때 요청 흐름, 비동기 경로, 저장소, 관측 도구, 생략된 다중 데이터 센터 요소를 순서대로 짚어 보라.",
+      "speakingTransferPrompt": "그림 1-19를 면접에서 직접 그린다고 생각하고, 각 박스와 화살표를 어떤 순서로 설명할지 말해 보자."
+    }
+  ]
+}

@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(10);
+    expect(career?.counts.totalPages).toBe(13);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -168,12 +168,15 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 30~32p 무상태 웹 계층');
     expect(track.studyGuide?.markdown).toContain('1장 · 33~35p 데이터 센터');
     expect(track.studyGuide?.markdown).toContain('1장 · 35p 메시지 큐 도입');
-    expect(track.counts.totalPages).toBe(10);
-    expect(track.counts.capturedPages).toBe(10);
-    expect(track.counts.structuredPages).toBe(10);
-    expect(track.counts.overlayPages).toBe(10);
-    expect(track.counts.openConfusions).toBe(24);
-    expect(track.learnerEvents).toHaveLength(24);
+    expect(track.studyGuide?.markdown).toContain('1장 · 36p 메시지 큐 확장 예시');
+    expect(track.studyGuide?.markdown).toContain('1장 · 36~38p 로그, 메트릭 그리고 자동화');
+    expect(track.studyGuide?.markdown).toContain('1장 · 38p 데이터베이스 규모 확장 도입');
+    expect(track.counts.totalPages).toBe(13);
+    expect(track.counts.capturedPages).toBe(13);
+    expect(track.counts.structuredPages).toBe(13);
+    expect(track.counts.overlayPages).toBe(13);
+    expect(track.counts.openConfusions).toBe(29);
+    expect(track.learnerEvents).toHaveLength(29);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
@@ -188,6 +191,11 @@ describe('sourcebook catalog loader', () => {
       '무상태는 상태가 없다는 뜻이 아니라 웹 서버에 묶지 않는다는 뜻이다',
     );
     expect(track.studyGuide?.markdown).toContain('데이터 센터는 한 URL 뒤에 숨은 여러 실제 경로다');
+    expect(track.studyGuide?.markdown).toContain(
+      '비유로는 props drilling을 줄이는 store처럼 직접 의존을 줄인다고 볼 수 있지만',
+    );
+    expect(track.studyGuide?.markdown).toContain('GA4/GTM은 전환·퍼널·이벤트 분석');
+    expect(track.studyGuide?.markdown).toContain('DB는 무한대가 아니고 수직 확장으로도');
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -409,6 +417,74 @@ describe('sourcebook catalog loader', () => {
     expect(page?.learnerEvents).toHaveLength(2);
     expect(page?.learnerEvents[0]?.questionRevision).toContain('무손실');
     expect(page?.reviewItems).toHaveLength(2);
+  });
+
+  it('loads the eleventh system design reading batch with message queue worker scaling feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p36-message-queue-worker-scaling',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('서비스 또는 서버 간 결합이 느슨해져서');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('메시지 큐');
+    expect(page?.segmentCards).toHaveLength(2);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('Zustand 비유');
+    expect(page?.segmentCards[1]?.devNote).toContain('화살표의 의미');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('느슨한 결합');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('queue depth');
+    expect(page?.learnerEvents).toHaveLength(1);
+    expect(page?.reviewItems).toHaveLength(1);
+  });
+
+  it('loads the twelfth system design reading batch with logs metrics automation feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp36-38-logs-metrics-automation',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('에러 로그를 모니터링하는 것은 중요하다');
+    expect(page?.rawSource).toContain('호스트 단위 메트릭');
+    expect(page?.rawSource).toContain('그림 1-19');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('로그, 메트릭 그리고 자동화');
+    expect(page?.segmentCards).toHaveLength(4);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('structured log');
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain('GA4도 넓게 보면');
+    expect(page?.segmentCards[3]?.trickySentenceExplanation).toContain('그림을 그냥 쓱 보는 습관');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('메트릭');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('observability');
+    expect(page?.learnerEvents).toHaveLength(3);
+    expect(page?.reviewItems).toHaveLength(3);
+  });
+
+  it('loads the thirteenth system design reading batch with database scaling intro feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p38-database-scaling-intro',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain(
+      '저장할 데이터가 많아지면 데이터베이스에 대한 부하도 증가한다',
+    );
+    expect(page?.rawSource).toContain('p38 하단에서 문장이 다음 페이지로 이어진다');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('데이터베이스의 규모 확장');
+    expect(page?.segmentCards).toHaveLength(2);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('데이터 양 자체가 늘면');
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain(
+      '물리적으로 무한대는 불가능',
+    );
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('working set');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('connection pool');
+    expect(page?.learnerEvents).toHaveLength(1);
+    expect(page?.reviewItems).toHaveLength(1);
   });
 
   it('exposes segment cards and learner events for useform', async () => {

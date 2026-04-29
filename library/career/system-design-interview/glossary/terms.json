@@ -1398,6 +1398,234 @@
           "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
         }
       ]
+    },
+    {
+      "id": "loose-coupling",
+      "term": "느슨한 결합",
+      "korean": "loose coupling",
+      "explanation": "한 컴포넌트가 다른 컴포넌트의 위치, 속도, 생존 여부를 덜 알아도 동작할 수 있게 만드는 설계 성질이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p36-message-queue-worker-scaling",
+          "segmentIds": ["ch01-p36-message-queue-worker-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "job",
+      "term": "job",
+      "korean": "작업 단위",
+      "explanation": "큐에 넣는 처리 요청이다. 예를 들어 이미지를 특정 크기의 썸네일로 만드는 요청 하나가 job이 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p36-message-queue-worker-scaling",
+          "segmentIds": ["ch01-p36-message-queue-worker-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "queue-depth",
+      "term": "queue depth",
+      "korean": "큐에 쌓인 메시지 수",
+      "explanation": "처리 대기 중인 job의 양이다. worker를 늘릴지 줄일지 판단하는 대표 신호가 된다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p36-message-queue-worker-scaling",
+          "segmentIds": ["ch01-p36-message-queue-worker-scaling-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "backpressure",
+      "term": "backpressure",
+      "korean": "처리 압력 / 역압",
+      "explanation": "생산 속도가 소비 속도보다 빨라 큐나 버퍼가 쌓이는 상황에서, 시스템이 속도를 제한하거나 압력을 흡수해야 하는 현상이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p36-message-queue-worker-scaling",
+          "segmentIds": ["ch01-p36-message-queue-worker-scaling-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "log",
+      "term": "로그",
+      "korean": "시스템 사건 기록",
+      "explanation": "에러, 요청 처리, 배포, 인증 실패처럼 나중에 원인을 찾기 위해 남기는 시간순 기록이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "structured-log",
+      "term": "structured log",
+      "korean": "구조화 로그",
+      "explanation": "자유로운 문장만 남기는 것이 아니라 JSON처럼 필드가 있는 형태로 남긴 로그다. 검색, 필터링, 집계가 쉽다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "pii",
+      "term": "PII",
+      "korean": "개인 식별 정보",
+      "explanation": "이름, 이메일, 전화번호, 주소, 주민번호처럼 개인을 식별할 수 있는 정보다. 로그나 리플레이에 그대로 남기면 보안 사고가 된다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "error-monitoring",
+      "term": "error monitoring",
+      "korean": "에러 모니터링",
+      "explanation": "브라우저나 서버에서 발생한 예외, stack trace, release version, 사용자 환경을 모아 원인 분석과 알림을 돕는 방식이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "metric",
+      "term": "메트릭",
+      "korean": "시간에 따라 수집하는 숫자 지표",
+      "explanation": "CPU 사용률, API p95 지연 시간, 에러율, DAU처럼 시스템이나 비즈니스 상태를 수치로 나타낸 값이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "time-series",
+      "term": "time series",
+      "korean": "시계열 데이터",
+      "explanation": "시간 순서로 저장되는 숫자 데이터다. 예를 들어 API latency가 분 단위로 어떻게 변했는지를 나타낸다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "core-web-vitals",
+      "term": "Core Web Vitals",
+      "korean": "핵심 웹 사용자 경험 지표",
+      "explanation": "Google이 정의한 LCP, INP, CLS 같은 웹 성능 지표로 로딩, 상호작용 반응성, 레이아웃 안정성을 측정한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "ga4",
+      "term": "GA4",
+      "korean": "Google Analytics 4",
+      "explanation": "사용자 행동 이벤트, 전환, 유입, 재방문 같은 제품/비즈니스 분석에 강한 도구다. 운영 장애 원인 분석 도구와는 목적이 다르다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "observability",
+      "term": "observability",
+      "korean": "관측성",
+      "explanation": "로그, 메트릭, 트레이스 등을 통해 시스템 내부 상태를 외부에서 추론할 수 있는 능력이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "trace",
+      "term": "trace",
+      "korean": "요청 경로 추적",
+      "explanation": "하나의 요청이 여러 서비스와 DB를 지나간 경로와 시간을 이어 붙여 보여 주는 관측 데이터다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+          "segmentIds": ["ch01-pp36-38-logs-metrics-automation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "working-set",
+      "term": "working set",
+      "korean": "자주 접근하는 데이터 묶음",
+      "explanation": "DB가 자주 읽는 데이터와 인덱스 일부다. working set이 메모리에 들어가면 빠르고, 디스크로 밀리면 느려질 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "index",
+      "term": "index",
+      "korean": "인덱스",
+      "explanation": "DB가 원하는 행을 빨리 찾도록 돕는 별도 자료구조다. 책의 색인처럼 찾기를 빠르게 하지만, 저장 공간과 쓰기 비용을 추가로 쓴다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "iops",
+      "term": "IOPS",
+      "korean": "초당 디스크 입출력 횟수",
+      "explanation": "DB가 디스크에서 읽고 쓰는 작업량을 나타내는 지표다. 데이터가 메모리에 없으면 I/O 병목이 커질 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "connection-pool",
+      "term": "connection pool",
+      "korean": "DB 연결 재사용 묶음",
+      "explanation": "요청마다 DB 연결을 새로 만들지 않고 미리 만들어 둔 연결을 재사용하는 구조다. 사용자가 많아지면 pool이 꽉 차 대기열이 생길 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "replica-lag",
+      "term": "replica lag",
+      "korean": "복제 지연",
+      "explanation": "주 DB에 반영된 변경이 읽기 복제본에 늦게 도착하는 시간 차이다. 프론트에서는 방금 저장한 값이 안 보이는 stale UI로 나타날 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "pageSlug": "ch01-p38-database-scaling-intro",
+  "pageTitle": "1장 · 38p 데이터베이스 규모 확장 도입",
+  "lastStructuredAt": "2026-04-29",
+  "segments": [
+    {
+      "id": "ch01-p38-database-scaling-intro-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 5,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-p38-database-scaling-intro-seg-002",
+      "order": 2,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 9,
+        "endLine": 11
+      }
+    }
+  ]
+}

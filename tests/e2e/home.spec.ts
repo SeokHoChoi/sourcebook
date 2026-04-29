@@ -168,9 +168,19 @@ test.describe('home page', () => {
     await expect(page.getByRole('heading', { name: '1장 · 30~32p 무상태 웹 계층' })).toBeVisible();
     await expect(page.getByRole('heading', { name: '1장 · 33~35p 데이터 센터' })).toBeVisible();
     await expect(page.getByRole('heading', { name: '1장 · 35p 메시지 큐 도입' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 36p 메시지 큐 확장 예시' }).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 36~38p 로그, 메트릭 그리고 자동화' }).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '1장 · 38p 데이터베이스 규모 확장 도입' }).first(),
+    ).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
+    await expect(page.getByText(/structured log: JSON처럼 필드가 있는 형태/).first()).toBeVisible();
     await expect(page.getByText('전체 스터디 문서 펼치기')).toBeVisible();
     await expect(
       page.locator(
@@ -247,6 +257,27 @@ test.describe('home page', () => {
     await expect(readingSection.getByText('메시지 큐', { exact: true }).first()).toBeVisible();
     await expect(
       readingSection.locator('a').filter({ hasText: '1장 · 35p 메시지 큐 도입' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 36p 메시지 큐 확장 예시' }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('로그, 메트릭 그리고 자동화', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection
+        .locator('a')
+        .filter({ hasText: '1장 · 36~38p 로그, 메트릭 그리고 자동화' })
+        .first(),
+    ).toBeVisible();
+    await expect(
+      readingSection.getByText('데이터베이스의 규모 확장', { exact: true }).first(),
+    ).toBeVisible();
+    await expect(
+      readingSection
+        .locator('a')
+        .filter({ hasText: '1장 · 38p 데이터베이스 규모 확장 도입' })
+        .first(),
     ).toBeVisible();
     await expect(
       readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
@@ -467,6 +498,60 @@ test.describe('home page', () => {
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
 
+  test('renders the eleventh system design reading batch with message queue worker scaling feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p36-message-queue-worker-scaling',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 36p 메시지 큐 확장 예시$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/Zustand 비유는/).first()).toBeVisible();
+    await expect(page.getByText(/queue depth/).first()).toBeVisible();
+    await expect(page.getByText(/이미지 업로드 후/).first()).toBeVisible();
+    await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
+  test('renders the twelfth system design reading batch with logs metrics automation feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp36-38-logs-metrics-automation',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 36~38p 로그, 메트릭 그리고 자동화$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/structured log/).first()).toBeVisible();
+    await expect(page.getByText(/GA4도 넓게 보면/).first()).toBeVisible();
+    await expect(page.getByText(/그림을 그냥 쓱 보는 습관/).first()).toBeVisible();
+    await expect(page.getByText(/Sentry, GA4\/GTM, Web Vitals/).first()).toBeVisible();
+    await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
+  test('renders the thirteenth system design reading batch with database scaling intro feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p38-database-scaling-intro',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 38p 데이터베이스 규모 확장 도입$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/데이터 양 자체가 늘면/).first()).toBeVisible();
+    await expect(page.getByText(/물리적으로 무한대는 불가능/).first()).toBeVisible();
+    await expect(page.getByText(/working set/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -529,10 +614,28 @@ test.describe('home page', () => {
     await expect(page.getByText(/다중 위치 테스트 범위 혼동/).first()).toBeVisible();
     await expect(page.getByText(/메시지 큐 무손실 보장 절대화/).first()).toBeVisible();
     await expect(page.getByText(/비동기 컴포넌트와 Kafka 범위 혼동/).first()).toBeVisible();
+    await expect(
+      page.getByText(/프론트 상태관리 비유와 메시지 큐 결합도 범위 구분/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/로그와 행동 분석 도구 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/메트릭을 서버 전용 수치로 축소 해석/).first()).toBeVisible();
+    await expect(page.getByText(/시스템 설계 그림을 장식으로 보는 습관/).first()).toBeVisible();
+    await expect(
+      page.getByText(/DB 데이터량 증가와 사용자 요청 증가 병목 구분/).first(),
+    ).toBeVisible();
     await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
     await expect(page.getByText(/Amazon EC2 Auto Scaling/).first()).toBeVisible();
     await expect(page.getByText(/지리적 라우팅 원리와 독해 속도 조절 혼동/).first()).toBeVisible();
     await expect(page.getByText(/메시지 큐는 메시지의 무손실/).first()).toBeVisible();
+    await expect(
+      page.getByText(/메시지 큐를 이용하면 서비스 또는 서버 간 결합이 느슨해져서/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/에러 로그를 모니터링하는 것은 중요하다/).first()).toBeVisible();
+    await expect(page.getByText(/메트릭을 잘 수집하면/).first()).toBeVisible();
+    await expect(page.getByText(/그림 1-19/).first()).toBeVisible();
+    await expect(
+      page.getByText(/저장할 데이터가 많아지면 데이터베이스에 대한 부하도 증가한다/).first(),
+    ).toBeVisible();
     await expect(
       page
         .locator(

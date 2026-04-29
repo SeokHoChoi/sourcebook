@@ -252,6 +252,51 @@
       "dueOn": "2026-05-09",
       "status": "scheduled",
       "sourceEventId": "system-design-event-024"
+    },
+    {
+      "id": "review-system-design-029",
+      "pageSlug": "ch01-p36-message-queue-worker-scaling",
+      "segmentId": "ch01-p36-message-queue-worker-scaling-seg-001",
+      "prompt": "Zustand가 props drilling을 줄이는 방식과 메시지 큐가 producer/consumer 결합을 낮추는 방식을 비교하고, 메시지 큐에만 있는 durability, ack, retry, worker scaling 의미를 설명하라.",
+      "dueOn": "2026-05-10",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-025"
+    },
+    {
+      "id": "review-system-design-030",
+      "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-001",
+      "prompt": "운영 로그, structured log, 프론트 error monitoring, GA4 이벤트, Hotjar류 session replay의 목적 차이와 PII 마스킹 필요성을 설명하라.",
+      "dueOn": "2026-05-11",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-026"
+    },
+    {
+      "id": "review-system-design-031",
+      "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-002",
+      "prompt": "메트릭을 time series, label/dimension 관점으로 설명하고, GA4, Sentry/RUM, Prometheus/CloudWatch가 각각 어떤 목적의 메트릭을 보는지 구분하라.",
+      "dueOn": "2026-05-12",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-027"
+    },
+    {
+      "id": "review-system-design-032",
+      "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+      "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-004",
+      "prompt": "시스템 설계 그림을 볼 때 경계, 동기 요청 흐름, 비동기 큐 경로, 저장소, 관측 도구, 빠진 요소를 순서대로 짚어 설명하라.",
+      "dueOn": "2026-05-13",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-028"
+    },
+    {
+      "id": "review-system-design-033",
+      "pageSlug": "ch01-p38-database-scaling-intro",
+      "segmentId": "ch01-p38-database-scaling-intro-seg-001",
+      "prompt": "데이터 양 증가와 사용자 요청 증가가 DB 부하를 다르게 키우는 방식을 working set, index, IOPS, connection pool 관점으로 설명하라.",
+      "dueOn": "2026-05-14",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-029"
     }
   ]
 }

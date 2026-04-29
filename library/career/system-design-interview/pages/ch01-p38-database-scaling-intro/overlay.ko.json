@@ -1,0 +1,61 @@
+{
+  "pageSlug": "ch01-p38-database-scaling-intro",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-p38-database-scaling-intro-seg-001",
+      "directTranslation": "데이터가 많아지면 저장 공간만 커지는 것이 아니라, 조회·쓰기·인덱스·백업·복제·캐시 적중률까지 함께 부담이 커진다.",
+      "trickySentenceExplanation": "네 질문처럼 `데이터가 많아서 찾는 데 오래 걸린다`도 일부 맞고, `데이터가 많다는 것은 보통 사용자와 요청도 많아진다`도 자주 맞다. 하지만 둘은 구분해야 한다. 데이터 양 자체가 늘면 테이블, 인덱스, 백업, vacuum/compaction, 복제 로그, 메모리 working set이 커진다. 사용자가 늘면 읽기/쓰기 QPS와 connection 수가 늘어난다. 데이터베이스 부하는 이 둘이 겹쳐서 생긴다. 인덱스가 있으면 모든 조회가 단순 선형 탐색은 아니지만, 인덱스도 커지고 메모리에 못 올라가면 디스크 I/O가 늘어 latency가 튈 수 있다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "working set",
+          "korean": "자주 접근하는 데이터 묶음",
+          "explanation": "DB가 자주 읽는 데이터와 인덱스 일부다. working set이 메모리에 들어가면 빠르고, 디스크로 밀리면 느려질 수 있다."
+        },
+        {
+          "term": "index",
+          "korean": "인덱스",
+          "explanation": "DB가 원하는 행을 빨리 찾도록 돕는 별도 자료구조다. 책의 색인처럼 찾기를 빠르게 하지만, 저장 공간과 쓰기 비용을 추가로 쓴다."
+        },
+        {
+          "term": "IOPS",
+          "korean": "초당 디스크 입출력 횟수",
+          "explanation": "DB가 디스크에서 읽고 쓰는 작업량을 나타내는 지표다. 데이터가 메모리에 없으면 I/O 병목이 커질 수 있다."
+        }
+      ],
+      "devNote": "프론트에서 이 차이는 목록 페이지 p95가 느려지거나, 검색 후 첫 화면이 늦게 뜨거나, `저장됨` 표시가 늦게 바뀌는 형태로 보인다. API는 하나지만 뒤에서는 DB query plan, index hit, connection pool, replica lag가 사용자 경험을 흔든다.",
+      "recallQuestion": "데이터 양 증가와 사용자 요청 증가가 각각 DB 부하를 어떻게 다르게 키우는지 설명하라.",
+      "speakingTransferPrompt": "상품 수가 1만 개에서 1억 개로 늘어난 쇼핑몰에서 검색·상세·주문 화면이 왜 느려질 수 있는지 DB 관점으로 말해 보자."
+    },
+    {
+      "segmentId": "ch01-p38-database-scaling-intro-seg-002",
+      "directTranslation": "데이터베이스도 서버와 마찬가지로 무한히 커질 수 없다. 더 큰 장비로 올리는 수직 확장과 데이터를 여러 서버로 나누는 수평 확장 사이의 선택이 필요하다.",
+      "trickySentenceExplanation": "네 생각처럼 물리적으로 무한대는 불가능하다. DB에는 엔진/버전별 테이블 크기 한계, 스토리지 볼륨 한계, 인스턴스 CPU/RAM 한계, IOPS 한계, 네트워크 한계, connection 한계가 있다. 클라우드에서는 스토리지를 자동 확장할 수 있는 기능이 있어도 무한 확장이 아니다. 또한 저장 공간만 늘린다고 CPU, 메모리, 쿼리 경합, 락 경합이 자동으로 해결되지는 않는다. 그래서 처음에는 scale up이 단순할 수 있지만, 어느 시점부터 read replica, partitioning, sharding 같은 수평 확장 고민으로 넘어간다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "vertical scaling",
+          "korean": "수직 확장 / scale up",
+          "explanation": "같은 DB 서버를 더 큰 CPU, 더 많은 RAM, 더 빠른 디스크를 가진 장비로 키우는 방식이다."
+        },
+        {
+          "term": "horizontal scaling",
+          "korean": "수평 확장 / scale out",
+          "explanation": "데이터나 요청을 여러 DB 서버로 나눠 처리하는 방식이다. 읽기 복제, 파티셔닝, 샤딩 등이 여기에 연결된다."
+        },
+        {
+          "term": "connection pool",
+          "korean": "DB 연결을 미리 만들어 재사용하는 묶음",
+          "explanation": "요청마다 DB 연결을 새로 만들지 않고 재사용한다. 사용자가 많아지면 pool이 꽉 차 대기열이 생길 수 있다."
+        },
+        {
+          "term": "replica lag",
+          "korean": "복제 지연",
+          "explanation": "주 DB에 반영된 변경이 읽기 복제본에 늦게 도착하는 시간 차이다. 프론트에서는 방금 저장한 값이 안 보이는 stale UI로 나타날 수 있다."
+        }
+      ],
+      "devNote": "이 페이지는 다음 페이지로 이어지는 도입부다. 지금은 `DB도 무한대가 아니며, 저장 공간·처리량·지연 시간·복제·일관성 문제가 함께 온다`까지만 잡으면 된다.",
+      "recallQuestion": "DB storage autoscaling이 있어도 `무한 확장`이 아닌 이유를 CPU, RAM, IOPS, connection, query contention 관점에서 설명하라.",
+      "speakingTransferPrompt": "서비스가 커질 때 DB scale up으로 버틸 수 있는 구간과, scale out을 고민해야 하는 구간을 구분해 말해 보자."
+    }
+  ]
+}
