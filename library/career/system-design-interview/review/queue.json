@@ -189,6 +189,69 @@
       "dueOn": "2026-05-02",
       "status": "scheduled",
       "sourceEventId": "system-design-event-017"
+    },
+    {
+      "id": "review-system-design-022",
+      "pageSlug": "ch01-pp33-35-data-center",
+      "segmentId": "ch01-pp33-35-data-center-seg-002",
+      "prompt": "geoDNS가 사용자의 정확한 GPS가 아니라 DNS resolver, 네트워크 위치, latency, health check 같은 단서로 데이터 센터 IP를 고른다는 점을 설명하고, 독해 중 질문 주차장을 어떻게 쓸지 말하라.",
+      "dueOn": "2026-05-03",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-018"
+    },
+    {
+      "id": "review-system-design-023",
+      "pageSlug": "ch01-pp33-35-data-center",
+      "segmentId": "ch01-pp33-35-data-center-seg-003",
+      "prompt": "데이터 센터 failover를 유발하는 심각한 장애 예시를 세 가지 들고, 프론트 API 에러 수신과 infra health check 기반 감지의 차이를 설명하라.",
+      "dueOn": "2026-05-04",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-019"
+    },
+    {
+      "id": "review-system-design-024",
+      "pageSlug": "ch01-pp33-35-data-center",
+      "segmentId": "ch01-pp33-35-data-center-seg-004",
+      "prompt": "여러 위치에서 테스트한다는 말이 단순 접속 확인보다 넓은 이유를 DNS routing, CDN asset, API latency, 데이터 동기화, failover drill로 설명하라.",
+      "dueOn": "2026-05-05",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-020"
+    },
+    {
+      "id": "review-system-design-025",
+      "pageSlug": "ch01-pp33-35-data-center",
+      "segmentId": "ch01-pp33-35-data-center-seg-004",
+      "prompt": "자동화된 배포 도구가 같은 artifact와 설정을 여러 데이터 센터에 반복 가능하게 배포해 configuration drift를 줄인다는 점을 설명하라.",
+      "dueOn": "2026-05-06",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-021"
+    },
+    {
+      "id": "review-system-design-026",
+      "pageSlug": "ch01-pp33-35-data-center",
+      "segmentId": "ch01-pp33-35-data-center-seg-005",
+      "prompt": "웹 서버, DB, 캐시, CDN, 메시지 큐, worker를 시스템 컴포넌트로 나누고, 각각 어떤 병목을 독립적으로 확장할 수 있는지 설명하라.",
+      "dueOn": "2026-05-07",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-022"
+    },
+    {
+      "id": "review-system-design-027",
+      "pageSlug": "ch01-p35-message-queue-intro",
+      "segmentId": "ch01-p35-message-queue-intro-seg-001",
+      "prompt": "메시지 큐의 durability가 디스크/복제 저장, ack, retry, dead-letter queue로 만들어진다는 점과 at-least-once 전달 때문에 idempotency가 필요한 이유를 설명하라.",
+      "dueOn": "2026-05-08",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-023"
+    },
+    {
+      "id": "review-system-design-028",
+      "pageSlug": "ch01-p35-message-queue-intro",
+      "segmentId": "ch01-p35-message-queue-intro-seg-001",
+      "prompt": "Kafka를 전통적인 큐와 비교해 event streaming platform이라고 설명하면서도, producer와 consumer를 비동기적으로 분리하는 메시징 컴포넌트로 볼 수 있는 이유를 말하라.",
+      "dueOn": "2026-05-09",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-024"
     }
   ]
 }

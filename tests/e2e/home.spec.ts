@@ -166,6 +166,8 @@ test.describe('home page', () => {
       page.getByRole('heading', { name: '1장 · 27~29p CDN 동작과 무효화' }),
     ).toBeVisible();
     await expect(page.getByRole('heading', { name: '1장 · 30~32p 무상태 웹 계층' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '1장 · 33~35p 데이터 센터' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '1장 · 35p 메시지 큐 도입' })).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
@@ -237,6 +239,14 @@ test.describe('home page', () => {
     ).toBeVisible();
     await expect(
       readingSection.locator('a').filter({ hasText: '1장 · 30~32p 무상태 웹 계층' }).first(),
+    ).toBeVisible();
+    await expect(readingSection.getByText('데이터 센터', { exact: true }).first()).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 33~35p 데이터 센터' }).first(),
+    ).toBeVisible();
+    await expect(readingSection.getByText('메시지 큐', { exact: true }).first()).toBeVisible();
+    await expect(
+      readingSection.locator('a').filter({ hasText: '1장 · 35p 메시지 큐 도입' }).first(),
     ).toBeVisible();
     await expect(
       readingSection.getByText('15장 구글 드라이브 설계', { exact: true }).first(),
@@ -419,12 +429,42 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/서버가 한 대뿐이면 모든 요청이 그 한 대로 가므로/).first(),
     ).toBeVisible();
-    await expect(
-      page.getByText(/자동 규모 확장\(autoscaling\)은 트래픽 양에 따라/).first(),
-    ).toBeVisible();
+    await expect(page.getByText(/AWS EC2 Auto Scaling의 Auto Scaling group/).first()).toBeVisible();
     await expect(page.getByText('질문 원문').first()).toBeVisible();
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
     await expect(page.getByText(/웹 계층에서 제거하여야 한다/).first()).toBeVisible();
+  });
+
+  test('renders the ninth system design reading batch with data center feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp33-35-data-center',
+    );
+
+    await expect(page.getByRole('heading', { name: /^1장 · 33~35p 데이터 센터$/ })).toBeVisible();
+    await expect(page.getByText(/geoDNS가 정확히 뭔데/).first()).toBeVisible();
+    await expect(page.getByText(/질문을 세 종류로 나누자/).first()).toBeVisible();
+    await expect(page.getByText(/데이터 센터 전력 장애/).first()).toBeVisible();
+    await expect(page.getByText(/여러 위치에서 테스트/).first()).toBeVisible();
+    await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
+  test('renders the tenth system design reading batch with message queue feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-p35-message-queue-intro',
+    );
+
+    await expect(page.getByRole('heading', { name: /^1장 · 35p 메시지 큐 도입$/ })).toBeVisible();
+    await expect(page.getByText(/메시지 큐의 무손실/).first()).toBeVisible();
+    await expect(page.getByText(/Kafka도 넓은 의미의 메시징/).first()).toBeVisible();
+    await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
 
   test('renders the system design journal with the captured chapter-1 questions', async ({
@@ -484,8 +524,15 @@ test.describe('home page', () => {
     await expect(page.getByText(/세션 상태와 웹 계층 범위 혼동/).first()).toBeVisible();
     await expect(page.getByText(/고정 세션과 단일 서버 문제 구분/).first()).toBeVisible();
     await expect(page.getByText(/무상태와 오토스케일링 관계 절대화/).first()).toBeVisible();
+    await expect(page.getByText(/지리적 라우팅 원리와 독해 속도 조절 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/데이터센터 장애 감지 계층 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/다중 위치 테스트 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/메시지 큐 무손실 보장 절대화/).first()).toBeVisible();
+    await expect(page.getByText(/비동기 컴포넌트와 Kafka 범위 혼동/).first()).toBeVisible();
     await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
     await expect(page.getByText(/Amazon EC2 Auto Scaling/).first()).toBeVisible();
+    await expect(page.getByText(/지리적 라우팅 원리와 독해 속도 조절 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/메시지 큐는 메시지의 무손실/).first()).toBeVisible();
     await expect(
       page
         .locator(

@@ -1,0 +1,16 @@
+{
+  "pageSlug": "ch01-p35-message-queue-intro",
+  "pageTitle": "1장 · 35p 메시지 큐 도입",
+  "lastStructuredAt": "2026-04-29",
+  "segments": [
+    {
+      "id": "ch01-p35-message-queue-intro-seg-001",
+      "order": 1,
+      "kind": "diagram",
+      "source": {
+        "startLine": 3,
+        "endLine": 14
+      }
+    }
+  ]
+}
