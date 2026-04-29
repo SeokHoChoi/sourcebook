@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(8);
+    expect(career?.counts.totalPages).toBe(10);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -166,12 +166,14 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 24~26p 캐시와 CDN 도입');
     expect(track.studyGuide?.markdown).toContain('1장 · 27~29p CDN 동작과 무효화');
     expect(track.studyGuide?.markdown).toContain('1장 · 30~32p 무상태 웹 계층');
-    expect(track.counts.totalPages).toBe(8);
-    expect(track.counts.capturedPages).toBe(8);
-    expect(track.counts.structuredPages).toBe(8);
-    expect(track.counts.overlayPages).toBe(8);
-    expect(track.counts.openConfusions).toBe(17);
-    expect(track.learnerEvents).toHaveLength(17);
+    expect(track.studyGuide?.markdown).toContain('1장 · 33~35p 데이터 센터');
+    expect(track.studyGuide?.markdown).toContain('1장 · 35p 메시지 큐 도입');
+    expect(track.counts.totalPages).toBe(10);
+    expect(track.counts.capturedPages).toBe(10);
+    expect(track.counts.structuredPages).toBe(10);
+    expect(track.counts.overlayPages).toBe(10);
+    expect(track.counts.openConfusions).toBe(24);
+    expect(track.learnerEvents).toHaveLength(24);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
@@ -185,6 +187,7 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain(
       '무상태는 상태가 없다는 뜻이 아니라 웹 서버에 묶지 않는다는 뜻이다',
     );
+    expect(track.studyGuide?.markdown).toContain('데이터 센터는 한 URL 뒤에 숨은 여러 실제 경로다');
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -363,6 +366,48 @@ describe('sourcebook catalog loader', () => {
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('object versioning');
     expect(page?.learnerEvents).toHaveLength(1);
     expect(page?.learnerEvents[0]?.questionRevision).toContain('CloudFront 같은 CDN');
+    expect(page?.reviewItems).toHaveLength(2);
+  });
+
+  it('loads the ninth system design reading batch with data center feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp33-35-data-center',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('통상 이 절차를 지리적 라우팅');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('데이터 센터');
+    expect(page?.segmentCards).toHaveLength(5);
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain('질문을 세 종류로 나누자');
+    expect(page?.segmentCards[2]?.trickySentenceExplanation).toContain('데이터 센터 전체의 전력');
+    expect(page?.segmentCards[3]?.trickySentenceExplanation).toContain('정적 자산 로딩');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('geoDNS');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('메시지 큐');
+    expect(page?.learnerEvents).toHaveLength(5);
+    expect(page?.learnerEvents[0]?.questionRevision).toContain('geoDNS는 사용자의 실제 GPS');
+    expect(page?.reviewItems).toHaveLength(5);
+  });
+
+  it('loads the tenth system design reading batch with message queue feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-p35-message-queue-intro',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('메시지 큐는 메시지의 무손실');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('메시지 큐');
+    expect(page?.segmentCards).toHaveLength(1);
+    expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('Kafka도 넓은 의미');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('메시지 큐');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('Kafka');
+    expect(page?.learnerEvents).toHaveLength(2);
+    expect(page?.learnerEvents[0]?.questionRevision).toContain('무손실');
     expect(page?.reviewItems).toHaveLength(2);
   });
 
@@ -574,6 +619,21 @@ describe('sourcebook catalog loader', () => {
       categorySlug: 'career',
       trackSlug: 'system-design-interview',
       pageSlug: 'ch01-pp27-29-cdn-operation',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-pp30-32-stateless-web-tier',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-pp33-35-data-center',
+    });
+    expect(pageParams).toContainEqual({
+      categorySlug: 'career',
+      trackSlug: 'system-design-interview',
+      pageSlug: 'ch01-p35-message-queue-intro',
     });
   });
 

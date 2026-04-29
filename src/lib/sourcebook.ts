@@ -17,7 +17,7 @@ export type LearningStage =
   | 'support-api'
   | 'reference';
 export type SourceScope = 'full-page' | 'section';
-export type SegmentKind = 'heading' | 'paragraph' | 'code' | 'list';
+export type SegmentKind = 'heading' | 'paragraph' | 'code' | 'list' | 'diagram';
 export type LearnerEventStatus = 'open' | 'scheduled' | 'resolved';
 export type ReviewItemStatus = 'due' | 'scheduled' | 'done';
 export type LearnerEventTargetView = 'page' | 'study';

@@ -505,6 +505,76 @@ function renderSourceList(text: string | null, language: 'ko' | 'en' = 'en') {
   );
 }
 
+function renderSourceDiagram(text: string | null, language: 'ko' | 'en' = 'ko') {
+  const blocks = getBlocks(text);
+
+  if (blocks.length === 0) {
+    return <p className="text-base leading-8 text-slate-500">아직 원문이 연결되지 않았다.</p>;
+  }
+
+  const lines = getLines(text ?? '');
+  const sectionTitle = lines.find((line) => line.startsWith('## '))?.replace(/^##\s+/, '');
+  const figureLabel = lines.find((line) => /^그림\s+\d+-\d+/.test(line.trim())) ?? '그림 자료';
+  const labelLines = lines
+    .filter((line) => line.trim().startsWith('- '))
+    .map((line) => line.replace(/^-\s+/, '').trim())
+    .filter(Boolean);
+  const proseBlocks = blocks.filter((block) => {
+    const trimmed = block.trim();
+
+    return (
+      trimmed.length > 0 &&
+      !trimmed.startsWith('## ') &&
+      !trimmed.startsWith('그림 ') &&
+      !trimmed.startsWith('- ')
+    );
+  });
+
+  return (
+    <div className="mx-auto max-w-[68ch] space-y-4" lang={language}>
+      <div className="rounded-[1.2rem] border border-emerald-200/80 bg-emerald-50/70 p-4">
+        <p className="text-[0.72rem] font-semibold tracking-[0.18em] text-emerald-800 uppercase">
+          도식 자료
+        </p>
+        <p className="mt-2 text-lg font-semibold text-slate-950">
+          {sectionTitle ? `${figureLabel} · ${sectionTitle}` : figureLabel}
+        </p>
+        <p className="mt-2 text-sm leading-7 text-slate-700">
+          스크린샷 이미지는 저장하지 않고, 그림의 역할과 레이블만 보존한다. 레이블은 독해를 방해하지
+          않도록 아래 접힌 영역에 따로 둔다.
+        </p>
+      </div>
+
+      {proseBlocks.map((block, index) => (
+        <p
+          key={`${index}-${block.slice(0, 24)}`}
+          className="font-reading text-[1.08rem] leading-[1.94] text-pretty whitespace-pre-wrap text-slate-950 md:text-[1.15rem]"
+        >
+          {block}
+        </p>
+      ))}
+
+      {labelLines.length > 0 ? (
+        <details className="rounded-[1.2rem] border border-black/8 bg-white p-4">
+          <summary className="cursor-pointer text-sm font-semibold text-slate-700">
+            그림에 적힌 원문 레이블 보기
+          </summary>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {labelLines.map((line, index) => (
+              <span
+                key={`${index}-${line}`}
+                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-sm leading-6 text-slate-700"
+              >
+                {line}
+              </span>
+            ))}
+          </div>
+        </details>
+      ) : null}
+    </div>
+  );
+}
+
 function containsHangul(text: string) {
   return /[가-힣]/.test(text);
 }
@@ -879,9 +949,11 @@ function ThinkingPrompts({ segment }: { segment: SegmentCard }) {
 function NarrativeBlock({ segment, label }: { segment: SegmentCard; label: string }) {
   const narrativeLabels = getNarrativeLabels(segment.sourceText);
   const renderSource =
-    segment.kind === 'list'
-      ? (text: string | null) => renderSourceList(text, narrativeLabels.language)
-      : (text: string | null) => renderSourceParagraphs(text, narrativeLabels.language);
+    segment.kind === 'diagram'
+      ? (text: string | null) => renderSourceDiagram(text, narrativeLabels.language)
+      : segment.kind === 'list'
+        ? (text: string | null) => renderSourceList(text, narrativeLabels.language)
+        : (text: string | null) => renderSourceParagraphs(text, narrativeLabels.language);
 
   return (
     <section

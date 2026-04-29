@@ -1,0 +1,151 @@
+{
+  "pageSlug": "ch01-pp33-35-data-center",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp33-35-data-center-seg-001",
+      "directTranslation": "전 세계 사용자가 생기면 한 지역의 서버만으로는 지연 시간과 장애 대응이 부족해진다. 그래서 여러 데이터 센터를 두는 단계로 넘어간다.",
+      "trickySentenceExplanation": "이 문장은 이전 페이지에서 이어지는 문장이다. 핵심은 `전 세계 어디서나 쾌적하게`라는 요구가 단순 서버 증설이 아니라 지역 분산까지 요구한다는 점이다. 서버 수를 늘리는 것과 서버를 여러 지역에 두는 것은 다른 확장 축이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "데이터 센터",
+          "korean": "서버, 네트워크, 전력, 냉각 설비가 모여 서비스를 운영하는 장소 또는 클라우드 지역 단위",
+          "explanation": "직접 건물을 소유한 회사의 서버실일 수도 있고, AWS 같은 클라우드의 Region/AZ 안에 있는 인프라일 수도 있다. 여기서는 사용자가 접속할 서비스 인프라가 놓인 지역 단위로 읽으면 된다."
+        },
+        {
+          "term": "가용성",
+          "korean": "사용자가 서비스를 사용할 수 있는 정도",
+          "explanation": "서버가 살아 있는지만이 아니라 네트워크, 데이터베이스, 배포 상태까지 포함해 요청을 정상 처리할 수 있는지를 뜻한다."
+        }
+      ],
+      "devNote": "프론트 관점에서는 글로벌 사용자가 늘면 JS/CSS 전송, 이미지 로딩, API 응답 지연, 로그인 세션, 데이터 최신성까지 지역 차이를 보이기 시작한다. `내 컴퓨터에서는 빠름`은 더 이상 충분한 테스트가 아니다.",
+      "recallQuestion": "서버를 여러 대 늘리는 것과 여러 데이터 센터를 두는 것이 왜 다른 확장 축인지 설명하라.",
+      "speakingTransferPrompt": "한국 사용자와 미국 사용자가 같은 서비스에 접속할 때 지연 시간과 장애 대응이 어떻게 달라질 수 있는지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp33-35-data-center-seg-002",
+      "directTranslation": "geoDNS는 사용자의 위치나 요청이 들어온 DNS 경로를 기준으로 도메인을 어느 데이터 센터의 IP로 돌려줄지 결정하는 DNS 서비스다. `가장 가까운`은 보통 GPS처럼 정확한 물리 거리라기보다 네트워크 위치, 리전 정책, 지연 시간, health check 결과를 조합한 운영 판단에 가깝다.",
+      "trickySentenceExplanation": "여기서 네가 `geoDNS가 정확히 뭔데? 어떻게 위치를 아는데?`라고 멈춘 것은 사고력이 나빠서가 아니다. 다만 모든 문장을 구현 원리까지 즉시 파고들면 작업 기억이 금방 꽉 찬다. 읽을 때는 질문을 세 종류로 나누자. 1) 지금 문장을 이해하지 못하면 다음 문장이 안 읽히는 blocking question, 2) 원리는 궁금하지만 지금 흐름에는 없어도 되는 mechanism question, 3) 설계 판단에 영향을 주는 design question. geoDNS의 내부 원리는 2번에 가깝다. 그래서 `DNS가 사용자 위치/네트워크 단서로 가까운 데이터 센터 IP를 돌려주는구나`까지만 잡고, 세부 원리는 질문 주차장에 넣은 뒤 다음 문단을 읽는 편이 낫다. 인지부하 이론은 학습 중 불필요한 세부 탐색이 작업 기억을 잡아먹을 수 있다고 설명하고, 자기설명 연구는 `내가 지금 무엇을 모르는지 표시하는 것` 자체는 이해를 돕는다고 본다. 정답은 질문을 없애는 것이 아니라 질문을 분류하고 시간 제한을 거는 것이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "지리적 라우팅",
+          "korean": "geographic routing / geo-routing",
+          "explanation": "사용자의 위치나 네트워크 위치에 따라 가까운 데이터 센터, 리전, 엣지 서버 쪽으로 트래픽을 보내는 방식이다."
+        },
+        {
+          "term": "geoDNS",
+          "korean": "위치 기반 DNS 응답",
+          "explanation": "도메인 이름을 항상 같은 IP로 바꾸지 않고, 사용자의 위치나 DNS resolver 위치, latency/health 정책에 따라 다른 IP를 돌려주는 DNS 방식이다."
+        },
+        {
+          "term": "authoritative DNS",
+          "korean": "도메인의 최종 DNS 답을 가진 DNS 서버",
+          "explanation": "브라우저나 OS가 직접 모든 것을 아는 것이 아니라 여러 DNS 단계를 거쳐 도메인의 권한 있는 DNS가 최종 답을 준다. geoDNS 정책은 이 단계에서 적용될 수 있다."
+        },
+        {
+          "term": "latency-based routing",
+          "korean": "지연 시간이 낮은 리소스로 보내는 라우팅",
+          "explanation": "사용자에게 물리적으로 가장 가까운 곳이 아니라 네트워크 지연 시간이 더 낮은 곳을 선택하는 정책이다. AWS Route 53에도 지연 시간 기반 라우팅 정책이 있다."
+        },
+        {
+          "term": "질문 주차장",
+          "korean": "지금 흐름을 막지 않는 질문을 잠시 보관하는 독해 도구",
+          "explanation": "궁금증을 버리는 것이 아니라 `지금 필요한 질문인지`를 표시해 두고, 문단 끝이나 절 끝에서 다시 돌아오는 방식이다."
+        }
+      ],
+      "devNote": "운전 비유로 바꾸면, 차선 변경 때 모든 물리 법칙을 계산하는 것이 아니라 `후방 차 거리`, `상대 속도`, `빈 공간`, `내 차 이동 경로`를 패턴으로 묶어 빠르게 판단하는 훈련이 필요하다. 읽기도 같다. 모든 단어를 즉시 깊게 파지 말고, 먼저 `이 문단의 역할`과 `다음 문장 예고`를 잡은 뒤 필요한 질문만 파고들자.",
+      "recallQuestion": "geoDNS가 `항상 같은 IP를 돌려주는 DNS`와 다른 점을 설명하라.",
+      "speakingTransferPrompt": "`가장 가까운 데이터 센터`가 GPS 기준으로만 정해지는 것이 아닌 이유를 네트워크 위치, latency, health check라는 단어로 설명해 보자."
+    },
+    {
+      "segmentId": "ch01-pp33-35-data-center-seg-003",
+      "directTranslation": "데이터 센터 하나가 심각하게 망가지면 트래픽을 건강한 데이터 센터로 돌린다. 이것은 사용자가 에러를 본 뒤 프론트가 판단하는 흐름이라기보다, DNS, 글로벌 로드밸런서, health check, 모니터링이 먼저 감지하고 라우팅 정책을 바꾸는 운영 계층의 일이다.",
+      "trickySentenceExplanation": "`심각한 장애`는 서버 한 대의 에러만 뜻하지 않는다. 데이터 센터 전체의 전력/네트워크 장애, 로드밸런서 장애, 웹 계층 대량 실패, 데이터베이스 장애, 캐시 장애, 잘못된 배포, 특정 리전 클라우드 서비스 장애, 높은 packet loss와 지연 시간도 포함될 수 있다. 프론트에서 API 에러를 보는 것도 장애 신호가 될 수 있지만, failover 판단은 보통 infra health check, synthetic monitoring, SLO 지표, 로그/메트릭/트레이싱이 먼저 담당한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "failover",
+          "korean": "장애 시 대체 리소스로 자동 전환하는 절차",
+          "explanation": "한 데이터 센터, 서버, DB가 실패하면 건강한 쪽으로 트래픽이나 역할을 넘기는 과정이다."
+        },
+        {
+          "term": "health check",
+          "korean": "서비스가 살아 있고 정상 처리 가능한지 주기적으로 확인하는 검사",
+          "explanation": "단순히 포트가 열렸는지뿐 아니라 특정 URL, DB 연결, 응답 시간, 에러율 등을 검사할 수 있다."
+        },
+        {
+          "term": "synthetic monitoring",
+          "korean": "가짜 사용자가 정해진 시나리오를 반복 실행해 서비스 상태를 확인하는 모니터링",
+          "explanation": "실제 사용자가 신고하기 전에 여러 지역에서 로그인, 검색, 결제 같은 흐름을 자동으로 실행해 장애를 감지한다."
+        },
+        {
+          "term": "SLO",
+          "korean": "Service Level Objective",
+          "explanation": "서비스가 어느 정도의 성공률, 지연 시간, 가용성을 달성해야 하는지 정한 목표다. 예를 들어 `p95 API 응답 300ms 이하` 같은 식이다."
+        }
+      ],
+      "devNote": "프론트가 할 일은 `장애를 직접 판단해 전 세계 트래픽을 바꾸는 것`이 아니다. 대신 API error boundary, retry/backoff, offline 안내, stale cache 표시, read-only 모드 같은 사용자 경험을 준비한다. 장애 전환 자체는 DNS/로드밸런서/플랫폼 계층이 담당하는 경우가 많다.",
+      "recallQuestion": "데이터 센터 장애 감지가 프론트의 API 에러 코드 수신과 같은 층위가 아닌 이유를 설명하라.",
+      "speakingTransferPrompt": "심각한 장애 예시 세 가지를 들고, 각각 health check나 모니터링이 어떻게 감지할 수 있을지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp33-35-data-center-seg-004",
+      "directTranslation": "다중 데이터 센터는 트래픽을 어느 지역으로 보낼지, 지역별 데이터가 맞는지, 여러 위치에서 같은 서비스가 배포되고 테스트되는지를 모두 해결해야 한다.",
+      "trickySentenceExplanation": "`여러 위치에서 테스트`는 개발자가 직접 비행기 타고 돌아다니라는 뜻이 아니다. 여러 리전의 synthetic monitoring, VPN/프록시, 클라우드 테스트 에이전트, 브라우저 테스트 서비스, RUM(real user monitoring)을 써서 지역별 DNS 라우팅, latency, 정적 자산 로딩, API 경로, 로그인, 데이터 동기화, read-after-write, failover를 검증하라는 뜻이다. `자동화된 배포 도구`에 대한 네 해석은 방향이 맞다. 자동화가 서비스를 같게 만드는 마법은 아니지만, 같은 artifact와 설정을 여러 데이터 센터에 반복 가능하게 배포하고, 사람이 수동으로 놓치는 version drift를 줄이는 것이 핵심이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "트래픽 우회",
+          "korean": "traffic routing / failover routing",
+          "explanation": "사용자 요청을 어느 데이터 센터, 리전, 서버 풀로 보낼지 결정하고 장애 시 다른 곳으로 돌리는 일이다."
+        },
+        {
+          "term": "데이터 동기화",
+          "korean": "synchronization",
+          "explanation": "여러 데이터 센터의 DB나 저장소가 같은 데이터를 갖도록 복제하고 맞추는 과정이다. 항상 즉시 같을 수도, 약간 늦게 맞을 수도 있다."
+        },
+        {
+          "term": "RUM",
+          "korean": "Real User Monitoring",
+          "explanation": "실제 사용자의 브라우저나 앱에서 수집한 로딩 시간, 에러, 지역 정보를 바탕으로 사용자 체감 품질을 관측하는 방식이다."
+        },
+        {
+          "term": "deployment artifact",
+          "korean": "배포 산출물",
+          "explanation": "빌드된 서버 이미지, JS 번들, 컨테이너 이미지처럼 배포 대상이 되는 고정된 결과물이다. 여러 데이터 센터에 같은 artifact를 배포해야 version drift를 줄일 수 있다."
+        },
+        {
+          "term": "configuration drift",
+          "korean": "환경별 설정이 조금씩 달라져 생기는 불일치",
+          "explanation": "처음에는 같았던 서버나 데이터 센터가 수동 수정과 누락으로 서로 다른 설정을 갖게 되는 문제다."
+        }
+      ],
+      "devNote": "프론트 실무 예시는 `서울에서는 JS chunk가 잘 내려오는데 미국 서부에서는 특정 chunk 404`, `한 지역은 새 API schema, 다른 지역은 이전 schema`, `로그인은 되지만 다른 리전으로 넘어가면 장바구니가 비어 보임` 같은 문제다. 그래서 여러 위치 테스트는 단순 접속 확인이 아니라 핵심 사용자 플로우와 데이터 최신성까지 본다.",
+      "recallQuestion": "여러 위치에서 웹사이트를 테스트한다는 말이 단순히 다른 장소에서 접속해 보는 것보다 넓은 이유를 설명하라.",
+      "speakingTransferPrompt": "다중 데이터 센터 서비스에서 로그인, 상품 조회, 결제, 정적 자산 로딩을 어떤 위치별 테스트로 확인할지 말해 보자."
+    },
+    {
+      "segmentId": "ch01-pp33-35-data-center-seg-005",
+      "directTranslation": "시스템을 더 키우려면 웹 서버, 데이터베이스, 캐시, CDN, 메시지 큐, 작업자 같은 구성요소를 서로 분리해 각각 필요한 만큼만 확장할 수 있어야 한다.",
+      "trickySentenceExplanation": "여기서 컴포넌트는 React 컴포넌트가 아니라 시스템 구성요소다. 네가 이전에 잡았던 `DB만 확장하거나 로드밸런서 뒤의 웹 서버만 확장한다`는 이해가 맞다. 다만 여기서는 한 걸음 더 나아가 `즉시 처리하지 않아도 되는 일`을 메시지 큐로 빼서 웹 요청 처리와 비동기 작업 처리까지 분리한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "시스템 컴포넌트",
+          "korean": "배포되고 실행되는 시스템 구성요소",
+          "explanation": "웹 서버, DB, 캐시, CDN, 검색 서버, 메시지 큐, worker처럼 네트워크로 연결되고 독립적으로 운영되는 단위다."
+        },
+        {
+          "term": "독립적 확장",
+          "korean": "병목이 생긴 부분만 따로 늘리는 구조",
+          "explanation": "이미지 처리 worker만 늘리거나, 읽기 DB replica만 늘리거나, 웹 서버만 늘리는 식으로 전체 시스템을 한꺼번에 키우지 않는 방식이다."
+        },
+        {
+          "term": "worker",
+          "korean": "백그라운드 작업 처리 프로세스",
+          "explanation": "사용자 요청을 바로 붙잡고 있지 않고, 큐에서 작업을 꺼내 이메일 발송, 이미지 리사이즈, 알림 전송 같은 일을 수행하는 서버 프로세스다."
+        }
+      ],
+      "devNote": "프론트 관점에서는 `업로드 버튼을 눌렀는데 바로 최종 결과가 나와야 하나, 아니면 작업 접수 후 진행 상태를 보여 주면 되나`가 이 분리와 연결된다. 비동기 worker가 들어오면 프론트는 polling, WebSocket/SSE, 작업 상태 화면, 실패 재시도 UX를 설계해야 한다.",
+      "recallQuestion": "시스템 컴포넌트를 분리하면 왜 모든 리소스를 한꺼번에 늘리지 않아도 되는가?",
+      "speakingTransferPrompt": "이미지 업로드 서비스를 웹 서버, 객체 저장소, 메시지 큐, worker, DB로 나눠 설명해 보자."
+    }
+  ]
+}

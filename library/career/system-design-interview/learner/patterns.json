@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27",
+  "generatedAt": "2026-04-29",
   "patterns": [
     {
       "label": "프론트 확장성 범위 오판",
@@ -102,6 +102,48 @@
       "count": 1,
       "pageSlugs": ["ch01-pp30-32-stateless-web-tier"],
       "representativeQuestion": "AWS의 오토스케일링은 어떤 이름의 기능인가? 무상태가 아니면 autoscaling이 불가능한가, 아니면 가능하지만 복잡하고 위험한가?"
+    },
+    {
+      "label": "지리적 라우팅 원리와 독해 속도 조절 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp33-35-data-center"],
+      "representativeQuestion": "geoDNS는 어떤 원리로 가까운 데이터 센터를 고르는가? 세부 원리를 바로 파고드는 태도와 독해 속도는 어떻게 균형 잡아야 하는가?"
+    },
+    {
+      "label": "데이터센터 장애 감지 계층 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp33-35-data-center"],
+      "representativeQuestion": "데이터 센터의 심각한 장애는 무엇이며, 프론트가 API 에러를 받는 것과 인프라 계층의 failover 감지는 어떻게 다른가?"
+    },
+    {
+      "label": "다중 위치 테스트 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp33-35-data-center"],
+      "representativeQuestion": "여러 위치에서 테스트한다는 말은 사람이 직접 이동한다는 뜻인가, 여러 리전의 사용자 플로우와 데이터 동기화를 검증한다는 뜻인가?"
+    },
+    {
+      "label": "배포 자동화 역할 과소/과대 해석",
+      "count": 1,
+      "pageSlugs": ["ch01-pp33-35-data-center"],
+      "representativeQuestion": "자동화된 배포 도구가 모든 데이터 센터에 같은 서비스를 설치하게 한다는 말은 정확히 무엇을 자동화한다는 뜻인가?"
+    },
+    {
+      "label": "시스템 컴포넌트 분리 재확인",
+      "count": 1,
+      "pageSlugs": ["ch01-pp33-35-data-center"],
+      "representativeQuestion": "컴포넌트를 분리하고 독립적으로 확장한다는 말은 DB, 웹 서버, 캐시, 메시지 큐 같은 시스템 구성요소를 따로 키운다는 뜻인가?"
+    },
+    {
+      "label": "메시지 큐 무손실 보장 절대화",
+      "count": 1,
+      "pageSlugs": ["ch01-p35-message-queue-intro"],
+      "representativeQuestion": "메시지 큐의 무손실은 어떤 원리로 보장되며, 왜 큐가 producer와 consumer 사이에 필요한가?"
+    },
+    {
+      "label": "비동기 컴포넌트와 Kafka 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-p35-message-queue-intro"],
+      "representativeQuestion": "Kafka는 메시지 큐인가, 이벤트 스트리밍 플랫폼인가, 그리고 이 문맥에서 컴포넌트라고 불러도 되는가?"
     }
   ]
 }

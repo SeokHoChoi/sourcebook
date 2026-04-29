@@ -300,6 +300,10 @@
         {
           "pageSlug": "ch01-p18-nosql-and-scaling",
           "segmentIds": ["ch01-p18-nosql-and-scaling-seg-007"]
+        },
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-003", "ch01-pp33-35-data-center-seg-004"]
         }
       ]
     },
@@ -1156,6 +1160,242 @@
         {
           "pageSlug": "ch01-pp14-15-intro-single-server",
           "segmentIds": ["ch01-pp14-15-intro-single-server-seg-007"]
+        }
+      ]
+    },
+    {
+      "id": "data-center",
+      "term": "데이터 센터",
+      "korean": "data center",
+      "explanation": "서버, 네트워크, 전력, 냉각 설비가 모여 서비스를 운영하는 장소 또는 클라우드 인프라 지역 단위. 직접 건물일 수도 있고 클라우드 리전/AZ 내부의 운영 단위일 수도 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": [
+            "ch01-pp33-35-data-center-seg-001",
+            "ch01-pp33-35-data-center-seg-002",
+            "ch01-pp33-35-data-center-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "geo-routing",
+      "term": "지리적 라우팅",
+      "korean": "geo-routing",
+      "explanation": "사용자의 위치나 네트워크 위치에 따라 가까운 데이터 센터, 리전, 엣지 서버 쪽으로 트래픽을 보내는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "geodns",
+      "term": "geoDNS",
+      "korean": "위치 기반 DNS 응답",
+      "explanation": "도메인 이름을 항상 같은 IP로 바꾸지 않고, 사용자의 위치나 DNS resolver 위치, latency/health 정책에 따라 다른 IP를 돌려주는 DNS 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "authoritative-dns",
+      "term": "authoritative DNS",
+      "korean": "권한 있는 DNS 서버",
+      "explanation": "특정 도메인의 최종 DNS 답을 가진 서버. geoDNS 정책은 이 응답 단계에서 사용자 위치나 정책에 따라 다른 IP를 반환할 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "health-check",
+      "term": "health check",
+      "korean": "상태 검사",
+      "explanation": "서비스가 살아 있고 정상 처리 가능한지 주기적으로 확인하는 검사. 특정 URL, 응답 시간, 에러율, DB 연결 등을 기준으로 삼을 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "synthetic-monitoring",
+      "term": "synthetic monitoring",
+      "korean": "가짜 사용자 시나리오 모니터링",
+      "explanation": "여러 위치의 테스트 에이전트가 로그인, 검색, 결제 같은 흐름을 반복 실행해 실제 사용자가 신고하기 전에 장애와 지연을 감지하는 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-003", "ch01-pp33-35-data-center-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "deployment-artifact",
+      "term": "deployment artifact",
+      "korean": "배포 산출물",
+      "explanation": "빌드된 서버 이미지, 컨테이너 이미지, JS/CSS 번들처럼 배포 대상이 되는 고정된 결과물. 여러 데이터 센터에 같은 artifact를 배포해야 버전 차이를 줄일 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "configuration-drift",
+      "term": "configuration drift",
+      "korean": "설정 불일치 누적",
+      "explanation": "처음에는 같았던 서버나 데이터 센터가 수동 수정과 누락으로 서로 다른 설정을 갖게 되는 문제.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "worker",
+      "term": "worker",
+      "korean": "백그라운드 작업 처리 프로세스",
+      "explanation": "큐에서 작업을 꺼내 이메일 발송, 이미지 리사이즈, 알림 전송 같은 일을 수행하는 서버 프로세스.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "message-queue",
+      "term": "메시지 큐",
+      "korean": "message queue",
+      "explanation": "생산자가 만든 작업 메시지를 보관하고 소비자가 나중에 꺼내 처리하게 해, 두 컴포넌트의 속도 차이와 일시 장애를 흡수하는 중간 저장소.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp33-35-data-center",
+          "segmentIds": ["ch01-pp33-35-data-center-seg-005"]
+        },
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "durability",
+      "term": "durability",
+      "korean": "내구성 / 안전 보관 성질",
+      "explanation": "메시지나 데이터가 저장된 뒤 장애가 나도 쉽게 사라지지 않도록 디스크 기록, 복제, ack 절차 등으로 보호하는 성질.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "asynchronous-communication",
+      "term": "비동기 통신",
+      "korean": "asynchronous communication",
+      "explanation": "요청한 쪽이 상대 작업이 끝날 때까지 같은 호출 안에서 기다리지 않고, 메시지를 남긴 뒤 나중에 처리되도록 하는 통신 방식.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "producer-publisher",
+      "term": "생산자 / 발행자",
+      "korean": "producer / publisher",
+      "explanation": "메시지를 만들어 큐나 스트림에 넣는 서비스. 예를 들어 업로드 API가 이미지 리사이즈 작업 메시지를 발행할 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "consumer-subscriber",
+      "term": "소비자 / 구독자",
+      "korean": "consumer / subscriber",
+      "explanation": "큐나 스트림에서 메시지를 읽어 실제 작업을 수행하는 서비스. 예를 들어 worker가 이미지를 리사이즈하고 저장한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "ack",
+      "term": "ack",
+      "korean": "acknowledgement / 처리 확인 신호",
+      "explanation": "소비자가 메시지를 성공적으로 처리했음을 큐에 알리는 신호. ack가 없으면 큐는 메시지를 다시 전달할 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "at-least-once-delivery",
+      "term": "at-least-once delivery",
+      "korean": "최소 한 번 전달",
+      "explanation": "메시지를 잃지 않기 위해 한 번 이상 전달하는 보장. 실패 상황에서는 같은 메시지가 두 번 처리될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "idempotency",
+      "term": "idempotency",
+      "korean": "멱등성",
+      "explanation": "같은 요청을 여러 번 처리해도 결과가 한 번 처리한 것과 같게 만드는 성질. 최소 한 번 전달 시스템에서 중복 메시지 처리를 막는 핵심 설계 기준이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "dead-letter-queue",
+      "term": "dead-letter queue",
+      "korean": "실패 메시지 보관 큐",
+      "explanation": "정해진 재시도 횟수를 넘긴 메시지를 따로 모아 원인 분석과 재처리를 할 수 있게 하는 큐다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "kafka",
+      "term": "Kafka",
+      "korean": "분산 이벤트 스트리밍 플랫폼",
+      "explanation": "전통적인 FIFO 큐와 완전히 같지는 않지만, producer/consumer, durable log, consumer group을 통해 비동기 메시징과 이벤트 스트리밍을 구현하는 대표 시스템이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p35-message-queue-intro",
+          "segmentIds": ["ch01-p35-message-queue-intro-seg-001"]
         }
       ]
     }
