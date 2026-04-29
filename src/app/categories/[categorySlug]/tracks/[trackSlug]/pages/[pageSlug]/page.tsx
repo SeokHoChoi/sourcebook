@@ -823,6 +823,183 @@ function renderNoteParagraphs(text: string | null, tone: 'amber' | 'slate' = 'sl
   );
 }
 
+type ThinkingPromptKind = 'recall' | 'transfer';
+type ThinkingPromptTone = 'slate' | 'amber';
+
+const frontendInterviewKeywords = [
+  'API',
+  'CDN',
+  'Core Web Vitals',
+  'GA4',
+  'Hotjar',
+  'JS',
+  'React',
+  'Sentry',
+  'TanStack',
+  'UI',
+  'Web Vitals',
+  'WebSocket',
+  '브라우저',
+  '성능',
+  '에러',
+  '업로드',
+  '오프라인',
+  '장애',
+  '재시도',
+  '캐시',
+  '프론트',
+  '화면',
+];
+
+function compactThinkingText(text: string | null, maxLength = 560) {
+  const normalized = text?.replace(/\s+/g, ' ').trim();
+
+  if (!normalized) {
+    return null;
+  }
+
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+
+  const preview = normalized.slice(0, maxLength);
+  const sentenceBoundary = Math.max(
+    preview.lastIndexOf('. '),
+    preview.lastIndexOf('? '),
+    preview.lastIndexOf('! '),
+    preview.lastIndexOf('다. '),
+  );
+  const cutPoint = sentenceBoundary > maxLength * 0.55 ? sentenceBoundary + 1 : maxLength;
+
+  return `${preview.slice(0, cutPoint).trim()}...`;
+}
+
+function buildThinkingPromptAnswer(segment: SegmentCard, kind: ThinkingPromptKind) {
+  const explicitAnswer = kind === 'recall' ? segment.recallAnswer : segment.speakingTransferAnswer;
+
+  if (explicitAnswer) {
+    return explicitAnswer;
+  }
+
+  const coreAnswer = compactThinkingText(segment.directTranslation, 620);
+  const supportAnswer = compactThinkingText(
+    kind === 'recall'
+      ? (segment.trickySentenceExplanation ?? segment.devNote)
+      : (segment.devNote ?? segment.trickySentenceExplanation),
+    620,
+  );
+
+  if (coreAnswer && supportAnswer) {
+    return `${coreAnswer}\n\n답변을 더 단단하게 만들려면 이렇게 덧붙이면 좋다. ${supportAnswer}`;
+  }
+
+  if (coreAnswer) {
+    return coreAnswer;
+  }
+
+  if (supportAnswer) {
+    return supportAnswer;
+  }
+
+  return '먼저 원문이 말하는 구성 요소를 하나씩 짚고, 그 요소가 왜 필요한지와 어떤 trade-off를 만드는지 순서대로 말하면 된다.';
+}
+
+function buildFrontendInterviewHighlight(segment: SegmentCard) {
+  const explicitHighlight = compactThinkingText(segment.interviewHighlight, 620);
+
+  if (explicitHighlight) {
+    return explicitHighlight;
+  }
+
+  const source = [segment.devNote, segment.trickySentenceExplanation, segment.directTranslation]
+    .filter(Boolean)
+    .join(' ');
+
+  if (!frontendInterviewKeywords.some((keyword) => source.includes(keyword))) {
+    return null;
+  }
+
+  const highlightBody = compactThinkingText(segment.devNote ?? source, 520);
+
+  if (!highlightBody) {
+    return null;
+  }
+
+  return `프론트 면접에서는 이 답을 "화면 구현"에만 가두지 말고 사용자 체감 성능, API 경계, 캐시/장애/재시도 UX까지 연결해 말하면 좋다. ${highlightBody}`;
+}
+
+function ThinkingPromptToggle({
+  answer,
+  highlight,
+  kind,
+  label,
+  text,
+  tone,
+}: {
+  answer: string;
+  highlight: string | null;
+  kind: ThinkingPromptKind;
+  label: string;
+  text: string;
+  tone: ThinkingPromptTone;
+}) {
+  const isAmber = tone === 'amber';
+
+  return (
+    <details
+      className={cn(
+        'group/thinking overflow-hidden rounded-2xl border transition-colors',
+        isAmber ? 'border-amber-200/80 bg-amber-50/65' : 'border-black/8 bg-white/90',
+      )}
+    >
+      <summary className="flex cursor-pointer list-none items-start gap-3 px-3 py-3 focus-visible:ring-2 focus-visible:ring-slate-300 focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+        <span
+          className={cn(
+            'mt-0.5 inline-flex shrink-0 rounded-full px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.14em] uppercase',
+            isAmber ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-700',
+          )}
+        >
+          {label}
+        </span>
+        <span className="min-w-0 flex-1 text-sm leading-7 text-slate-800">{text}</span>
+        <span className="mt-0.5 hidden shrink-0 rounded-full border border-black/8 bg-white/80 px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.12em] text-slate-500 uppercase sm:inline-flex">
+          정답 확인
+        </span>
+        <ChevronRight className="mt-1.5 size-4 shrink-0 text-slate-400 transition-transform group-open/thinking:rotate-90" />
+      </summary>
+
+      <div className="space-y-3 border-t border-black/6 bg-white/72 px-4 py-4">
+        <section className="space-y-2">
+          <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-slate-400 uppercase">
+            모범 답안
+          </p>
+          <p className="text-sm leading-7 whitespace-pre-wrap text-slate-800">{answer}</p>
+        </section>
+
+        {highlight ? (
+          <section
+            className={cn(
+              'rounded-2xl border px-4 py-3',
+              isAmber ? 'border-amber-200/90 bg-amber-50/90' : 'border-emerald-200 bg-emerald-50',
+            )}
+          >
+            <p className="text-[0.68rem] font-semibold tracking-[0.16em] text-emerald-800/75 uppercase">
+              프론트 면접 어필
+            </p>
+            <p className="mt-2 text-sm leading-7 text-slate-800">{highlight}</p>
+          </section>
+        ) : null}
+
+        <p className="text-xs leading-6 text-slate-500">
+          {kind === 'recall'
+            ? '답을 보기 전에 먼저 핵심 결론을 한 문장으로 말해 보고, 그다음 이유와 trade-off를 붙여 보자.'
+            : '답을 보기 전에 네 프로젝트의 화면, API, 장애 UX 중 하나에 억지로라도 연결해 보자.'}
+        </p>
+      </div>
+    </details>
+  );
+}
+
 function SectionAnchor({ id }: { id: string }) {
   return (
     <a
@@ -892,12 +1069,25 @@ function GlossaryCluster({ glosses }: { glosses: OverlayGloss[] }) {
 }
 
 function ThinkingPrompts({ segment }: { segment: SegmentCard }) {
+  const highlight = buildFrontendInterviewHighlight(segment);
   const prompts = [
     segment.recallQuestion
-      ? { label: '핵심', text: segment.recallQuestion, tone: 'slate' as const }
+      ? {
+          answer: buildThinkingPromptAnswer(segment, 'recall'),
+          kind: 'recall' as const,
+          label: '핵심',
+          text: segment.recallQuestion,
+          tone: 'slate' as const,
+        }
       : null,
     segment.speakingTransferPrompt
-      ? { label: '연결', text: segment.speakingTransferPrompt, tone: 'amber' as const }
+      ? {
+          answer: buildThinkingPromptAnswer(segment, 'transfer'),
+          kind: 'transfer' as const,
+          label: '연결',
+          text: segment.speakingTransferPrompt,
+          tone: 'amber' as const,
+        }
       : null,
   ].filter((value): value is NonNullable<typeof value> => Boolean(value));
 
@@ -917,29 +1107,15 @@ function ThinkingPrompts({ segment }: { segment: SegmentCard }) {
       </div>
       <div className="mt-3 space-y-2.5">
         {prompts.map((prompt) => (
-          <article
+          <ThinkingPromptToggle
             key={`${prompt.label}-${prompt.text}`}
-            className={cn(
-              'rounded-2xl border px-3 py-3',
-              prompt.tone === 'amber'
-                ? 'border-amber-200/80 bg-amber-50/65'
-                : 'border-black/8 bg-white/90',
-            )}
-          >
-            <div className="flex items-start gap-3">
-              <span
-                className={cn(
-                  'mt-0.5 inline-flex shrink-0 rounded-full px-2.5 py-1 text-[0.68rem] font-semibold tracking-[0.14em] uppercase',
-                  prompt.tone === 'amber'
-                    ? 'bg-amber-100 text-amber-900'
-                    : 'bg-slate-100 text-slate-700',
-                )}
-              >
-                {prompt.label}
-              </span>
-              <p className="text-sm leading-7 text-slate-800">{prompt.text}</p>
-            </div>
-          </article>
+            answer={prompt.answer}
+            highlight={highlight}
+            kind={prompt.kind}
+            label={prompt.label}
+            text={prompt.text}
+            tone={prompt.tone}
+          />
         ))}
       </div>
     </section>

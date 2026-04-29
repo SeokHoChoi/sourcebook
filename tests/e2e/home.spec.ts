@@ -31,7 +31,7 @@ test.describe('home page', () => {
       page.getByText(/원문과 직독직해, 코드 읽기 포인트를 같은 문맥 안에서/),
     ).toBeVisible();
     await expect(
-      page.getByText(/useForm은 폼을 더 쉽게 관리하기 위한 커스텀 훅이다/),
+      page.getByText(/useForm은 폼을 더 쉽게 관리하기 위한 커스텀 훅이다/).first(),
     ).toBeVisible();
     await expect(page.getByText(/학습 로그/)).toBeVisible();
     await page.getByText('학습 로그').click();
@@ -318,7 +318,7 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/서버에서 서버로 요청하는 것도 HTTP 요청 아닌가/).first(),
     ).toBeVisible();
-    await expect(page.getByText(/실제 웹 프론트도 JSON API를 많이 쓴다/)).toBeVisible();
+    await expect(page.getByText(/실제 웹 프론트도 JSON API를 많이 쓴다/).first()).toBeVisible();
   });
 
   test('renders the third system design reading batch with database split feedback', async ({
@@ -481,6 +481,30 @@ test.describe('home page', () => {
     await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
     await expect(page.getByText('질문 원문').first()).toBeVisible();
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
+  test('keeps system design thinking prompt model answers closed until opened', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp33-35-data-center',
+    );
+
+    const thinkingPrompt = page
+      .locator('details', {
+        hasText:
+          '서버를 여러 대 늘리는 것과 여러 데이터 센터를 두는 것이 왜 다른 확장 축인지 설명하라.',
+      })
+      .first();
+
+    await expect(thinkingPrompt.locator('summary')).toBeVisible();
+    await expect(thinkingPrompt.getByText('모범 답안')).toBeHidden();
+
+    await thinkingPrompt.locator('summary').click();
+
+    await expect(thinkingPrompt.getByText('모범 답안')).toBeVisible();
+    await expect(thinkingPrompt.getByText('프론트 면접 어필')).toBeVisible();
+    await expect(thinkingPrompt.getByText(/전 세계 사용자가 생기면/)).toBeVisible();
   });
 
   test('renders the tenth system design reading batch with message queue feedback', async ({
