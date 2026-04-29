@@ -20,7 +20,8 @@
       ],
       "devNote": "프론트 관점에서는 글로벌 사용자가 늘면 JS/CSS 전송, 이미지 로딩, API 응답 지연, 로그인 세션, 데이터 최신성까지 지역 차이를 보이기 시작한다. `내 컴퓨터에서는 빠름`은 더 이상 충분한 테스트가 아니다.",
       "recallQuestion": "서버를 여러 대 늘리는 것과 여러 데이터 센터를 두는 것이 왜 다른 확장 축인지 설명하라.",
-      "speakingTransferPrompt": "한국 사용자와 미국 사용자가 같은 서비스에 접속할 때 지연 시간과 장애 대응이 어떻게 달라질 수 있는지 말해 보자."
+      "speakingTransferPrompt": "한국 사용자와 미국 사용자가 같은 서비스에 접속할 때 지연 시간과 장애 대응이 어떻게 달라질 수 있는지 말해 보자.",
+      "interviewHighlight": "프론트 면접에서는 글로벌 트래픽을 `서버가 알아서 처리`로 넘기지 말고 CDN edge, API region, Web Vitals 지역별 분포, 장애 시 fallback UI까지 연결해 말하면 좋다."
     },
     {
       "segmentId": "ch01-pp33-35-data-center-seg-002",
