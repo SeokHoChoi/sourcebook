@@ -144,6 +144,36 @@
       "count": 1,
       "pageSlugs": ["ch01-p35-message-queue-intro"],
       "representativeQuestion": "Kafka는 메시지 큐인가, 이벤트 스트리밍 플랫폼인가, 그리고 이 문맥에서 컴포넌트라고 불러도 되는가?"
+    },
+    {
+      "label": "프론트 상태관리 비유와 메시지 큐 결합도 범위 구분",
+      "count": 1,
+      "pageSlugs": ["ch01-p36-message-queue-worker-scaling"],
+      "representativeQuestion": "Zustand로 props drilling을 줄이는 것과 메시지 큐로 서비스 결합을 낮추는 것이 비슷한가, 어디서부터 다른가?"
+    },
+    {
+      "label": "로그와 행동 분석 도구 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp36-38-logs-metrics-automation"],
+      "representativeQuestion": "운영 로그, 프론트 error monitoring, GA4 이벤트, Hotjar session replay는 모두 같은 수집 도구인가, 목적이 다른가?"
+    },
+    {
+      "label": "메트릭을 서버 전용 수치로 축소 해석",
+      "count": 1,
+      "pageSlugs": ["ch01-pp36-38-logs-metrics-automation"],
+      "representativeQuestion": "메트릭은 서버 CPU 같은 숫자만 뜻하는가, 프론트 성능과 비즈니스 이벤트도 포함하는가?"
+    },
+    {
+      "label": "시스템 설계 그림을 장식으로 보는 습관",
+      "count": 1,
+      "pageSlugs": ["ch01-pp36-38-logs-metrics-automation"],
+      "representativeQuestion": "그림 1-19를 볼 때 박스와 선을 어떤 순서로 읽어야 면접 설계 설명에 도움이 되는가?"
+    },
+    {
+      "label": "DB 데이터량 증가와 사용자 요청 증가 병목 구분",
+      "count": 1,
+      "pageSlugs": ["ch01-p38-database-scaling-intro"],
+      "representativeQuestion": "저장할 데이터가 많아지면 DB 부하가 증가한다는 말은 내부 탐색 비용 증가인가, 사용자 증가에 따른 요청 증가인가?"
     }
   ]
 }

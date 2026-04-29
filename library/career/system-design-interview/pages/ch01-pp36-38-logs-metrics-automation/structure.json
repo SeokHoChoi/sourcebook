@@ -1,0 +1,43 @@
+{
+  "pageSlug": "ch01-pp36-38-logs-metrics-automation",
+  "pageTitle": "1장 · 36~38p 로그, 메트릭 그리고 자동화",
+  "lastStructuredAt": "2026-04-29",
+  "segments": [
+    {
+      "id": "ch01-pp36-38-logs-metrics-automation-seg-001",
+      "order": 1,
+      "kind": "list",
+      "source": {
+        "startLine": 5,
+        "endLine": 7
+      }
+    },
+    {
+      "id": "ch01-pp36-38-logs-metrics-automation-seg-002",
+      "order": 2,
+      "kind": "list",
+      "source": {
+        "startLine": 9,
+        "endLine": 12
+      }
+    },
+    {
+      "id": "ch01-pp36-38-logs-metrics-automation-seg-003",
+      "order": 3,
+      "kind": "list",
+      "source": {
+        "startLine": 14,
+        "endLine": 14
+      }
+    },
+    {
+      "id": "ch01-pp36-38-logs-metrics-automation-seg-004",
+      "order": 4,
+      "kind": "diagram",
+      "source": {
+        "startLine": 16,
+        "endLine": 42
+      }
+    }
+  ]
+}

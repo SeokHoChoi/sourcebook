@@ -3,7 +3,7 @@
   "trackSlug": "system-design-interview",
   "title": "대규모 시스템 설계 기초",
   "status": "active",
-  "phase": "1장 p14~35 적재 완료",
+  "phase": "1장 p14~38 적재 완료",
   "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
   "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
   "studyGuide": {
@@ -26,7 +26,10 @@
       "1장 일곱 번째 배치인 27~29p는 CDN 동작, S3 origin, TTL, 장애 fallback, invalidation, object versioning을 한 배치로 묶고, p27의 이어진 문장은 이전 페이지의 잘림을 명시했다.",
       "1장 여덟 번째 배치인 30~32p는 무상태 웹 계층, 상태 정보 의존 아키텍처, sticky session, 공유 저장소, autoscaling을 한 배치로 묶고, p32 하단의 잘린 문장은 임의 보완하지 않았다.",
       "1장 아홉 번째 배치인 33~35p는 데이터 센터, 지리적 라우팅, 다중 데이터 센터 테스트/배포를 목차 절 기준으로 분리하고, 그림은 세로 텍스트 나열 대신 구조 요약과 접힌 레이블로 보존했다.",
-      "1장 열 번째 배치인 35p 메시지 큐 도입부는 다음 절로 이어지도록 별도 페이지로 분리하고, 무손실·비동기 통신·Kafka 범위 질문을 같은 절 안에 연결했다."
+      "1장 열 번째 배치인 35p 메시지 큐 도입부는 다음 절로 이어지도록 별도 페이지로 분리하고, 무손실·비동기 통신·Kafka 범위 질문을 같은 절 안에 연결했다.",
+      "1장 열한 번째 배치인 36p 메시지 큐 확장 예시는 producer/consumer decoupling과 worker scaling을 Zustand 비유와 비교해 교정했다.",
+      "1장 열두 번째 배치인 36~38p 로그, 메트릭 그리고 자동화는 로그·행동 분석·RUM·메트릭·자동화 도구를 실무 도입 기준으로 분리했다.",
+      "1장 열세 번째 배치인 38p 데이터베이스 규모 확장 도입은 저장 데이터 증가와 사용자 요청 증가가 DB 부하를 다르게 키운다는 점을 분리해 설명했다."
     ]
   },
   "intakeFlow": [
@@ -228,6 +231,63 @@
         "source": "pages/ch01-p35-message-queue-intro/source.md",
         "structure": "pages/ch01-p35-message-queue-intro/structure.json",
         "overlay": "pages/ch01-p35-message-queue-intro/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-p36-message-queue-worker-scaling",
+      "title": "1장 · 36p 메시지 큐 확장 예시",
+      "readOrder": 11,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "메시지 큐",
+      "canonicalUrl": "전자책 캡처 36p",
+      "sourceRepoPath": "ebook-capture/ch01-p36-message-queue-worker-scaling",
+      "files": {
+        "source": "pages/ch01-p36-message-queue-worker-scaling/source.md",
+        "structure": "pages/ch01-p36-message-queue-worker-scaling/structure.json",
+        "overlay": "pages/ch01-p36-message-queue-worker-scaling/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-pp36-38-logs-metrics-automation",
+      "title": "1장 · 36~38p 로그, 메트릭 그리고 자동화",
+      "readOrder": 12,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "로그, 메트릭 그리고 자동화",
+      "canonicalUrl": "전자책 캡처 36~38p",
+      "sourceRepoPath": "ebook-capture/ch01-pp36-38-logs-metrics-automation",
+      "files": {
+        "source": "pages/ch01-pp36-38-logs-metrics-automation/source.md",
+        "structure": "pages/ch01-pp36-38-logs-metrics-automation/structure.json",
+        "overlay": "pages/ch01-pp36-38-logs-metrics-automation/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch01-p38-database-scaling-intro",
+      "title": "1장 · 38p 데이터베이스 규모 확장 도입",
+      "readOrder": 13,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "1장 사용자 수에 따른 규모 확장성",
+      "sectionLabel": "데이터베이스의 규모 확장",
+      "canonicalUrl": "전자책 캡처 38p",
+      "sourceRepoPath": "ebook-capture/ch01-p38-database-scaling-intro",
+      "files": {
+        "source": "pages/ch01-p38-database-scaling-intro/source.md",
+        "structure": "pages/ch01-p38-database-scaling-intro/structure.json",
+        "overlay": "pages/ch01-p38-database-scaling-intro/overlay.ko.json"
       }
     }
   ]
