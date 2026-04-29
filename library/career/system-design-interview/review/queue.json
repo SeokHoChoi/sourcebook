@@ -297,6 +297,33 @@
       "dueOn": "2026-05-14",
       "status": "scheduled",
       "sourceEventId": "system-design-event-029"
+    },
+    {
+      "id": "review-system-design-034",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-003",
+      "prompt": "샤딩 키가 하나 이상의 칼럼으로 구성된다는 말을 row, column, field, partition key, composite key를 써서 설명하라.",
+      "dueOn": "2026-05-15",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-030"
+    },
+    {
+      "id": "review-system-design-035",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-004",
+      "prompt": "정규화와 비정규화의 차이를 설명하고, 샤딩 후 cross-shard join을 피하려고 비정규화를 쓰면 어떤 stale UI 위험이 생기는지 예시로 말하라.",
+      "dueOn": "2026-05-16",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-031"
+    },
+    {
+      "id": "review-system-design-036",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-005",
+      "prompt": "프론트엔드 개발자가 DB 샤딩 절을 읽을 때 API 계약, pagination, stale UI, optimistic update 관점에서 무엇을 가져가야 하는지 설명하라.",
+      "dueOn": "2026-05-17",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-032"
     }
   ]
 }

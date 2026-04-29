@@ -1714,6 +1714,10 @@
         {
           "pageSlug": "ch01-p38-database-scaling-intro",
           "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        },
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-003"]
         }
       ]
     },
@@ -1786,6 +1790,193 @@
         {
           "pageSlug": "ch01-p38-database-scaling-intro",
           "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        },
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": [
+            "ch01-pp39-44-database-sharding-seg-002",
+            "ch01-pp39-44-database-sharding-seg-003"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "column",
+      "term": "column",
+      "korean": "칼럼",
+      "explanation": "DB 테이블에서 세로 방향의 속성 이름이다. 예를 들어 `Users` 테이블의 `user_id`, `email`, `created_at`이 칼럼이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "row",
+      "term": "row",
+      "korean": "행",
+      "explanation": "DB 테이블에서 가로 방향의 데이터 묶음이다. 보통 한 사용자, 한 주문, 한 게시글처럼 하나의 레코드를 나타낸다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "term": "field",
+      "korean": "필드",
+      "explanation": "문서형 DB나 JSON에서 속성 하나를 부르는 말이다. RDB의 column과 비슷하게 읽을 수 있지만 저장 구조와 제약은 다를 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "composite-key",
+      "term": "composite key",
+      "korean": "복합 키",
+      "explanation": "하나의 칼럼이 아니라 여러 칼럼이나 필드를 묶어 만든 키다. 예를 들어 `tenant_id + user_id` 조합으로 데이터를 나눌 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "schema",
+      "term": "schema",
+      "korean": "스키마",
+      "explanation": "테이블 이름, 칼럼, 타입, 제약 조건처럼 데이터베이스 구조를 정한 설계도다. 샤딩 예시에서 각 샤드는 같은 스키마를 쓰되 서로 다른 데이터를 가진다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "hash-function",
+      "term": "hash function",
+      "korean": "해시 함수",
+      "explanation": "입력값을 일정한 규칙으로 숫자나 키 공간에 매핑하는 함수다. 샤딩에서는 특정 값이 어느 샤드로 갈지 정하는 데 쓰일 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "modulo",
+      "term": "modulo",
+      "korean": "나머지 연산",
+      "explanation": "`user_id % 4`처럼 어떤 수를 나눴을 때의 나머지를 구하는 연산이다. 단순 샤딩 예시에서 자주 등장한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "normalization",
+      "term": "normalization",
+      "korean": "정규화",
+      "explanation": "데이터 중복과 갱신 불일치를 줄이기 위해 테이블을 역할별로 나누는 설계 방식이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "denormalization",
+      "term": "denormalization",
+      "korean": "비정규화",
+      "explanation": "조회 성능과 단순한 read path를 위해 일부 데이터를 의도적으로 중복하거나 미리 합쳐 두는 설계다. 쓰기 복잡도와 stale data 위험이 trade-off다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "cross-shard-query",
+      "term": "cross-shard query",
+      "korean": "샤드 간 질의",
+      "explanation": "여러 샤드에 흩어진 데이터를 동시에 읽거나 합쳐야 하는 질의다. 조인, 전역 정렬, 집계가 비싸질 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "hot-shard",
+      "term": "hot shard",
+      "korean": "핫 샤드",
+      "explanation": "특정 샤드에 데이터나 요청이 지나치게 몰려 그 샤드만 병목이 되는 상태다. 유명 사용자나 특정 테넌트가 원인이 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "resharding",
+      "term": "resharding",
+      "korean": "재샤딩",
+      "explanation": "기존 shard key나 shard 배치를 바꿔 데이터를 다시 나누는 작업이다. 데이터 이동, downtime, routing 변경을 동반할 수 있어 어렵다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "api-contract",
+      "term": "API contract",
+      "korean": "API 계약",
+      "explanation": "프론트와 백엔드가 합의한 요청/응답 형태, 에러 형식, 페이지네이션 방식, 캐시 정책 같은 약속이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "cursor-pagination",
+      "term": "cursor pagination",
+      "korean": "커서 페이지네이션",
+      "explanation": "페이지 번호 대신 마지막으로 본 항목의 cursor를 기준으로 다음 목록을 가져오는 방식이다. 대규모 목록에서 중복/누락을 줄이고 안정적인 탐색을 돕는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "read-after-write",
+      "term": "read-after-write",
+      "korean": "쓰기 직후 읽기",
+      "explanation": "사용자가 방금 저장하거나 수정한 데이터를 바로 다시 조회했을 때 최신 값이 보여야 한다는 일관성 기대다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-pp39-44-database-sharding",
+          "segmentIds": ["ch01-pp39-44-database-sharding-seg-005"]
         }
       ]
     }

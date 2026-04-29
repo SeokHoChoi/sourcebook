@@ -580,6 +580,43 @@ test.describe('home page', () => {
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
 
+  test('renders the fourteenth system design reading batch with sharding and denormalization feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp39-44-database-sharding',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 39~44p 데이터베이스 샤딩과 1장 마무리$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/DB 테이블의 세로 방향 속성/).first()).toBeVisible();
+    await expect(page.getByText(/NoSQL에서는 field나 partition key/).first()).toBeVisible();
+    await expect(page.getByText(/의도적으로 중복/).first()).toBeVisible();
+
+    const denormalizationPrompt = page
+      .locator('details', {
+        hasText: '피드 카드 API가 작성자 이름과 아바타를 함께 내려줄 때',
+      })
+      .first();
+    await denormalizationPrompt.locator('summary').click();
+    await expect(denormalizationPrompt.getByText(/denormalized read model/).first()).toBeVisible();
+
+    const frontendTransferPrompt = page
+      .locator('details', {
+        hasText: '이직 면접에서 `프론트엔드가 시스템 설계를 왜 공부했는가`',
+      })
+      .first();
+    await frontendTransferPrompt.locator('summary').click();
+    await expect(
+      frontendTransferPrompt.getByText(/시스템 설계 개념을 UI 품질 언어로 번역/).first(),
+    ).toBeVisible();
+
+    await expect(page.getByText(/cursor pagination/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -651,6 +688,11 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/DB 데이터량 증가와 사용자 요청 증가 병목 구분/).first(),
     ).toBeVisible();
+    await expect(page.getByText(/샤딩 키와 DB 칼럼 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/정규화\/비정규화 trade-off 혼동/).first()).toBeVisible();
+    await expect(
+      page.getByText(/프론트 이직 관점과 풀스택 장기 학습 관점 분리/).first(),
+    ).toBeVisible();
     await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
     await expect(page.getByText(/Amazon EC2 Auto Scaling/).first()).toBeVisible();
     await expect(page.getByText(/지리적 라우팅 원리와 독해 속도 조절 혼동/).first()).toBeVisible();
@@ -663,6 +705,14 @@ test.describe('home page', () => {
     await expect(page.getByText(/그림 1-19/).first()).toBeVisible();
     await expect(
       page.getByText(/저장할 데이터가 많아지면 데이터베이스에 대한 부하도 증가한다/).first(),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/데이터가 어떻게 분산될지 정하는 하나 이상의 칼럼으로 구성된다/).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByText(/이를 해결하는 한 가지 방법은 데이터베이스를 비정규화하여 하나의 테이블/)
+        .first(),
     ).toBeVisible();
     await expect(
       page
