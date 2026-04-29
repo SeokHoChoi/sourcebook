@@ -487,8 +487,16 @@ describe('sourcebook catalog loader', () => {
     expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain(
       '물리적으로 무한대는 불가능',
     );
+    expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain('같은 층위의 단어가 아니다');
+    expect(page?.segmentCards[1]?.recallAnswer).toContain(
+      '한 DB 안의 파티셔닝은 수평 확장과 다르다',
+    );
+    expect(page?.segmentCards[1]?.interviewHighlight).toContain('read replica lag');
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('working set');
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('connection pool');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('read replica');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('partitioning');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('sharding');
     expect(page?.learnerEvents).toHaveLength(1);
     expect(page?.reviewItems).toHaveLength(1);
   });

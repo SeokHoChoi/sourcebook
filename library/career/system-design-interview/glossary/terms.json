@@ -1682,6 +1682,30 @@
       ]
     },
     {
+      "id": "query-plan",
+      "term": "query plan",
+      "korean": "쿼리 실행 계획",
+      "explanation": "DB가 SQL을 실행할 때 어떤 인덱스를 쓰고, 어떤 순서로 테이블을 읽고, 어떤 방식으로 조인할지 정한 내부 실행 경로다. 같은 SQL도 통계, 인덱스, 데이터 분포에 따라 실행 계획이 달라질 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "disk-io",
+      "term": "disk I/O",
+      "korean": "디스크 입출력",
+      "explanation": "디스크에서 데이터를 읽거나 쓰는 작업이다. 메모리 접근보다 훨씬 느리기 때문에 working set이 메모리를 넘거나 인덱스가 커지면 latency의 큰 원인이 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-001"]
+        }
+      ]
+    },
+    {
       "id": "connection-pool",
       "term": "connection pool",
       "korean": "DB 연결 재사용 묶음",
@@ -1698,6 +1722,66 @@
       "term": "replica lag",
       "korean": "복제 지연",
       "explanation": "주 DB에 반영된 변경이 읽기 복제본에 늦게 도착하는 시간 차이다. 프론트에서는 방금 저장한 값이 안 보이는 stale UI로 나타날 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "read-replica",
+      "term": "read replica",
+      "korean": "읽기 복제본",
+      "explanation": "primary DB의 데이터를 복제해 둔 읽기 전용 DB다. 조회 트래픽을 여러 복제본으로 나눌 수 있지만, 쓰기는 보통 primary에 남고 복제 지연 때문에 방금 쓴 값이 늦게 보일 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "partitioning",
+      "term": "partitioning",
+      "korean": "파티셔닝",
+      "explanation": "논리적으로 하나인 큰 테이블이나 인덱스를 날짜, 지역, 해시 같은 기준으로 더 작은 물리 파티션으로 나누는 방식이다. 한 DB 안에서도 가능하므로 여러 서버로 데이터를 나누는 sharding과 구분해야 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "sharding",
+      "term": "sharding",
+      "korean": "샤딩",
+      "explanation": "shard key 기준으로 데이터를 여러 DB 서버나 클러스터에 분산하는 방식이다. 저장 용량과 읽기/쓰기 처리량을 늘릴 수 있지만, cross-shard query, 분산 트랜잭션, rebalancing, hot shard 같은 운영 복잡도가 생긴다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "partition-key",
+      "term": "partition key",
+      "korean": "파티션 키",
+      "explanation": "어떤 데이터가 어느 파티션에 들어갈지 결정하는 컬럼이나 표현식이다. 자주 쓰는 조회 조건과 맞으면 불필요한 파티션을 건너뛰는 partition pruning에 도움이 된다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch01-p38-database-scaling-intro",
+          "segmentIds": ["ch01-p38-database-scaling-intro-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "shard-key",
+      "term": "shard key",
+      "korean": "샤드 키",
+      "explanation": "데이터가 어느 shard에 저장될지 결정하는 필드다. 값의 종류와 요청량이 고르게 퍼져야 특정 shard만 과부하되는 hot shard를 줄일 수 있다.",
       "pageRefs": [
         {
           "pageSlug": "ch01-p38-database-scaling-intro",
