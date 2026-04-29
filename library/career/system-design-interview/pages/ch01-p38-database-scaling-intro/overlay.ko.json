@@ -21,6 +21,21 @@
           "term": "IOPS",
           "korean": "초당 디스크 입출력 횟수",
           "explanation": "DB가 디스크에서 읽고 쓰는 작업량을 나타내는 지표다. 데이터가 메모리에 없으면 I/O 병목이 커질 수 있다."
+        },
+        {
+          "term": "query plan",
+          "korean": "쿼리 실행 계획",
+          "explanation": "DB가 SQL을 실행할 때 어떤 인덱스를 쓰고, 어떤 순서로 테이블을 읽고, 어떤 방식으로 조인할지 정한 내부 실행 경로다."
+        },
+        {
+          "term": "cache hit",
+          "korean": "캐시 적중",
+          "explanation": "필요한 데이터가 메모리나 캐시에 이미 있어 디스크나 원본 저장소를 덜 보고 응답할 수 있는 상태다."
+        },
+        {
+          "term": "disk I/O",
+          "korean": "디스크 입출력",
+          "explanation": "디스크에서 데이터를 읽거나 디스크에 쓰는 작업이다. 메모리보다 훨씬 느리기 때문에 DB latency의 큰 원인이 될 수 있다."
         }
       ],
       "devNote": "프론트에서 이 차이는 목록 페이지 p95가 느려지거나, 검색 후 첫 화면이 늦게 뜨거나, `저장됨` 표시가 늦게 바뀌는 형태로 보인다. API는 하나지만 뒤에서는 DB query plan, index hit, connection pool, replica lag가 사용자 경험을 흔든다.",
@@ -30,7 +45,7 @@
     {
       "segmentId": "ch01-p38-database-scaling-intro-seg-002",
       "directTranslation": "데이터베이스도 서버와 마찬가지로 무한히 커질 수 없다. 더 큰 장비로 올리는 수직 확장과 데이터를 여러 서버로 나누는 수평 확장 사이의 선택이 필요하다.",
-      "trickySentenceExplanation": "네 생각처럼 물리적으로 무한대는 불가능하다. DB에는 엔진/버전별 테이블 크기 한계, 스토리지 볼륨 한계, 인스턴스 CPU/RAM 한계, IOPS 한계, 네트워크 한계, connection 한계가 있다. 클라우드에서는 스토리지를 자동 확장할 수 있는 기능이 있어도 무한 확장이 아니다. 또한 저장 공간만 늘린다고 CPU, 메모리, 쿼리 경합, 락 경합이 자동으로 해결되지는 않는다. 그래서 처음에는 scale up이 단순할 수 있지만, 어느 시점부터 read replica, partitioning, sharding 같은 수평 확장 고민으로 넘어간다.",
+      "trickySentenceExplanation": "네 생각처럼 물리적으로 무한대는 불가능하다. DB에는 엔진/버전별 테이블 크기 한계, 스토리지 볼륨 한계, 인스턴스 CPU/RAM 한계, IOPS 한계, 네트워크 한계, connection 한계가 있다. 클라우드에서는 스토리지를 자동 확장할 수 있는 기능이 있어도 무한 확장이 아니다. 또한 저장 공간만 늘린다고 CPU, 메모리, 쿼리 경합, 락 경합이 자동으로 해결되지는 않는다. 여기서 `read replica`, `partitioning`, `sharding`은 모두 같은 뜻이나 같은 층위의 단어가 아니다. read replica는 읽기 복제본을 만들어 읽기 요청을 분산하는 방식이다. 쓰기는 여전히 primary DB에 몰리고, 복제 지연 때문에 방금 쓴 값이 replica에서 늦게 보일 수 있다. partitioning은 논리적으로 하나인 큰 테이블을 범위, 목록, 해시 같은 기준으로 더 작은 물리 조각으로 나누는 방식이다. 한 DB 안에서도 할 수 있으므로 항상 여러 서버로 나누는 수평 확장은 아니다. sharding은 shard key 기준으로 데이터를 여러 DB 서버나 클러스터에 나누는 본격적인 scale out이다. 저장 용량과 읽기/쓰기 부하를 나눌 수 있지만, cross-shard query, 분산 트랜잭션, rebalancing, hot shard 문제가 생긴다.",
       "selectiveVocabGlosses": [
         {
           "term": "vertical scaling",
@@ -51,11 +66,39 @@
           "term": "replica lag",
           "korean": "복제 지연",
           "explanation": "주 DB에 반영된 변경이 읽기 복제본에 늦게 도착하는 시간 차이다. 프론트에서는 방금 저장한 값이 안 보이는 stale UI로 나타날 수 있다."
+        },
+        {
+          "term": "read replica",
+          "korean": "읽기 복제본",
+          "explanation": "primary DB의 데이터를 비동기로 복사해 둔 읽기 전용 DB다. 읽기 많은 서비스에서 조회 트래픽을 나누지만, 쓰기 병목은 primary에 남고 replica lag를 고려해야 한다."
+        },
+        {
+          "term": "partitioning",
+          "korean": "파티셔닝",
+          "explanation": "논리적으로 하나인 큰 테이블을 날짜, 지역, 해시 같은 기준으로 더 작은 물리 파티션으로 나누는 방식이다. 특정 파티션만 읽도록 줄이는 partition pruning과 백업·삭제·보관 관리에 도움이 된다."
+        },
+        {
+          "term": "sharding",
+          "korean": "샤딩",
+          "explanation": "데이터를 shard key 기준으로 여러 DB 서버나 클러스터에 분산하는 방식이다. 저장 용량과 처리량을 늘릴 수 있지만, 키 선택이 나쁘면 특정 shard에 트래픽이 몰린다."
+        },
+        {
+          "term": "partition key",
+          "korean": "파티션 키",
+          "explanation": "데이터가 어느 파티션에 들어갈지 결정하는 컬럼이나 표현식이다. 자주 쓰는 조회 조건과 맞아야 불필요한 파티션 탐색을 줄일 수 있다."
+        },
+        {
+          "term": "shard key",
+          "korean": "샤드 키",
+          "explanation": "데이터가 어느 shard에 저장될지 결정하는 필드다. 값이 다양하고 트래픽이 고르게 퍼져야 hot shard와 전체 shard broadcast를 줄일 수 있다."
         }
       ],
-      "devNote": "이 페이지는 다음 페이지로 이어지는 도입부다. 지금은 `DB도 무한대가 아니며, 저장 공간·처리량·지연 시간·복제·일관성 문제가 함께 온다`까지만 잡으면 된다.",
+      "devNote": "프론트는 DB 토폴로지를 직접 고르지 않는 경우가 많지만 영향은 받는다. read replica를 쓰면 저장 직후 다시 조회했을 때 stale UI가 보일 수 있어 낙관적 업데이트, `저장 중/동기화 중` 표시, primary-read가 필요할 수 있다. sharding을 쓰면 전역 정렬, 무한 스크롤, 검색 필터가 shard key와 맞지 않을 때 API가 느려질 수 있다. 즉 API 응답 모양은 같아 보여도 일관성, 지연 시간, 페이지네이션 UX는 달라진다.",
       "recallQuestion": "DB storage autoscaling이 있어도 `무한 확장`이 아닌 이유를 CPU, RAM, IOPS, connection, query contention 관점에서 설명하라.",
-      "speakingTransferPrompt": "서비스가 커질 때 DB scale up으로 버틸 수 있는 구간과, scale out을 고민해야 하는 구간을 구분해 말해 보자."
+      "recallAnswer": "storage autoscaling은 저장 공간 부족을 늦춰 줄 뿐, CPU, RAM, IOPS, connection 수, lock contention, query plan 문제를 자동으로 없애지 않는다. 읽기 요청이 많으면 read replica로 조회 부하를 나눌 수 있지만 쓰기는 primary에 남고 replica lag가 생긴다. 테이블이 너무 커지면 partitioning으로 특정 범위만 읽고 관리하도록 나눌 수 있지만, 한 DB 안의 파티셔닝은 수평 확장과 다르다. 한 DB가 저장 용량이나 쓰기 처리량을 감당하지 못하면 sharding처럼 데이터를 여러 DB 서버로 나누는 scale out을 고민한다.",
+      "speakingTransferPrompt": "서비스가 커질 때 DB scale up으로 버틸 수 있는 구간과, scale out을 고민해야 하는 구간을 구분해 말해 보자.",
+      "speakingTransferAnswer": "처음에는 더 큰 인스턴스, 더 많은 RAM, 좋은 인덱스, 쿼리 개선으로 버틸 수 있다. 읽기 비중이 높고 약간의 지연된 읽기를 허용할 수 있으면 read replica를 붙여 조회 트래픽을 분산한다. 테이블이 날짜나 테넌트 기준으로 커지고 오래된 데이터 보관·삭제·백업이 부담되면 partitioning을 고려한다. 쓰기 처리량, 저장 용량, 특정 테넌트 크기 때문에 한 DB가 한계에 닿으면 shard key를 정해 sharding을 검토한다. 대신 sharding은 cross-shard query, 전역 정렬, 분산 트랜잭션, rebalancing 비용이 크므로 가장 나중에 꺼내는 카드에 가깝다.",
+      "interviewHighlight": "프론트 면접에서는 `DB는 백엔드 문제`로 끊지 말고 `read replica lag 때문에 방금 저장한 값이 안 보일 수 있어 optimistic UI와 재검증을 설계했다`, `무한 스크롤 정렬 기준을 API의 shard/partition 친화적인 커서와 맞췄다`처럼 UX와 데이터 일관성까지 연결하면 강하게 어필된다."
     }
   ]
 }

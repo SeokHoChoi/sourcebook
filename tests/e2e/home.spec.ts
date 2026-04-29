@@ -573,6 +573,9 @@ test.describe('home page', () => {
     await expect(page.getByText(/데이터 양 자체가 늘면/).first()).toBeVisible();
     await expect(page.getByText(/물리적으로 무한대는 불가능/).first()).toBeVisible();
     await expect(page.getByText(/working set/).first()).toBeVisible();
+    await expect(page.getByText(/read replica/).first()).toBeVisible();
+    await expect(page.getByText(/partitioning/).first()).toBeVisible();
+    await expect(page.getByText(/sharding/).first()).toBeVisible();
     await expect(page.getByText('질문 원문').first()).toBeVisible();
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
