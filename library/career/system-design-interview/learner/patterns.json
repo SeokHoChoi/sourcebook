@@ -174,6 +174,24 @@
       "count": 1,
       "pageSlugs": ["ch01-p38-database-scaling-intro"],
       "representativeQuestion": "저장할 데이터가 많아지면 DB 부하가 증가한다는 말은 내부 탐색 비용 증가인가, 사용자 증가에 따른 요청 증가인가?"
+    },
+    {
+      "label": "샤딩 키와 DB 칼럼 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp39-44-database-sharding"],
+      "representativeQuestion": "샤딩 키가 하나 이상의 칼럼으로 구성된다는 말에서 칼럼은 RDB의 column인가, NoSQL의 field나 partition key까지 포함해 읽어야 하는가?"
+    },
+    {
+      "label": "정규화/비정규화 trade-off 혼동",
+      "count": 1,
+      "pageSlugs": ["ch01-pp39-44-database-sharding"],
+      "representativeQuestion": "비정규화는 무엇이고, 왜 샤딩 후 조인 문제를 줄이기 위해 중복 저장을 일부러 허용하는가?"
+    },
+    {
+      "label": "프론트 이직 관점과 풀스택 장기 학습 관점 분리",
+      "count": 1,
+      "pageSlugs": ["ch01-pp39-44-database-sharding"],
+      "representativeQuestion": "프론트엔드 개발자는 DB 샤딩 절에서 무엇을 당장 면접 언어로 가져가고, 무엇을 장기 풀스택 학습 과제로 남겨야 하는가?"
     }
   ]
 }

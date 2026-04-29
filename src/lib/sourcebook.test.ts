@@ -75,7 +75,7 @@ describe('sourcebook catalog loader', () => {
     expect(frontend?.counts.totalPages).toBe(35);
     expect(career?.counts.totalTracks).toBe(3);
     expect(career?.counts.activeTracks).toBe(1);
-    expect(career?.counts.totalPages).toBe(13);
+    expect(career?.counts.totalPages).toBe(14);
     expect(notes?.counts.totalTracks).toBe(1);
     expect(notes?.counts.activeTracks).toBe(1);
     expect(notes?.counts.totalPages).toBe(0);
@@ -171,12 +171,13 @@ describe('sourcebook catalog loader', () => {
     expect(track.studyGuide?.markdown).toContain('1장 · 36p 메시지 큐 확장 예시');
     expect(track.studyGuide?.markdown).toContain('1장 · 36~38p 로그, 메트릭 그리고 자동화');
     expect(track.studyGuide?.markdown).toContain('1장 · 38p 데이터베이스 규모 확장 도입');
-    expect(track.counts.totalPages).toBe(13);
-    expect(track.counts.capturedPages).toBe(13);
-    expect(track.counts.structuredPages).toBe(13);
-    expect(track.counts.overlayPages).toBe(13);
-    expect(track.counts.openConfusions).toBe(29);
-    expect(track.learnerEvents).toHaveLength(29);
+    expect(track.studyGuide?.markdown).toContain('1장 · 39~44p 데이터베이스 샤딩과 1장 마무리');
+    expect(track.counts.totalPages).toBe(14);
+    expect(track.counts.capturedPages).toBe(14);
+    expect(track.counts.structuredPages).toBe(14);
+    expect(track.counts.overlayPages).toBe(14);
+    expect(track.counts.openConfusions).toBe(32);
+    expect(track.learnerEvents).toHaveLength(32);
     expect(track.studyGuide?.markdown).toContain(
       '부하 분산 집합은 로드밸런서가 요청을 보낼 후보 서버 묶음이다',
     );
@@ -196,6 +197,7 @@ describe('sourcebook catalog loader', () => {
     );
     expect(track.studyGuide?.markdown).toContain('GA4/GTM은 전환·퍼널·이벤트 분석');
     expect(track.studyGuide?.markdown).toContain('DB는 무한대가 아니고 수직 확장으로도');
+    expect(track.studyGuide?.markdown).toContain('프론트는 저장소를 직접 운영하지 않아도');
   });
 
   it('loads the first system design reading batch with OCR source, overlays, and learner events', async () => {
@@ -499,6 +501,37 @@ describe('sourcebook catalog loader', () => {
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('sharding');
     expect(page?.learnerEvents).toHaveLength(1);
     expect(page?.reviewItems).toHaveLength(1);
+  });
+
+  it('loads the fourteenth system design reading batch with sharding and denormalization feedback', async () => {
+    const page = await getTrackPage(
+      'career',
+      'system-design-interview',
+      'ch01-pp39-44-database-sharding',
+    );
+
+    expect(page).not.toBeNull();
+    expect(page?.rawSource).toContain('데이터가 어떻게 분산될지 정하는 하나 이상의 칼럼');
+    expect(page?.rawSource).toContain('데이터베이스를 비정규화');
+    expect(page?.rawSource).toContain('그림 1-23 요약');
+    expect(page?.chapterLabel).toBe('1장 사용자 수에 따른 규모 확장성');
+    expect(page?.sectionLabel).toBe('데이터베이스의 규모 확장');
+    expect(page?.segmentCards).toHaveLength(5);
+    expect(page?.segmentCards[2]?.trickySentenceExplanation).toContain(
+      'DB 테이블의 세로 방향 속성',
+    );
+    expect(page?.segmentCards[2]?.devNote).toContain('NoSQL에서는 field나 partition key');
+    expect(page?.segmentCards[3]?.trickySentenceExplanation).toContain('의도적으로 중복');
+    expect(page?.segmentCards[3]?.speakingTransferAnswer).toContain('denormalized read model');
+    expect(page?.segmentCards[4]?.interviewHighlight).toContain(
+      '시스템 설계 개념을 UI 품질 언어로 번역',
+    );
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('column');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('denormalization');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('cross-shard query');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('cursor pagination');
+    expect(page?.learnerEvents).toHaveLength(3);
+    expect(page?.reviewItems).toHaveLength(3);
   });
 
   it('exposes segment cards and learner events for useform', async () => {

@@ -1,0 +1,52 @@
+{
+  "pageSlug": "ch01-pp39-44-database-sharding",
+  "pageTitle": "1장 · 39~44p 데이터베이스 샤딩과 1장 마무리",
+  "lastStructuredAt": "2026-04-29",
+  "segments": [
+    {
+      "id": "ch01-pp39-44-database-sharding-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 3,
+        "endLine": 24
+      }
+    },
+    {
+      "id": "ch01-pp39-44-database-sharding-seg-002",
+      "order": 2,
+      "kind": "diagram",
+      "source": {
+        "startLine": 26,
+        "endLine": 35
+      }
+    },
+    {
+      "id": "ch01-pp39-44-database-sharding-seg-003",
+      "order": 3,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 37,
+        "endLine": 43
+      }
+    },
+    {
+      "id": "ch01-pp39-44-database-sharding-seg-004",
+      "order": 4,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 45,
+        "endLine": 59
+      }
+    },
+    {
+      "id": "ch01-pp39-44-database-sharding-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 61,
+        "endLine": 67
+      }
+    }
+  ]
+}
