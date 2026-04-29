@@ -553,7 +553,8 @@ test.describe('home page', () => {
     await expect(page.getByText(/structured log/).first()).toBeVisible();
     await expect(page.getByText(/GA4도 넓게 보면/).first()).toBeVisible();
     await expect(page.getByText(/그림을 그냥 쓱 보는 습관/).first()).toBeVisible();
-    await expect(page.getByText(/Sentry, GA4\/GTM, Web Vitals/).first()).toBeVisible();
+    await expect(page.getByText(/requestId.*sourcemap/).first()).toBeVisible();
+    await expect(page.getByText(/Hotjar류 도구는 개인정보 마스킹/).first()).toBeVisible();
     await expect(page.getByText('그림에 적힌 원문 레이블 보기').first()).toBeVisible();
     await expect(page.getByText('질문 원문').first()).toBeVisible();
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();

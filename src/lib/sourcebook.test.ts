@@ -456,8 +456,14 @@ describe('sourcebook catalog loader', () => {
     expect(page?.segmentCards[0]?.trickySentenceExplanation).toContain('structured log');
     expect(page?.segmentCards[1]?.trickySentenceExplanation).toContain('GA4도 넓게 보면');
     expect(page?.segmentCards[3]?.trickySentenceExplanation).toContain('그림을 그냥 쓱 보는 습관');
+    expect(page?.segmentCards[0]?.recallAnswer).toContain('console.log는 개발 중 임시 확인');
+    expect(page?.segmentCards[0]?.speakingTransferAnswer).toContain('x-request-id');
+    expect(page?.segmentCards[0]?.interviewHighlight).toContain('Sentry release+sourcemap');
+    expect(page?.segmentCards[1]?.speakingTransferAnswer).toContain('검색 페이지가 느리다는 말은');
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('메트릭');
     expect(page?.glossaryTerms.map((term) => term.term)).toContain('observability');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('requestId');
+    expect(page?.glossaryTerms.map((term) => term.term)).toContain('sourcemap');
     expect(page?.learnerEvents).toHaveLength(3);
     expect(page?.reviewItems).toHaveLength(3);
   });

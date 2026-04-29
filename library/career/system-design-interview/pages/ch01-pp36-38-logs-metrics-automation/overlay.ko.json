@@ -5,7 +5,7 @@
     {
       "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-001",
       "directTranslation": "로그는 문제가 생겼을 때 `무슨 일이 있었는지`를 시간 순서와 맥락으로 남기는 기록이다. 규모가 커지면 서버마다 흩어진 로그를 한곳에 모아 검색하고 경고를 걸 수 있어야 한다.",
-      "trickySentenceExplanation": "로그는 원문을 그대로 아무렇게나 저장하는 것이 아니다. 실무에서는 사람이 읽을 메시지와 기계가 검색할 필드를 함께 남기는 structured log가 기본에 가깝다. 예를 들어 `level`, `timestamp`, `service`, `route`, `requestId`, `userIdHash`, `errorCode`, `durationMs`, `message`, `stack` 같은 필드를 JSON으로 남긴다. 원문 stack trace는 보존할 수 있지만, 비밀번호, 토큰, 주민번호, 결제 정보 같은 민감정보는 절대 그대로 남기면 안 된다. 백엔드는 pino/winston/logback 같은 로거로 stdout 또는 로그 수집기로 보내고, CloudWatch Logs, ELK/OpenSearch, Loki, Datadog 같은 곳에서 모은다. 프론트는 브라우저 콘솔만으로는 운영 로그가 되지 않으므로 Sentry 같은 error monitoring, OpenTelemetry JS, RUM SDK, `window.onerror`, `unhandledrejection`, React Error Boundary, Next.js instrumentation 등을 통해 에러와 성능 신호를 수집한다. 사용자의 클릭·스크롤·전환 이벤트 수집은 로그와 겹칠 수 있지만 목적이 다르다. 로그는 문제 추적, analytics는 행동과 비즈니스 판단, replay/heatmap은 UX 관찰에 가깝다.",
+      "trickySentenceExplanation": "로그는 원문을 그대로 아무렇게나 저장하는 것이 아니다. 실무에서는 사람이 읽을 메시지와 기계가 검색할 필드를 함께 남기는 structured log가 기본에 가깝다. 예를 들어 `level`, `timestamp`, `service`, `route`, `requestId`, `traceId`, `release`, `userIdHash`, `errorCode`, `durationMs`, `message`, `stack` 같은 필드를 JSON으로 남긴다. 원문 stack trace는 보존할 수 있지만, 비밀번호, 토큰, 주민번호, 결제 정보 같은 민감정보는 절대 그대로 남기면 안 된다. 백엔드는 pino/winston/logback 같은 로거로 stdout 또는 로그 수집기로 보내고, CloudWatch Logs, ELK/OpenSearch, Loki, Datadog 같은 곳에서 모은다. 프론트는 브라우저 console만으로는 운영 로그가 되지 않는다. Sentry 같은 error monitoring으로 JS 예외, unhandled promise rejection, React Error Boundary 이벤트를 수집하고, sourcemap과 release를 연결해 minified stack trace를 사람이 읽을 수 있게 만든다. GA4/GTM은 전환·퍼널·유입 같은 제품 분석, Web Vitals/RUM은 실제 사용자 성능, Hotjar류 heatmap/session replay는 UX 관찰에 가깝다. 즉 `장애 원인`, `사용자 행동`, `체감 성능`, `UX 관찰`을 목적별로 분리해 수집해야 한다.",
       "selectiveVocabGlosses": [
         {
           "term": "로그",
@@ -31,16 +31,34 @@
           "term": "RUM",
           "korean": "Real User Monitoring",
           "explanation": "실제 사용자 브라우저에서 로딩 시간, 에러, 지역, 기기, 네트워크 상태를 수집해 체감 품질을 관측하는 방식이다."
+        },
+        {
+          "term": "requestId",
+          "korean": "요청 하나를 추적하는 식별자",
+          "explanation": "브라우저, API 서버, DB 작업 로그가 같은 요청에서 나온 것인지 연결하기 위해 쓰는 ID다. 보통 HTTP header나 응답 body로 전달한다."
+        },
+        {
+          "term": "sourcemap",
+          "korean": "압축된 JS를 원래 코드 위치로 되돌려 보는 지도 파일",
+          "explanation": "배포된 JS는 번들링과 minify 때문에 에러 위치가 읽기 어렵다. sourcemap을 Sentry 같은 도구에 올리면 실제 파일·라인으로 stack trace를 볼 수 있다."
+        },
+        {
+          "term": "session replay",
+          "korean": "사용자 세션 재현",
+          "explanation": "사용자가 어떤 화면을 보고 어떤 클릭·입력 흐름을 거쳤는지 재현하는 UX 관찰 도구다. 개인정보 마스킹과 수집 동의가 핵심이다."
         }
       ],
-      "devNote": "프론트에서 당장 도입한다면 1) Sentry로 JS 에러와 unhandled promise rejection 수집, 2) Web Vitals를 GA4 또는 자체 endpoint로 전송, 3) 중요한 API 실패는 requestId와 함께 로깅, 4) GA4/GTM으로 비즈니스 이벤트 수집, 5) Hotjar류 도구는 개인정보 마스킹을 켠 뒤 heatmap/session replay 용도로 제한하는 식이 현실적이다. 로그와 analytics를 한 바구니에 넣지 말고 `장애 원인`, `사용자 행동`, `체감 성능`을 분리해서 본다.",
+      "devNote": "실무 조합은 이렇게 잡는다. 1) 프론트와 백엔드가 같은 `requestId`를 공유한다. 2) Sentry에 release, environment, route, browser, API status, sourcemap을 연결한다. 3) Web Vitals는 `web-vitals` 라이브러리로 LCP/INP/CLS를 route·release·device와 함께 GA4 또는 자체 endpoint로 보낸다. 4) GA4/GTM은 `sign_up_start`, `sign_up_success`, `purchase`, `search` 같은 제품 이벤트만 담당한다. 5) Hotjar류 도구는 개인정보 마스킹·입력값 suppression·sampling을 켜고 heatmap/session replay 용도로 제한한다. 6) 백엔드 structured log는 requestId, route, status, durationMs, errorCode, userIdHash, stack을 남긴다.",
       "recallQuestion": "프론트 운영에서 console.log와 Sentry error monitoring, GA4 이벤트, Hotjar session replay는 각각 어떤 목적이 다른가?",
-      "speakingTransferPrompt": "회원가입 버튼 클릭 후 500 에러가 났을 때 프론트와 백엔드가 어떤 로그 필드와 requestId를 남겨야 추적 가능한지 설명해 보자."
+      "recallAnswer": "console.log는 개발 중 임시 확인에 가깝고, 운영에서 중앙 수집·검색·알림을 보장하지 않는다. Sentry는 JS 예외, unhandled promise rejection, React Error Boundary, sourcemap, release 정보를 묶어 `왜 터졌는지`를 찾는 도구다. GA4/GTM은 사용자가 어떤 행동을 했고 어느 단계에서 이탈했는지 보는 제품 분석 도구다. Hotjar session replay와 heatmap은 사용자가 실제로 어디서 망설이거나 잘못 클릭했는지 보는 정성적 UX 도구다. Web Vitals/RUM은 실제 사용자 환경에서 LCP, INP, CLS 같은 체감 성능을 숫자로 본다. 목적이 다르므로 한 도구로 전부 해결하려 하면 장애 원인, 행동 분석, UX 관찰이 뒤섞인다.",
+      "speakingTransferPrompt": "회원가입 버튼 클릭 후 500 에러가 났을 때 프론트와 백엔드가 어떤 로그 필드와 requestId를 남겨야 추적 가능한지 설명해 보자.",
+      "speakingTransferAnswer": "프론트와 백엔드는 같은 장애를 서로 다른 목적의 신호로 남겨야 한다. 프론트는 회원가입 요청을 보낼 때 `x-request-id`를 만들거나 서버가 내려준 requestId를 저장하고, 실패 시 Sentry에 `requestId`, `route`, `release`, `environment`, `browser`, `apiPath`, `httpStatus`, `errorCode`, `userIdHash`를 붙인다. 백엔드는 같은 requestId로 `service`, `endpoint`, `status`, `durationMs`, `dbQueryName`, `upstreamError`, `stack`을 structured log에 남긴다. GA4에는 `sign_up_start`와 `sign_up_failed` 같은 퍼널 이벤트만 남기고, Hotjar는 개인정보 마스킹을 켠 세션 재현으로 사용자가 어떤 화면 상태에서 실패했는지 확인한다. 비밀번호, 토큰, 주민번호, 원문 입력값은 절대 로그에 남기지 않는다.",
+      "interviewHighlight": "프론트 면접에서는 `에러를 화면에 표시했다`에서 멈추지 말고 `Sentry release+sourcemap으로 코드 위치를 찾고, requestId로 백엔드 로그와 연결하고, GA4 funnel로 비즈니스 영향도를 보고, Web Vitals/RUM으로 체감 성능을 분리했다`까지 말하면 운영 감각이 선명하게 드러난다."
     },
     {
       "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-002",
       "directTranslation": "메트릭은 시스템이나 비즈니스 상태를 숫자로 계속 측정한 값이다. CPU, 메모리 같은 서버 숫자도 있고, DB 지연 시간, 캐시 적중률, DAU, 매출, 재방문율 같은 숫자도 있다.",
-      "trickySentenceExplanation": "메트릭은 `좋아 보인다/느리다`가 아니라 숫자로 관측 가능한 값이다. 보통 이름, 값, 시간, label 또는 dimension을 가진 time series로 저장된다. 프론트와 백엔드 모두 메트릭을 가진다. 백엔드는 request rate, error rate, latency, queue depth, DB connection, cache hit ratio를 본다. 프론트는 Core Web Vitals, JS error rate, API failure rate, hydration time, route transition time, checkout conversion을 본다. 책의 호스트 단위 메트릭은 서버/인프라에 가깝고, 종합 메트릭은 DB·캐시·API 계층처럼 여러 인스턴스를 합친 상태다. 핵심 비즈니스 메트릭은 GA4 같은 제품 분석 도구와 연결된다. GA4도 넓게 보면 메트릭을 다루지만, Prometheus/CloudWatch와 같은 운영 메트릭 도구를 대체하지 않는다. 둘 중 하나만 고르는 문제가 아니라 목적별로 함께 쓴다.",
+      "trickySentenceExplanation": "메트릭은 `좋아 보인다/느리다`가 아니라 숫자로 관측 가능한 값이다. 보통 이름, 값, 시간, label 또는 dimension을 가진 time series로 저장된다. 프론트와 백엔드 모두 메트릭을 가진다. 백엔드는 request rate, error rate, latency, queue depth, DB connection, cache hit ratio를 본다. 프론트는 Core Web Vitals, JS error rate, API failure rate, hydration time, route transition time, checkout conversion을 본다. 책의 호스트 단위 메트릭은 서버/인프라에 가깝고, 종합 메트릭은 DB·캐시·API 계층처럼 여러 인스턴스를 합친 상태다. 핵심 비즈니스 메트릭은 GA4 같은 제품 분석 도구와 연결된다. GA4도 넓게 보면 메트릭을 다루지만, Prometheus/CloudWatch와 같은 운영 메트릭 도구를 대체하지 않는다. 둘 중 하나만 고르는 문제가 아니라 `증상`, `원인`, `사용자 영향`, `사업 영향`을 나눠 함께 본다.",
       "selectiveVocabGlosses": [
         {
           "term": "메트릭",
@@ -66,11 +84,24 @@
           "term": "GA4",
           "korean": "Google Analytics 4",
           "explanation": "사용자 행동 이벤트, 전환, 유입, 재방문 같은 제품/비즈니스 분석에 강한 도구다. 운영 장애 원인 분석 도구와는 목적이 다르다."
+        },
+        {
+          "term": "GTM",
+          "korean": "Google Tag Manager",
+          "explanation": "사이트 코드 배포 없이 GA4, 광고 픽셀, 사용자 행동 이벤트 태그를 관리하는 도구다. 보통 dataLayer에 이벤트를 넣고 GTM에서 전송 규칙을 관리한다."
+        },
+        {
+          "term": "funnel",
+          "korean": "사용자 전환 단계",
+          "explanation": "예를 들어 회원가입 시작 -> 약관 동의 -> 인증 -> 완료처럼 사용자가 목표까지 가는 단계를 나눈 것이다. 어느 단계에서 이탈하는지 본다."
         }
       ],
-      "devNote": "실무 대답은 `GA4 하나면 됨`도, `Prometheus 하나면 됨`도 아니다. GA4는 사용자가 어떤 행동을 했는지, Sentry/RUM은 사용자가 어떤 에러와 성능을 겪었는지, CloudWatch/Prometheus는 서버와 인프라가 어떤 상태인지 본다. 좋은 시스템은 이 세 층을 requestId, release version, route, region 같은 공통 차원으로 연결한다.",
+      "devNote": "장애를 볼 때는 네 층을 분리한다. 1) 사용자 체감: Web Vitals, route transition, API failure rate. 2) 애플리케이션 원인: Sentry error rate, release, stack trace. 3) 서버/인프라 원인: p95/p99 latency, 5xx rate, DB latency, queue depth, cache hit ratio. 4) 비즈니스 영향: GA4 funnel drop, conversion, retention. 이 층들을 `route`, `release`, `environment`, `region`, `experimentId` 같은 공통 dimension으로 묶으면 원인과 영향을 연결할 수 있다.",
       "recallQuestion": "호스트 단위 메트릭, 종합 메트릭, 핵심 비즈니스 메트릭을 각각 프론트와 백엔드 예시로 설명하라.",
-      "speakingTransferPrompt": "검색 페이지가 느리다는 이슈를 Core Web Vitals, API latency, DB latency, 검색 전환율 메트릭으로 나누어 설명해 보자."
+      "recallAnswer": "호스트 단위 메트릭은 서버 한 대나 컨테이너 하나의 CPU, 메모리, 디스크 I/O, 네트워크 사용량처럼 가장 낮은 운영 신호다. 종합 메트릭은 여러 인스턴스를 합친 API p95 latency, DB latency, cache hit ratio, queue depth, 5xx rate처럼 서비스 계층의 상태를 보는 숫자다. 핵심 비즈니스 메트릭은 DAU, 가입 완료율, 검색 전환율, 구매 전환율, 재방문율처럼 제품 목표와 연결되는 숫자다. 프론트에서는 Core Web Vitals, JS error rate, API failure rate가 운영/체감 메트릭이고, GA4의 가입·구매 funnel은 비즈니스 메트릭이다.",
+      "speakingTransferPrompt": "검색 페이지가 느리다는 이슈를 Core Web Vitals, API latency, DB latency, 검색 전환율 메트릭으로 나누어 설명해 보자.",
+      "speakingTransferAnswer": "검색 페이지가 느리다는 말은 하나의 원인이 아니라 여러 계층의 증상일 수 있다. 프론트에서는 LCP가 높으면 결과 화면 첫 렌더링이 늦는 것이고, INP가 높으면 검색어 입력이나 필터 클릭 반응이 늦는 것이다. API latency가 높으면 `/search` 응답 자체가 늦는 것이고, DB latency가 높으면 검색 인덱스나 쿼리 계층이 병목일 수 있다. GA4에서는 `search_submit` 대비 `result_click`이나 `purchase` 전환율이 떨어지는지 본다. Sentry/RUM에는 route, release, query length, result count, device, network 같은 dimension을 붙여서 특정 배포나 특정 기기에서만 느린지 확인한다.",
+      "interviewHighlight": "프론트 면접에서는 `느립니다`를 감각으로 말하지 말고 LCP/INP/CLS, API p95, JS error rate, GA4 funnel drop처럼 숫자로 쪼개 말하면 좋다. 특히 `성능 저하가 실제 전환율 하락으로 이어졌는가`를 연결하면 화면 개발자를 넘어 제품 품질을 보는 사람처럼 들린다."
     },
     {
       "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-003",
@@ -93,9 +124,12 @@
           "explanation": "전체 배포 전에 작은 범위에서 에러율, latency, 비즈니스 지표를 확인해 위험을 줄인다."
         }
       ],
-      "devNote": "프론트 실무에서는 PR마다 lint/type/test/build를 돌리고, 배포 후 Sentry release와 sourcemap을 연결하고, Web Vitals와 error rate가 튀면 알림을 받는 흐름까지 자동화하는 것이 좋다. `배포했는데 어느 커밋부터 에러가 늘었는지 모름`은 자동화와 관측성 연결이 약한 신호다.",
+      "devNote": "프론트 실무에서는 PR마다 lint/type/test/build/e2e를 돌리고, 배포 시 Sentry release와 sourcemap upload를 자동화하고, 배포 후 Web Vitals와 error rate가 튀면 알림을 받는 흐름까지 연결한다. `배포했는데 어느 커밋부터 에러가 늘었는지 모름`은 자동화와 관측성 연결이 약한 신호다.",
       "recallQuestion": "자동화가 단순히 편한 도구가 아니라 대규모 시스템에서 필수에 가까워지는 이유를 설명하라.",
-      "speakingTransferPrompt": "프론트 배포 파이프라인에 lint, type-check, test, build, sourcemap upload, canary, rollback을 어떤 순서로 넣을지 말해 보자."
+      "recallAnswer": "규모가 커질수록 사람이 기억해서 하는 절차는 빠지거나 순서가 바뀐다. 자동화는 lint, type-check, test, build, security scan, deploy, rollback 같은 절차를 매번 같은 방식으로 실행해 실수를 줄인다. 또 배포와 관측성을 연결해 어느 release에서 에러율이나 Web Vitals가 나빠졌는지 빠르게 찾게 한다. 그래서 자동화는 편의 기능이 아니라 배포 안정성, 반복 가능성, 장애 대응 속도를 만드는 운영 기반이다.",
+      "speakingTransferPrompt": "프론트 배포 파이프라인에 lint, type-check, test, build, sourcemap upload, canary, rollback을 어떤 순서로 넣을지 말해 보자.",
+      "speakingTransferAnswer": "PR 단계에서는 lint, format, type-check, unit test, e2e test, build를 먼저 통과시킨다. 배포 artifact를 만들 때는 release version을 고정하고 Sentry sourcemap upload를 자동화한다. staging이나 preview에서 smoke test를 돌린 뒤 production에는 canary 또는 점진 배포로 일부 트래픽만 먼저 보낸다. 배포 후에는 Sentry error rate, Web Vitals, API 5xx, 핵심 GA4 funnel을 짧은 시간 창으로 감시한다. 기준을 넘으면 자동 rollback 또는 feature flag off가 가능해야 한다.",
+      "interviewHighlight": "프론트 면접에서는 CI/CD를 `빌드 자동화`로만 말하지 말고 sourcemap upload, release tracking, Web Vitals guardrail, canary/rollback까지 연결해 말하면 배포 이후의 책임까지 이해한다는 신호가 된다."
     },
     {
       "segmentId": "ch01-pp36-38-logs-metrics-automation-seg-004",
@@ -120,7 +154,10 @@
       ],
       "devNote": "면접에서 그림을 그릴 때는 박스를 많이 그리는 것보다 선의 의미를 말하는 것이 중요하다. `이 선은 동기 HTTP`, `이 선은 비동기 큐`, `여기는 캐시 miss 때 DB`, `이 도구는 에러율과 큐 길이를 감시`처럼 읽어야 한다.",
       "recallQuestion": "그림 1-19를 볼 때 요청 흐름, 비동기 경로, 저장소, 관측 도구, 생략된 다중 데이터 센터 요소를 순서대로 짚어 보라.",
-      "speakingTransferPrompt": "그림 1-19를 면접에서 직접 그린다고 생각하고, 각 박스와 화살표를 어떤 순서로 설명할지 말해 보자."
+      "recallAnswer": "먼저 경계선을 본다. 그림 1-19는 지면상 하나의 데이터 센터를 중심으로 단순화되어 있다. 다음은 동기 요청 흐름이다. 사용자 단말에서 CDN 또는 로드밸런서를 거쳐 웹 서버로 들어간다. 그다음 비동기 경로를 찾는다. 웹 서버가 메시지 큐에 작업을 넣고 worker가 나중에 처리한다. 저장소는 DB, 캐시, NoSQL로 나뉜다. 마지막으로 로그, 모니터링, 메트릭, 자동화 도구가 어디에 붙어 장애 탐지와 배포 안정성을 돕는지 본다. 실제 다중 데이터 센터 설계에서는 지역별 큐, 지역별 worker, 중앙 로그/메트릭 수집, 장애 경계가 추가로 필요할 수 있다.",
+      "speakingTransferPrompt": "그림 1-19를 면접에서 직접 그린다고 생각하고, 각 박스와 화살표를 어떤 순서로 설명할지 말해 보자.",
+      "speakingTransferAnswer": "면접에서는 박스를 먼저 많이 그리지 말고 요청 흐름부터 말한다. `사용자는 CDN에서 정적 자산을 받고, 동적 요청은 로드밸런서를 통해 웹 서버로 들어갑니다. 웹 서버는 빠르게 끝나야 하는 작업은 DB/캐시를 보고 응답하고, 오래 걸리는 작업은 메시지 큐에 넣어 worker가 비동기로 처리합니다. 캐시는 DB 부하를 줄이고, NoSQL은 특정 접근 패턴이나 세션/이벤트성 데이터를 맡을 수 있습니다. 운영 도구는 로그, 메트릭, 모니터링, 자동화로 에러율, latency, queue depth, 배포 상태를 추적합니다.` 순서로 설명하면 된다.",
+      "interviewHighlight": "프론트 면접에서도 설계 그림을 볼 때 CDN, Web Vitals, API latency, 에러 모니터링, 비동기 작업 진행 상태 UX를 함께 말하면 `화면 바깥의 사용자 경험`까지 이해한다는 강한 신호가 된다."
     }
   ]
 }

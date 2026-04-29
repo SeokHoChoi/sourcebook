@@ -1065,13 +1065,24 @@ Kafka도 이 문맥에서는 컴포넌트라고 부를 수 있다. 다만 전통
 
 백엔드는 stdout/log collector/CloudWatch/ELK/Loki/Datadog으로 모으고, 프론트는 브라우저 console이 아니라 Sentry 같은 error monitoring, OpenTelemetry JS, RUM SDK, `window.onerror`, `unhandledrejection`, React Error Boundary로 운영 신호를 보낸다. 사용자 액션 수집은 별도다. GA4/GTM은 전환·퍼널·이벤트 분석, Hotjar류는 heatmap/session replay, Sentry는 에러와 성능, Web Vitals는 체감 성능을 본다. 하나만 고르는 문제가 아니라 목적별로 조합하고, PII 마스킹과 consent를 반드시 챙겨야 한다.
 
-실무 도입 기준으로 정리하면 이렇게 나눈다.
+실무 조합은 아래처럼 나누는 것이 가장 안전하다.
 
-1. 장애 원인 추적: Sentry, backend structured log, requestId, traceId, release version.
-2. 사용자 행동 분석: GA4/GTM, 핵심 이벤트, funnel, conversion, retention.
-3. 체감 성능 관측: Web Vitals, RUM, route별 API latency, device/browser/region dimension.
-4. UX 관찰: Hotjar류 heatmap/session replay. 단, 입력값과 개인정보 마스킹을 먼저 켠다.
-5. 서버 운영 관측: CloudWatch/Prometheus/Grafana, DB, cache, queue depth, host metrics.
+| 목적             | 대표 도구                             | 프론트에서 남길 것                                                                             | 백엔드/운영에서 연결할 것                                                          | 주의점                                                             |
+| ---------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 장애 원인 추적   | Sentry, OpenTelemetry, backend log    | `requestId`, `release`, `route`, `component`, `apiPath`, `httpStatus`, `errorCode`, breadcrumb | 같은 `requestId`를 가진 structured log, stack trace, DB/query 이름, upstream error | sourcemap upload 없으면 번들 stack trace가 읽기 어렵다.            |
+| 사용자 행동 분석 | GA4, GTM                              | `sign_up_start`, `sign_up_success`, `search_submit`, `purchase` 같은 제품 이벤트               | 배포 버전, 실험군, campaign, route dimension                                       | GA4는 원인 추적 로그가 아니라 제품 분석 도구다.                    |
+| 체감 성능 관측   | Web Vitals, RUM, Sentry Performance   | LCP, INP, CLS, route transition, API failure rate                                              | API p95/p99, CDN cache hit, DB latency, region                                     | 평균만 보지 말고 p95/p99와 기기·지역별 분포를 본다.                |
+| UX 관찰          | Hotjar류 heatmap/session replay       | 클릭, 스크롤, 화면 이동, rage click, dead click                                                | 장애 시점의 requestId나 release와 느슨하게 연결                                    | 입력값 suppression, 개인정보 마스킹, sampling, 동의 정책이 먼저다. |
+| 인프라 운영      | CloudWatch, Prometheus, Grafana, Loki | 보통 프론트가 직접 남기지는 않지만 route/release dimension은 연결 가능                         | CPU, memory, 5xx, queue depth, cache hit ratio, DB connection                      | 서버 메트릭만으로 사용자 체감 문제를 설명할 수 없다.               |
+
+따라 할 수 있는 최소 구성은 이렇다.
+
+1. 모든 API 응답에 `x-request-id`를 내려주고, 프론트 에러 UI와 Sentry 이벤트에 붙인다.
+2. Sentry를 도입할 때 release, environment, sourcemap upload, React Error Boundary, unhandled promise rejection 수집을 같이 묶는다.
+3. `web-vitals` 라이브러리로 LCP/INP/CLS를 route, release, device, network와 함께 GA4 또는 자체 endpoint로 보낸다.
+4. GA4/GTM에는 제품 이벤트만 넣는다. 이벤트 이름과 parameter는 문서화하고, 임의 문자열을 여기저기 흩뿌리지 않는다.
+5. Hotjar류 replay는 기본 수집을 켜는 것이 아니라 마스킹, suppression, sampling, 동의 정책을 먼저 정한 뒤 제한적으로 켠다.
+6. 백엔드 로그는 requestId, traceId, status, durationMs, userIdHash, stack을 구조화해서 중앙 수집하고, 프론트의 requestId와 검색 가능하게 만든다.
 
 #### 발췌 2. 메트릭을 잘 수집하면
 
@@ -1085,7 +1096,9 @@ Kafka도 이 문맥에서는 컴포넌트라고 부를 수 있다. 다만 전통
 
 메트릭은 시간에 따라 수집되는 숫자 지표다. `api_request_count`, `p95_latency_ms`, `cpu_usage`, `cache_hit_ratio`, `checkout_conversion_rate`, `DAU`처럼 이름, 값, 시간, label/dimension을 가진다.
 
-프론트도 메트릭을 수집한다. Core Web Vitals, JS error rate, API failure rate, route transition time, checkout conversion rate가 예시다. 백엔드는 request rate, error rate, latency, queue depth, DB connection, cache hit ratio를 본다. GA4는 사용자의 행동 이벤트를 바탕으로 비즈니스/제품 메트릭을 보는 도구라서 `메트릭`을 다루는 것은 맞다. 하지만 서버 CPU, DB latency, queue depth 같은 운영 메트릭을 대체하지 않는다. 실무에서는 GA4, Sentry/RUM, Prometheus/CloudWatch를 목적별로 함께 쓰고 requestId, release, route, region 같은 공통 차원으로 연결한다.
+프론트도 메트릭을 수집한다. Core Web Vitals, JS error rate, API failure rate, route transition time, checkout conversion rate가 예시다. 백엔드는 request rate, error rate, latency, queue depth, DB connection, cache hit ratio를 본다. GA4는 사용자의 행동 이벤트를 바탕으로 비즈니스/제품 메트릭을 보는 도구라서 `메트릭`을 다루는 것은 맞다. 하지만 서버 CPU, DB latency, queue depth 같은 운영 메트릭을 대체하지 않는다. 실무에서는 GA4, Sentry/RUM, Prometheus/CloudWatch를 목적별로 함께 쓰고 `requestId`, `release`, `route`, `region`, `experimentId` 같은 공통 차원으로 연결한다.
+
+예를 들어 `회원가입 전환율이 떨어졌다`면 GA4만 보면 "어느 단계에서 이탈했는지"는 보이지만 "왜"는 약하다. 같은 시간대의 Sentry error rate, API 5xx, Web Vitals INP, backend p95 latency를 함께 봐야 한다. 반대로 Sentry만 보면 에러 원인은 보이지만 사업 영향도는 약하다. 그래서 운영에서는 `사용자 행동`, `에러 원인`, `체감 성능`, `서버 상태`를 분리 수집하고 공통 차원으로 다시 연결한다.
 
 #### 발췌 3. 그림 1-19
 
@@ -1111,6 +1124,11 @@ Kafka도 이 문맥에서는 컴포넌트라고 부를 수 있다. 다만 전통
 - label/dimension: route, region, browser, status_code처럼 메트릭을 쪼개 보는 기준이다.
 - Core Web Vitals: LCP, INP, CLS 같은 핵심 웹 사용자 경험 지표다.
 - GA4: 사용자 행동 이벤트, 전환, 유입, 재방문 같은 제품/비즈니스 분석에 강한 도구다.
+- GTM: Google Tag Manager다. dataLayer에 넣은 이벤트를 GA4나 광고 태그 등으로 보내는 규칙을 관리한다.
+- requestId: 하나의 요청을 프론트, API, DB, 작업 서버 로그에서 같이 찾기 위한 ID다.
+- sourcemap: 번들링·압축된 JS 에러 위치를 원래 소스 파일과 라인으로 되돌려 보는 매핑 파일이다.
+- session replay: 사용자의 화면 이동과 클릭 흐름을 재현하는 UX 관찰 도구다. 개인정보 마스킹이 필수다.
+- breadcrumb: 에러 직전의 클릭, navigation, fetch 같은 작은 행동 단서다.
 - observability: 로그, 메트릭, 트레이스 등을 통해 시스템 내부 상태를 외부에서 추론할 수 있는 능력이다.
 - trace: 하나의 요청이 여러 서비스와 DB를 지나간 경로와 시간을 이어 붙여 보여 주는 관측 데이터다.
 

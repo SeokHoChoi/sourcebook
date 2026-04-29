@@ -826,31 +826,6 @@ function renderNoteParagraphs(text: string | null, tone: 'amber' | 'slate' = 'sl
 type ThinkingPromptKind = 'recall' | 'transfer';
 type ThinkingPromptTone = 'slate' | 'amber';
 
-const frontendInterviewKeywords = [
-  'API',
-  'CDN',
-  'Core Web Vitals',
-  'GA4',
-  'Hotjar',
-  'JS',
-  'React',
-  'Sentry',
-  'TanStack',
-  'UI',
-  'Web Vitals',
-  'WebSocket',
-  '브라우저',
-  '성능',
-  '에러',
-  '업로드',
-  '오프라인',
-  '장애',
-  '재시도',
-  '캐시',
-  '프론트',
-  '화면',
-];
-
 function compactThinkingText(text: string | null, maxLength = 560) {
   const normalized = text?.replace(/\s+/g, ' ').trim();
 
@@ -881,16 +856,18 @@ function buildThinkingPromptAnswer(segment: SegmentCard, kind: ThinkingPromptKin
     return explicitAnswer;
   }
 
-  const coreAnswer = compactThinkingText(segment.directTranslation, 620);
+  const coreAnswer = compactThinkingText(segment.directTranslation, kind === 'recall' ? 520 : 480);
   const supportAnswer = compactThinkingText(
     kind === 'recall'
-      ? (segment.trickySentenceExplanation ?? segment.devNote)
+      ? (segment.trickySentenceExplanation ?? null)
       : (segment.devNote ?? segment.trickySentenceExplanation),
-    620,
+    kind === 'recall' ? 420 : 620,
   );
 
   if (coreAnswer && supportAnswer) {
-    return `${coreAnswer}\n\n답변을 더 단단하게 만들려면 이렇게 덧붙이면 좋다. ${supportAnswer}`;
+    return kind === 'recall'
+      ? `${coreAnswer}\n\n주의해서 붙일 점: ${supportAnswer}`
+      : `${coreAnswer}\n\n실무로 연결하면: ${supportAnswer}`;
   }
 
   if (coreAnswer) {
@@ -905,27 +882,7 @@ function buildThinkingPromptAnswer(segment: SegmentCard, kind: ThinkingPromptKin
 }
 
 function buildFrontendInterviewHighlight(segment: SegmentCard) {
-  const explicitHighlight = compactThinkingText(segment.interviewHighlight, 620);
-
-  if (explicitHighlight) {
-    return explicitHighlight;
-  }
-
-  const source = [segment.devNote, segment.trickySentenceExplanation, segment.directTranslation]
-    .filter(Boolean)
-    .join(' ');
-
-  if (!frontendInterviewKeywords.some((keyword) => source.includes(keyword))) {
-    return null;
-  }
-
-  const highlightBody = compactThinkingText(segment.devNote ?? source, 520);
-
-  if (!highlightBody) {
-    return null;
-  }
-
-  return `프론트 면접에서는 이 답을 "화면 구현"에만 가두지 말고 사용자 체감 성능, API 경계, 캐시/장애/재시도 UX까지 연결해 말하면 좋다. ${highlightBody}`;
+  return compactThinkingText(segment.interviewHighlight, 700);
 }
 
 function ThinkingPromptToggle({
