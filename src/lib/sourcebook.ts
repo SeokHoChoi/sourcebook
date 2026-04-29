@@ -120,7 +120,10 @@ export type OverlaySegment = {
   selectiveVocabGlosses: OverlayGloss[];
   devNote: string;
   recallQuestion: string;
+  recallAnswer?: string;
   speakingTransferPrompt: string;
+  speakingTransferAnswer?: string;
+  interviewHighlight?: string;
 };
 
 export type PageOverlay = {
@@ -203,7 +206,10 @@ export type SegmentCard = {
   selectiveVocabGlosses: OverlayGloss[];
   devNote: string | null;
   recallQuestion: string | null;
+  recallAnswer: string | null;
   speakingTransferPrompt: string | null;
+  speakingTransferAnswer: string | null;
+  interviewHighlight: string | null;
 };
 
 export type TrackPageRecord = TrackPageManifest & {
@@ -565,7 +571,10 @@ export const getTrack = cache(
             selectiveVocabGlosses: overlaySegment?.selectiveVocabGlosses ?? [],
             devNote: overlaySegment?.devNote ?? null,
             recallQuestion: overlaySegment?.recallQuestion ?? null,
+            recallAnswer: overlaySegment?.recallAnswer ?? null,
             speakingTransferPrompt: overlaySegment?.speakingTransferPrompt ?? null,
+            speakingTransferAnswer: overlaySegment?.speakingTransferAnswer ?? null,
+            interviewHighlight: overlaySegment?.interviewHighlight ?? null,
           };
         });
 
