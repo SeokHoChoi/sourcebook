@@ -177,6 +177,12 @@ test.describe('home page', () => {
     await expect(
       page.getByRole('heading', { name: '1장 · 38p 데이터베이스 규모 확장 도입' }).first(),
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '2장 · 46~51p 개략적인 규모 추정' }).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/사고 실험은 실제 서버를 배포하지 않고/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS = Average QPS/).first()).toBeVisible();
+    await expect(page.getByText(/SLA, SLO, SLI/).first()).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
@@ -277,6 +283,20 @@ test.describe('home page', () => {
       readingSection
         .locator('a')
         .filter({ hasText: '1장 · 38p 데이터베이스 규모 확장 도입' })
+        .first(),
+    ).toBeVisible();
+    const scaleEstimationChapter = readingSection
+      .locator('details')
+      .filter({ hasText: '2장 개략적인 규모 추정' })
+      .first();
+
+    await expect(scaleEstimationChapter.getByText('2장 개략적인 규모 추정')).toBeVisible();
+    await scaleEstimationChapter.scrollIntoViewIfNeeded();
+    await scaleEstimationChapter.locator('summary').first().click();
+    await expect(
+      scaleEstimationChapter
+        .locator('a')
+        .filter({ hasText: '2장 · 46~51p 개략적인 규모 추정' })
         .first(),
     ).toBeVisible();
     await expect(
@@ -617,6 +637,25 @@ test.describe('home page', () => {
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
 
+  test('renders the fifteenth system design reading batch with scale estimation feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch02-pp46-51-scale-estimation',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^2장 · 46~51p 개략적인 규모 추정$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/사고 실험은 실제 서버를 배포/).first()).toBeVisible();
+    await expect(page.getByText(/스크린샷 원본 저장 없음/).first()).toBeVisible();
+    await expect(page.getByText(/SLA를 `배포한 뒤에야/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS = Average QPS/).first()).toBeVisible();
+    await expect(page.getByText(/서버 수 = Peak QPS/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -714,6 +753,15 @@ test.describe('home page', () => {
         .getByText(/이를 해결하는 한 가지 방법은 데이터베이스를 비정규화하여 하나의 테이블/)
         .first(),
     ).toBeVisible();
+    await expect(page.getByText(/사고 실험 용어를 추상 개념으로만 해석/).first()).toBeVisible();
+    await expect(page.getByText(/도식 이미지 보존 방식과 OCR 계약 충돌/).first()).toBeVisible();
+    await expect(page.getByText(/SLA와 실제 측정 지표 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS 경험적 배율을 공식으로 오해/).first()).toBeVisible();
+    await expect(page.getByText(/규모 추정 항목별 기본 공식 부재/).first()).toBeVisible();
+    await expect(
+      page.getByText(/개략적인 규모 추정은 보편적으로 통용되는 성능 수치상의 사고 실험/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/많이 출제되는 개략적 규모 추정 문제는 QPS/).first()).toBeVisible();
     await expect(
       page
         .locator(

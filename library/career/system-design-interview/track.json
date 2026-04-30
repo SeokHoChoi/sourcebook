@@ -3,7 +3,7 @@
   "trackSlug": "system-design-interview",
   "title": "대규모 시스템 설계 기초",
   "status": "active",
-  "phase": "1장 p14~44 적재 완료",
+  "phase": "2장 p46~51 적재 완료",
   "description": "가상 면접 사례로 배우는 대규모 시스템 설계 기초를 프론트엔드 중심으로 읽되, 스크린샷은 보관하지 않고 OCR 텍스트와 학습 코멘트만 누적하는 스터디 트랙.",
   "scope": "목차와 장별 캡처는 OCR로 텍스트만 추출해 교차검증하고, 장마다 보강 설명·예시·오개념 교정·근거 링크를 계속 누적한다.",
   "studyGuide": {
@@ -12,7 +12,7 @@
     "description": "책 OCR 텍스트 아카이브, 프론트엔드 중심 학습 포인트, 향후 캡처/해석 기록 규칙, 외부 근거 레지스트리를 한곳에 모은 스터디 문서.",
     "file": "references/study-guide.md",
     "tocFile": "references/table-of-contents-archive.md",
-    "updatedAt": "2026-04-29",
+    "updatedAt": "2026-04-30",
     "verificationNotes": [
       "목차는 2026-04-22에 전달된 전자책 캡처 8장을 기준으로 OCR 가능한 화면 텍스트와 페이지 번호만 전사했다.",
       "학습 운영 원칙은 retrieval practice, distributed practice, worked example, metacognitive scaffolding 연구를 참고해 구성했다.",
@@ -30,7 +30,8 @@
       "1장 열한 번째 배치인 36p 메시지 큐 확장 예시는 producer/consumer decoupling과 worker scaling을 Zustand 비유와 비교해 교정했다.",
       "1장 열두 번째 배치인 36~38p 로그, 메트릭 그리고 자동화는 로그·행동 분석·RUM·메트릭·자동화 도구를 실무 도입 기준으로 분리했다.",
       "1장 열세 번째 배치인 38p 데이터베이스 규모 확장 도입은 저장 데이터 증가와 사용자 요청 증가가 DB 부하를 다르게 키운다는 점을 분리해 설명했다.",
-      "1장 열네 번째 배치인 39~44p 데이터베이스 샤딩과 1장 마무리는 샤딩 키의 칼럼 의미, 비정규화, 프론트엔드 독해 관점을 발췌문별로 분리해 반영했다."
+      "1장 열네 번째 배치인 39~44p 데이터베이스 샤딩과 1장 마무리는 샤딩 키의 칼럼 의미, 비정규화, 프론트엔드 독해 관점을 발췌문별로 분리해 반영했다.",
+      "2장 첫 배치인 46~51p는 개략적 규모 추정, 2의 제곱수, 응답지연 값, SLA, 트위터 QPS/저장소 예제를 단위 감각과 계산 절차 중심으로 반영했다."
     ]
   },
   "intakeFlow": [
@@ -308,6 +309,25 @@
         "source": "pages/ch01-pp39-44-database-sharding/source.md",
         "structure": "pages/ch01-pp39-44-database-sharding/structure.json",
         "overlay": "pages/ch01-pp39-44-database-sharding/overlay.ko.json"
+      }
+    },
+    {
+      "slug": "ch02-pp46-51-scale-estimation",
+      "title": "2장 · 46~51p 개략적인 규모 추정",
+      "readOrder": 15,
+      "status": "full",
+      "captureMode": "excerpt",
+      "pageType": "section-page",
+      "learningStage": "reference",
+      "sourceScope": "full-page",
+      "chapterLabel": "2장 개략적인 규모 추정",
+      "sectionLabel": "2의 제곱수",
+      "canonicalUrl": "전자책 캡처 46~51p",
+      "sourceRepoPath": "ebook-capture/ch02-pp46-51-scale-estimation",
+      "files": {
+        "source": "pages/ch02-pp46-51-scale-estimation/source.md",
+        "structure": "pages/ch02-pp46-51-scale-estimation/structure.json",
+        "overlay": "pages/ch02-pp46-51-scale-estimation/overlay.ko.json"
       }
     }
   ]

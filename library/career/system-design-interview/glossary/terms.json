@@ -891,6 +891,13 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-001", "ch01-pp24-26-cache-and-cdn-seg-003"]
+        },
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": [
+            "ch02-pp46-51-scale-estimation-seg-005",
+            "ch02-pp46-51-scale-estimation-seg-006"
+          ]
         }
       ]
     },
@@ -903,6 +910,13 @@
         {
           "pageSlug": "ch01-pp24-26-cache-and-cdn",
           "segmentIds": ["ch01-pp24-26-cache-and-cdn-seg-001", "ch01-pp24-26-cache-and-cdn-seg-003"]
+        },
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": [
+            "ch02-pp46-51-scale-estimation-seg-005",
+            "ch02-pp46-51-scale-estimation-seg-006"
+          ]
         }
       ]
     },
@@ -1977,6 +1991,315 @@
         {
           "pageSlug": "ch01-pp39-44-database-sharding",
           "segmentIds": ["ch01-pp39-44-database-sharding-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "back-of-envelope-estimation",
+      "term": "back-of-the-envelope estimation",
+      "korean": "개략적 규모 추정",
+      "explanation": "정확한 견적서가 아니라, 빠른 가정과 단위 계산으로 시스템 규모와 병목 후보를 대략 잡는 추정 방식이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "thought-experiment",
+      "term": "thought experiment",
+      "korean": "사고 실험",
+      "explanation": "실제 서버를 배포하거나 부하 테스트를 돌리지 않고, 가정과 알려진 성능 수치를 이용해 머릿속과 종이 위에서 결과를 추론하는 방법이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-001"]
+        }
+      ]
+    },
+    {
+      "id": "bit",
+      "term": "bit",
+      "korean": "비트",
+      "explanation": "컴퓨터가 다루는 가장 작은 정보 단위다. 0 또는 1 하나를 뜻한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "byte",
+      "term": "byte",
+      "korean": "바이트",
+      "explanation": "일반적으로 8비트로 구성된 데이터 크기 단위다. ASCII 문자 하나가 대략 1바이트다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "data-size-units",
+      "term": "KB/MB/GB/TB/PB",
+      "korean": "데이터 크기 단위",
+      "explanation": "KB, MB, GB, TB, PB는 데이터 크기를 나타내는 단위다. 개략 추정에서는 1KB를 약 1천 바이트, 1MB를 약 100만 바이트처럼 10진 근사로 잡기도 한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-002"]
+        }
+      ]
+    },
+    {
+      "id": "nanosecond",
+      "term": "nanosecond",
+      "korean": "나노초",
+      "explanation": "10억분의 1초다. 캐시 접근이나 CPU 수준 연산을 설명할 때 자주 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "microsecond",
+      "term": "microsecond",
+      "korean": "마이크로초",
+      "explanation": "100만분의 1초다. 나노초보다 크고 밀리초보다 작은 시간 단위다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "millisecond",
+      "term": "millisecond",
+      "korean": "밀리초",
+      "explanation": "1000분의 1초다. 웹 성능, 네트워크 지연, API 응답 시간을 말할 때 가장 자주 보는 단위다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "disk-seek",
+      "term": "disk seek",
+      "korean": "디스크 탐색",
+      "explanation": "디스크에서 원하는 데이터 위치를 찾는 동작이다. 순차 읽기보다 비용이 커질 수 있어 가능한 피하라는 설계 감각이 중요하다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "round-trip-time",
+      "term": "round-trip time",
+      "korean": "왕복 지연 시간",
+      "explanation": "요청이 목적지까지 갔다가 응답이 다시 돌아오는 데 걸리는 시간이다. 지역 간 네트워크 지연을 볼 때 중요하다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-003"]
+        }
+      ]
+    },
+    {
+      "id": "sla",
+      "term": "SLA",
+      "korean": "서비스 수준 계약",
+      "explanation": "서비스 제공자가 고객에게 약속하는 가용성이나 성능 수준에 관한 계약이다. 위반 시 보상 조건이 붙을 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "slo",
+      "term": "SLO",
+      "korean": "서비스 수준 목표",
+      "explanation": "팀 내부에서 목표로 삼는 서비스 수준이다. 예를 들어 `로그인 성공률 99.9%`처럼 운영 목표로 잡는다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "sli",
+      "term": "SLI",
+      "korean": "서비스 수준 지표",
+      "explanation": "SLO를 판단하기 위해 실제로 측정하는 지표다. 성공률, 지연 시간, 에러율, 가용성 같은 값이 될 수 있다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "uptime",
+      "term": "uptime",
+      "korean": "가동 시간",
+      "explanation": "서비스가 정상적으로 사용 가능한 시간이다. 가용성 계산의 분자가 된다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "downtime",
+      "term": "downtime",
+      "korean": "장애 시간",
+      "explanation": "서비스가 정상적으로 사용 불가능한 시간이다. 가용성이 높을수록 허용 downtime은 짧아진다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-004"]
+        }
+      ]
+    },
+    {
+      "id": "peak-qps",
+      "term": "Peak QPS",
+      "korean": "최대 초당 요청 수",
+      "explanation": "평균이 아니라 가장 바쁜 구간의 초당 요청 수다. 보통 평균 QPS에 피크 배율을 곱해 개략 추정한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": [
+            "ch02-pp46-51-scale-estimation-seg-005",
+            "ch02-pp46-51-scale-estimation-seg-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mau",
+      "term": "MAU",
+      "korean": "월간 활성 사용자",
+      "explanation": "한 달 동안 서비스를 사용한 고유 사용자 수다. 규모 추정에서 전체 사용자 기반을 잡는 출발점으로 자주 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "dau",
+      "term": "DAU",
+      "korean": "일간 활성 사용자",
+      "explanation": "하루 동안 서비스를 사용한 고유 사용자 수다. 하루 요청량과 QPS를 추정할 때 자주 쓰인다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "retention-period",
+      "term": "retention period",
+      "korean": "보관 기간",
+      "explanation": "데이터를 얼마나 오래 저장할지 정한 기간이다. 저장소 요구량 계산에서 일일 생성량에 곱해진다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-005"]
+        }
+      ]
+    },
+    {
+      "id": "assumption",
+      "term": "assumption",
+      "korean": "가정",
+      "explanation": "아직 모르는 값을 계산 가능하게 만들기 위해 임시로 정한 입력값이다. 면접에서는 가정을 말하고 단위를 붙이는 것이 중요하다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": [
+            "ch02-pp46-51-scale-estimation-seg-005",
+            "ch02-pp46-51-scale-estimation-seg-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rounding",
+      "term": "rounding",
+      "korean": "근사치 계산",
+      "explanation": "복잡한 계산을 면접장에서 빠르게 하기 위해 숫자를 적당히 둥글려 계산하는 방식이다. 정확한 산술보다 절차와 단위가 중요하다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "storage-requirement",
+      "term": "storage requirement",
+      "korean": "저장소 요구량",
+      "explanation": "데이터를 저장하기 위해 필요한 용량이다. 보통 `건수 × 항목 크기 × 보관 기간 × 복제/인덱스 여유`로 추정한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": [
+            "ch02-pp46-51-scale-estimation-seg-005",
+            "ch02-pp46-51-scale-estimation-seg-006"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cache-requirement",
+      "term": "cache requirement",
+      "korean": "캐시 요구량",
+      "explanation": "자주 읽는 데이터를 캐시에 담기 위해 필요한 용량이다. hot data 크기, TTL, 목표 cache hit ratio를 기준으로 추정한다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "server-count-estimate",
+      "term": "server count estimate",
+      "korean": "서버 수 추정",
+      "explanation": "피크 요청량을 서버 한 대의 안전 처리량으로 나누고 여유 계수를 곱해 필요한 서버 대수를 대략 계산하는 방식이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-006"]
+        }
+      ]
+    },
+    {
+      "id": "headroom",
+      "term": "headroom",
+      "korean": "여유 용량",
+      "explanation": "예상보다 트래픽이 많거나 장애가 생겨도 버틸 수 있도록 일부러 남겨 두는 처리량·메모리·스토리지 여유분이다.",
+      "pageRefs": [
+        {
+          "pageSlug": "ch02-pp46-51-scale-estimation",
+          "segmentIds": ["ch02-pp46-51-scale-estimation-seg-006"]
         }
       ]
     }

@@ -192,6 +192,48 @@
       "count": 1,
       "pageSlugs": ["ch01-pp39-44-database-sharding"],
       "representativeQuestion": "프론트엔드 개발자는 DB 샤딩 절에서 무엇을 당장 면접 언어로 가져가고, 무엇을 장기 풀스택 학습 과제로 남겨야 하는가?"
+    },
+    {
+      "label": "사고 실험 용어를 추상 개념으로만 해석",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "개략적 규모 추정에서 사고 실험은 실제 부하 테스트와 어떻게 다르며, 가정과 계산은 어떤 순서로 이어지는가?"
+    },
+    {
+      "label": "도식 이미지 보존 방식과 OCR 계약 충돌",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "스크린샷 원본을 저장하지 않는 규칙 안에서 표와 도식의 학습 가치를 어떻게 보존할 수 있는가?"
+    },
+    {
+      "label": "SLA와 실제 측정 지표 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "SLA, SLO, SLI는 각각 무엇이고, 가용성은 배포 전후에 어떻게 측정해야 하는가?"
+    },
+    {
+      "label": "연습용 가정과 실측 데이터 범위 혼동",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "규모 추정 연습에서는 임의 수치를 써도 되는가, 실무에서는 어떤 데이터로 그 가정을 검증해야 하는가?"
+    },
+    {
+      "label": "Peak QPS 경험적 배율을 공식으로 오해",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "Peak QPS = 2 × QPS는 보편 공식인가, 연습용 피크 배율 가정인가?"
+    },
+    {
+      "label": "계산 대상 범위와 미미한 항목 구분",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "미디어 저장소 요구량 계산에서 tweet_id와 140바이트 텍스트가 빠지는 이유는 무엇인가?"
+    },
+    {
+      "label": "규모 추정 항목별 기본 공식 부재",
+      "count": 1,
+      "pageSlugs": ["ch02-pp46-51-scale-estimation"],
+      "representativeQuestion": "QPS, Peak QPS, 저장소 요구량, 캐시 요구량, 서버 수는 각각 어떤 기본 식으로 추정하는가?"
     }
   ]
 }
