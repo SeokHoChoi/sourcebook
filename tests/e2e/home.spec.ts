@@ -177,6 +177,12 @@ test.describe('home page', () => {
     await expect(
       page.getByRole('heading', { name: '1장 · 38p 데이터베이스 규모 확장 도입' }).first(),
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: '2장 · 46~51p 개략적인 규모 추정' }).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/사고 실험은 실제 서버를 배포하지 않고/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS = Average QPS/).first()).toBeVisible();
+    await expect(page.getByText(/SLA, SLO, SLI/).first()).toBeVisible();
     await expect(page.getByText('이 예시에서 쓰인 용어 풀이').first()).toBeVisible();
     await expect(page.getByText(/TTL: Time To Live의 줄임말/).first()).toBeVisible();
     await expect(page.getByText(/edge server: 사용자 가까운 곳에서 파일을/).first()).toBeVisible();
@@ -277,6 +283,20 @@ test.describe('home page', () => {
       readingSection
         .locator('a')
         .filter({ hasText: '1장 · 38p 데이터베이스 규모 확장 도입' })
+        .first(),
+    ).toBeVisible();
+    const scaleEstimationChapter = readingSection
+      .locator('details')
+      .filter({ hasText: '2장 개략적인 규모 추정' })
+      .first();
+
+    await expect(scaleEstimationChapter.getByText('2장 개략적인 규모 추정')).toBeVisible();
+    await scaleEstimationChapter.scrollIntoViewIfNeeded();
+    await scaleEstimationChapter.locator('summary').first().click();
+    await expect(
+      scaleEstimationChapter
+        .locator('a')
+        .filter({ hasText: '2장 · 46~51p 개략적인 규모 추정' })
         .first(),
     ).toBeVisible();
     await expect(
@@ -580,6 +600,62 @@ test.describe('home page', () => {
     await expect(page.getByText('질문 다듬기').first()).toBeVisible();
   });
 
+  test('renders the fourteenth system design reading batch with sharding and denormalization feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch01-pp39-44-database-sharding',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^1장 · 39~44p 데이터베이스 샤딩과 1장 마무리$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/DB 테이블의 세로 방향 속성/).first()).toBeVisible();
+    await expect(page.getByText(/NoSQL에서는 field나 partition key/).first()).toBeVisible();
+    await expect(page.getByText(/의도적으로 중복/).first()).toBeVisible();
+
+    const denormalizationPrompt = page
+      .locator('details', {
+        hasText: '피드 카드 API가 작성자 이름과 아바타를 함께 내려줄 때',
+      })
+      .first();
+    await denormalizationPrompt.locator('summary').click();
+    await expect(denormalizationPrompt.getByText(/denormalized read model/).first()).toBeVisible();
+
+    const frontendTransferPrompt = page
+      .locator('details', {
+        hasText: '이직 면접에서 `프론트엔드가 시스템 설계를 왜 공부했는가`',
+      })
+      .first();
+    await frontendTransferPrompt.locator('summary').click();
+    await expect(
+      frontendTransferPrompt.getByText(/시스템 설계 개념을 UI 품질 언어로 번역/).first(),
+    ).toBeVisible();
+
+    await expect(page.getByText(/cursor pagination/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
+  test('renders the fifteenth system design reading batch with scale estimation feedback', async ({
+    page,
+  }) => {
+    await page.goto(
+      '/categories/career/tracks/system-design-interview/pages/ch02-pp46-51-scale-estimation',
+    );
+
+    await expect(
+      page.getByRole('heading', { name: /^2장 · 46~51p 개략적인 규모 추정$/ }),
+    ).toBeVisible();
+    await expect(page.getByText(/사고 실험은 실제 서버를 배포/).first()).toBeVisible();
+    await expect(page.getByText(/스크린샷 원본 저장 없음/).first()).toBeVisible();
+    await expect(page.getByText(/SLA를 `배포한 뒤에야/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS = Average QPS/).first()).toBeVisible();
+    await expect(page.getByText(/서버 수 = Peak QPS/).first()).toBeVisible();
+    await expect(page.getByText('질문 원문').first()).toBeVisible();
+    await expect(page.getByText('질문 다듬기').first()).toBeVisible();
+  });
+
   test('renders the system design journal with the captured chapter-1 questions', async ({
     page,
   }) => {
@@ -651,6 +727,11 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/DB 데이터량 증가와 사용자 요청 증가 병목 구분/).first(),
     ).toBeVisible();
+    await expect(page.getByText(/샤딩 키와 DB 칼럼 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/정규화\/비정규화 trade-off 혼동/).first()).toBeVisible();
+    await expect(
+      page.getByText(/프론트 이직 관점과 풀스택 장기 학습 관점 분리/).first(),
+    ).toBeVisible();
     await expect(page.getByText(/세션 데이터는 로그인 세션이 대표 예지만/).first()).toBeVisible();
     await expect(page.getByText(/Amazon EC2 Auto Scaling/).first()).toBeVisible();
     await expect(page.getByText(/지리적 라우팅 원리와 독해 속도 조절 혼동/).first()).toBeVisible();
@@ -664,6 +745,23 @@ test.describe('home page', () => {
     await expect(
       page.getByText(/저장할 데이터가 많아지면 데이터베이스에 대한 부하도 증가한다/).first(),
     ).toBeVisible();
+    await expect(
+      page.getByText(/데이터가 어떻게 분산될지 정하는 하나 이상의 칼럼으로 구성된다/).first(),
+    ).toBeVisible();
+    await expect(
+      page
+        .getByText(/이를 해결하는 한 가지 방법은 데이터베이스를 비정규화하여 하나의 테이블/)
+        .first(),
+    ).toBeVisible();
+    await expect(page.getByText(/사고 실험 용어를 추상 개념으로만 해석/).first()).toBeVisible();
+    await expect(page.getByText(/도식 이미지 보존 방식과 OCR 계약 충돌/).first()).toBeVisible();
+    await expect(page.getByText(/SLA와 실제 측정 지표 범위 혼동/).first()).toBeVisible();
+    await expect(page.getByText(/Peak QPS 경험적 배율을 공식으로 오해/).first()).toBeVisible();
+    await expect(page.getByText(/규모 추정 항목별 기본 공식 부재/).first()).toBeVisible();
+    await expect(
+      page.getByText(/개략적인 규모 추정은 보편적으로 통용되는 성능 수치상의 사고 실험/).first(),
+    ).toBeVisible();
+    await expect(page.getByText(/많이 출제되는 개략적 규모 추정 문제는 QPS/).first()).toBeVisible();
     await expect(
       page
         .locator(

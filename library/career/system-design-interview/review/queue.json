@@ -297,6 +297,96 @@
       "dueOn": "2026-05-14",
       "status": "scheduled",
       "sourceEventId": "system-design-event-029"
+    },
+    {
+      "id": "review-system-design-034",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-003",
+      "prompt": "샤딩 키가 하나 이상의 칼럼으로 구성된다는 말을 row, column, field, partition key, composite key를 써서 설명하라.",
+      "dueOn": "2026-05-15",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-030"
+    },
+    {
+      "id": "review-system-design-035",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-004",
+      "prompt": "정규화와 비정규화의 차이를 설명하고, 샤딩 후 cross-shard join을 피하려고 비정규화를 쓰면 어떤 stale UI 위험이 생기는지 예시로 말하라.",
+      "dueOn": "2026-05-16",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-031"
+    },
+    {
+      "id": "review-system-design-036",
+      "pageSlug": "ch01-pp39-44-database-sharding",
+      "segmentId": "ch01-pp39-44-database-sharding-seg-005",
+      "prompt": "프론트엔드 개발자가 DB 샤딩 절을 읽을 때 API 계약, pagination, stale UI, optimistic update 관점에서 무엇을 가져가야 하는지 설명하라.",
+      "dueOn": "2026-05-17",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-032"
+    },
+    {
+      "id": "review-system-design-037",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-001",
+      "prompt": "사고 실험을 실제 부하 테스트와 구분하고, 가정 -> 계산 -> 요구사항 비교 -> 위험 지점 찾기 순서로 설명하라.",
+      "dueOn": "2026-05-18",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-033"
+    },
+    {
+      "id": "review-system-design-038",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-003",
+      "prompt": "응답지연 시각화 그림을 원본 이미지 대신 텍스트 구조와 재작성 도식으로 보존하는 이유를 OCR 계약과 저작권/가독성 관점에서 설명하라.",
+      "dueOn": "2026-05-19",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-034"
+    },
+    {
+      "id": "review-system-design-039",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-004",
+      "prompt": "SLA, SLO, SLI를 구분하고 프론트/백엔드/end-to-end 관점에서 가용성을 어떻게 측정하는지 말하라.",
+      "dueOn": "2026-05-20",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-035"
+    },
+    {
+      "id": "review-system-design-040",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-006",
+      "prompt": "연습용 규모 추정에서 임의 가정을 써도 되는 조건과, 실무에서 analytics/log/APM/billing/load test로 가정을 검증하는 절차를 설명하라.",
+      "dueOn": "2026-05-21",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-036"
+    },
+    {
+      "id": "review-system-design-041",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-005",
+      "prompt": "Peak QPS = Average QPS × peak factor라고 설명하고, 책의 2배가 보편 공식이 아니라 연습용 가정인 이유를 말하라.",
+      "dueOn": "2026-05-22",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-037"
+    },
+    {
+      "id": "review-system-design-042",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-005",
+      "prompt": "미디어 저장소 요구량 계산에서 tweet_id와 140바이트 텍스트가 빠진 이유를 계산 대상과 크기 차이 관점으로 설명하라.",
+      "dueOn": "2026-05-23",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-038"
+    },
+    {
+      "id": "review-system-design-043",
+      "pageSlug": "ch02-pp46-51-scale-estimation",
+      "segmentId": "ch02-pp46-51-scale-estimation-seg-006",
+      "prompt": "QPS, Peak QPS, 저장소 요구량, 캐시 요구량, 서버 수 추정의 기본 식을 간단한 예로 말하라.",
+      "dueOn": "2026-05-24",
+      "status": "scheduled",
+      "sourceEventId": "system-design-event-039"
     }
   ]
 }

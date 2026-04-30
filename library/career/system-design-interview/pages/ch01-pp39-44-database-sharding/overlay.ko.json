@@ -1,0 +1,171 @@
+{
+  "pageSlug": "ch01-pp39-44-database-sharding",
+  "language": "ko",
+  "segments": [
+    {
+      "segmentId": "ch01-pp39-44-database-sharding-seg-001",
+      "directTranslation": "이 구간은 `DB를 더 큰 한 대로 키울 것인가`, 아니면 `여러 대로 나눌 것인가`를 비교한다. 수직적 확장은 CPU, RAM, 디스크 같은 자원을 한 서버에 더 붙이는 방식이고, 수평적 확장은 서버 수를 늘려 저장과 처리를 나누는 방식이다.",
+      "trickySentenceExplanation": "p38에서 문장이 끊겼기 때문에 앞뒤를 붙여 읽어야 한다. 저자는 먼저 `한 대를 크게 만드는 방법`을 보여 준 뒤, 왜 결국 `여러 대로 나누는 방법`이 필요해지는지로 넘어간다. 여기서 중요한 것은 `수평 확장 = 항상 쉽다`가 아니다. 수평 확장은 한계 돌파 수단이지만, 데이터 분산 규칙, 조인, 트랜잭션, 운영 복잡도를 새로 만든다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "수직적 확장",
+          "korean": "scale up",
+          "explanation": "한 서버에 더 좋은 CPU, 더 많은 RAM, 더 큰 디스크를 붙여 한 대의 처리 능력을 키우는 방식."
+        },
+        {
+          "term": "수평적 확장",
+          "korean": "scale out",
+          "explanation": "서버나 노드를 여러 대로 늘려 작업과 데이터를 나누는 방식."
+        },
+        {
+          "term": "SPOF",
+          "korean": "단일 장애 지점",
+          "explanation": "Single Point of Failure. 한 곳이 고장나면 전체 서비스가 멈추는 지점."
+        }
+      ],
+      "devNote": "프론트엔드 면접에서는 DB를 직접 샤딩하지 않아도, API 지연·페이지네이션·검색 필터·stale UI가 DB 확장 전략의 영향을 받는다는 식으로 연결하면 강하다.",
+      "recallQuestion": "수직적 확장과 수평적 확장을 DB 관점에서 구분해 보자.",
+      "recallAnswer": "수직적 확장은 한 DB 서버의 자원을 키우는 방식이고, 수평적 확장은 여러 DB 서버나 파티션으로 데이터를 나누는 방식이다. 수직 확장은 단순하지만 하드웨어 한계, 비용, SPOF 문제가 있고, 수평 확장은 용량과 처리량을 나눌 수 있지만 분산 규칙과 운영 복잡도가 생긴다.",
+      "speakingTransferPrompt": "이커머스 상품 DB가 커질 때 scale up과 scale out을 언제 각각 고려할지 말해 보자.",
+      "speakingTransferAnswer": "처음에는 더 큰 DB 인스턴스나 스토리지로 올리는 scale up이 단순할 수 있다. 하지만 저장 용량, IOPS, connection, write 처리량, 장애 위험이 한 대에 몰리면 read replica, partitioning, sharding 같은 scale out을 고민한다. 프론트 입장에서는 이 결정이 목록 지연, stale UI, pagination 방식으로 드러난다.",
+      "interviewHighlight": "면접에서 `DB는 백엔드 영역이라 모릅니다`로 끝내지 말고, `프론트의 pagination, optimistic UI, stale state, retry UX가 저장소 확장 전략의 영향을 받는다`고 연결하면 시야가 넓어 보인다."
+    },
+    {
+      "segmentId": "ch01-pp39-44-database-sharding-seg-002",
+      "directTranslation": "그림 1-21과 1-22는 `user_id % 4`라는 간단한 규칙으로 사용자 데이터를 네 개 샤드에 나누는 예시다. `user_id`를 4로 나눈 나머지가 0이면 샤드 0, 1이면 샤드 1에 넣는다.",
+      "trickySentenceExplanation": "그림은 실제 운영에서 반드시 `% 4`를 쓴다는 뜻이 아니다. 핵심은 `데이터를 어디에 저장할지 결정하는 규칙이 필요하다`는 점이다. `% 4`는 가장 쉬운 예시지만, shard 수가 바뀌면 많은 데이터가 이동해야 하는 단점이 있다. 그래서 실무에서는 consistent hashing, range sharding, directory-based routing 같은 방식도 검토한다. 그림 1-22는 각 샤드가 같은 `Users` 테이블 구조를 갖지만 서로 다른 user_id 묶음을 가진다는 점을 보여 준다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "샤드",
+          "korean": "shard",
+          "explanation": "큰 데이터베이스를 나눈 작은 저장 단위. 각 샤드는 전체 데이터의 일부를 맡는다."
+        },
+        {
+          "term": "스키마",
+          "korean": "schema",
+          "explanation": "테이블 이름, 칼럼, 타입, 제약 조건처럼 DB 구조를 정한 설계도."
+        },
+        {
+          "term": "해시 함수",
+          "korean": "hash function",
+          "explanation": "입력값을 일정한 규칙으로 숫자나 키 공간에 매핑하는 함수. 샤드 분배에 쓰일 수 있다."
+        },
+        {
+          "term": "modulo",
+          "korean": "나머지 연산",
+          "explanation": "`user_id % 4`처럼 어떤 수를 나눴을 때의 나머지를 구하는 연산이다."
+        }
+      ],
+      "devNote": "그림을 볼 때는 `어떤 값이 라우팅 키인가`, `각 샤드가 같은 스키마인지`, `데이터가 중복되는지`, `샤드 수가 바뀌면 무엇이 이동하는지`를 질문해야 한다.",
+      "recallQuestion": "`user_id % 4` 샤딩 예시의 장점과 한계는 무엇인가?",
+      "recallAnswer": "장점은 이해와 구현이 단순하고 user_id가 고르게 분포하면 샤드도 고르게 나뉜다는 점이다. 한계는 샤드 수가 바뀌면 나머지 결과가 바뀌어 대량 재배치가 필요하고, 특정 user_id 범위나 유명 사용자에게 요청이 몰리면 hot shard가 생길 수 있다는 점이다.",
+      "speakingTransferPrompt": "사용자 ID 기준 샤딩이 무한 스크롤 피드 API에 어떤 영향을 줄 수 있는지 말해 보자.",
+      "speakingTransferAnswer": "사용자별 데이터 조회에는 유리할 수 있지만, 모든 사용자의 최신 게시물을 전역 시간순으로 보여 주는 피드라면 여러 샤드에서 데이터를 모아 정렬해야 할 수 있다. 그래서 feed용 read model, 캐시, 별도 검색/랭킹 저장소가 필요해질 수 있다.",
+      "interviewHighlight": "프론트 면접에서 이 그림을 활용하려면 `무한 스크롤 feed API가 user_id 기준 샤딩과 맞지 않으면 전역 정렬이 비싸질 수 있다`처럼 UI 요구사항과 shard key를 연결해 말하면 좋다."
+    },
+    {
+      "segmentId": "ch01-pp39-44-database-sharding-seg-003",
+      "directTranslation": "샤딩 키 또는 파티션 키는 데이터가 어느 샤드로 갈지 결정하는 하나 이상의 칼럼이다. 예시에서는 `user_id` 칼럼이 샤딩 키다.",
+      "trickySentenceExplanation": "`칼럼`은 DB 테이블의 세로 방향 속성이다. 예를 들어 `Users` 테이블에 `user_id`, `email`, `created_at`이 있으면 각각이 칼럼이고, 한 사용자 한 명의 데이터 묶음은 행(row)이다. 책은 앞에서 관계형 DB가 테이블과 열/칼럼으로 데이터를 표현한다고 설명했기 때문에 어느 정도는 이어서 알 수 있기를 기대한다. 하지만 여기서 멈춘 건 독해력이 부족해서가 아니라, `샤딩 키가 DB 칼럼이라는 말이 NoSQL 필드에도 적용되는가`까지 확장해서 생각했기 때문이다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "칼럼",
+          "korean": "column",
+          "explanation": "DB 테이블에서 세로 방향의 속성 이름이다. 예: `user_id`, `email`, `created_at`."
+        },
+        {
+          "term": "행",
+          "korean": "row",
+          "explanation": "테이블에서 한 개체나 한 사건을 나타내는 가로 방향 데이터 묶음이다."
+        },
+        {
+          "term": "필드",
+          "korean": "field",
+          "explanation": "문서형 DB나 JSON에서 속성 하나를 부르는 말이다. RDB의 column과 비슷하게 읽을 수 있지만 완전히 같은 구현은 아니다."
+        },
+        {
+          "term": "복합 키",
+          "korean": "composite key",
+          "explanation": "하나의 칼럼이 아니라 여러 칼럼이나 필드를 묶어 키로 쓰는 방식이다."
+        }
+      ],
+      "devNote": "더 좋은 질문은 `여기서 말하는 칼럼은 관계형 DB 테이블의 column을 뜻하는가? NoSQL에서는 field나 partition key로 보면 되는가? shard key는 복합 키도 가능한가?`처럼 다듬을 수 있다.",
+      "recallQuestion": "샤딩 키를 `하나 이상의 칼럼`이라고 할 때 칼럼은 무엇이고, 왜 중요한가?",
+      "recallAnswer": "칼럼은 테이블의 속성이다. 샤딩 키는 그 칼럼 값을 보고 데이터를 어느 샤드에 둘지 결정한다. `user_id`를 쓰면 사용자별 데이터가 나뉘고, `tenant_id`를 쓰면 고객사별로 나뉠 수 있다. 키 선택이 나쁘면 특정 샤드에 데이터나 요청이 몰린다.",
+      "speakingTransferPrompt": "프론트에서 보는 `userId`, `tenantId`, `createdAt` 같은 필드가 저장소 설계와 어떻게 연결될 수 있는지 설명해 보자.",
+      "speakingTransferAnswer": "프론트의 JSON 필드와 DB 칼럼을 1:1로 단정하면 안 된다. 다만 API의 주요 필드가 백엔드 저장소의 인덱스, 파티션 키, 샤딩 키와 연결될 수 있다는 감각은 필요하다. 조회 조건이 그 키와 맞지 않으면 API가 여러 파티션이나 샤드를 훑어 느려질 수 있다.",
+      "interviewHighlight": "면접에서 `칼럼이 뭔가요?`에 머무르지 말고 `어떤 필드를 기준으로 데이터를 나누면 내 화면의 주요 조회 패턴과 맞는가`까지 말하면 설계 감각이 보인다."
+    },
+    {
+      "segmentId": "ch01-pp39-44-database-sharding-seg-004",
+      "directTranslation": "샤딩은 강력하지만 재샤딩, 특정 샤드 과부하, 조인 어려움 같은 문제가 생긴다. 여러 샤드에 흩어진 데이터를 조인하기 어려울 때 한 가지 해결책은 데이터를 비정규화해서 한 테이블 또는 한 문서에서 필요한 조회가 끝나게 만드는 것이다.",
+      "trickySentenceExplanation": "비정규화는 `엉망으로 만든다`가 아니라 `읽기 경로를 빠르게 하기 위해 의도적으로 중복을 허용한다`는 뜻이다. 정규화는 중복을 줄이려고 Users, Posts, Comments 같은 테이블을 나누는 방식이다. 비정규화는 예를 들어 피드 카드에 필요한 `authorName`, `authorAvatarUrl`, `postTitle`, `likeCount`를 미리 한 레코드나 문서에 가까이 둔다. 대신 사용자 이름이 바뀌면 여러 곳의 중복 데이터를 갱신해야 하고, 늦게 갱신되면 프론트에는 stale UI처럼 보일 수 있다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "정규화",
+          "korean": "normalization",
+          "explanation": "데이터 중복과 갱신 불일치를 줄이기 위해 테이블을 역할별로 나누는 설계."
+        },
+        {
+          "term": "비정규화",
+          "korean": "denormalization",
+          "explanation": "조회를 빠르게 하려고 일부 데이터를 의도적으로 중복하거나 미리 합쳐 두는 설계."
+        },
+        {
+          "term": "cross-shard query",
+          "korean": "샤드 간 질의",
+          "explanation": "여러 샤드에 흩어진 데이터를 동시에 읽거나 조인해야 하는 질의."
+        },
+        {
+          "term": "hot shard",
+          "korean": "핫 샤드",
+          "explanation": "특정 샤드에 데이터나 요청이 지나치게 몰려 그 샤드만 병목이 되는 상태."
+        },
+        {
+          "term": "재샤딩",
+          "korean": "resharding",
+          "explanation": "기존 shard key나 shard 배치를 바꿔 데이터를 다시 나누는 작업."
+        }
+      ],
+      "devNote": "더 좋은 질문은 `샤딩 후 cross-shard join이 왜 어려워지고, 이를 피하기 위해 어떤 데이터를 중복 저장하면 읽기는 빨라지지만 쓰기와 최신성 관리가 어려워지는가?`처럼 다듬을 수 있다.",
+      "recallQuestion": "비정규화가 무엇이고, 왜 샤딩에서 자주 같이 언급되는가?",
+      "recallAnswer": "비정규화는 읽기 성능을 위해 데이터를 중복하거나 미리 합쳐 두는 방식이다. 샤딩하면 여러 샤드에 걸친 조인이 비싸거나 복잡해지므로, 자주 함께 읽는 데이터를 한 샤드나 한 문서에 가깝게 둬서 cross-shard join을 피하려고 비정규화를 쓴다. 대신 쓰기 복잡도와 stale data 문제가 생긴다.",
+      "speakingTransferPrompt": "피드 카드 API가 작성자 이름과 아바타를 함께 내려줄 때, 정규화/비정규화 관점에서 어떤 장단점이 있는지 말해 보자.",
+      "speakingTransferAnswer": "프론트에서 피드 카드 API가 author profile 일부를 같이 내려주는 경우가 있다. 이 응답이 빠르고 단순해 보이더라도 뒤에서는 denormalized read model일 수 있다. 사용자가 프로필 이름을 바꾼 직후 일부 카드에 예전 이름이 남는다면, 그건 프론트 버그가 아니라 비정규화된 데이터 갱신 지연일 수도 있다.",
+      "interviewHighlight": "프론트 면접에서 `API가 DTO로 주니까 DB는 상관없다`로 끝내면 약하다. `화면이 자주 함께 읽는 데이터는 백엔드에서 read model로 모을 수 있고, 프론트는 stale 가능성, revalidation, optimistic update, skeleton/error state를 설계해야 한다`고 말하면 좋다."
+    },
+    {
+      "segmentId": "ch01-pp39-44-database-sharding-seg-005",
+      "directTranslation": "1장 마지막은 지금까지의 확장 전략을 반복적으로 적용해 더 큰 시스템으로 가는 흐름을 정리한다. 웹 계층은 무상태로, 모든 계층은 다중화하고, 데이터는 캐시/CDN/샤딩으로 나누며, 시스템은 계속 모니터링하고 자동화해야 한다.",
+      "trickySentenceExplanation": "프론트엔드가 이 절을 읽을 때 목표는 `내가 직접 DB 샤딩을 설계하겠다`가 아니다. 당장 이직 관점에서는 `백엔드/인프라 제약이 프론트 UI와 API 사용 방식에 어떻게 나타나는지 설명할 수 있는가`가 핵심이다. 장기적으로 풀스택을 목표로 한다면, 지금은 용어를 외우기보다 `어떤 병목 때문에 어떤 분리가 필요해지는가`를 계속 묻는 습관을 잡아야 한다.",
+      "selectiveVocabGlosses": [
+        {
+          "term": "API 계약",
+          "korean": "API contract",
+          "explanation": "프론트와 백엔드가 합의한 요청/응답 형태, 에러 형식, pagination 방식, 캐시 정책 같은 약속."
+        },
+        {
+          "term": "stale UI",
+          "korean": "오래된 상태가 보이는 UI",
+          "explanation": "서버의 최신 상태와 화면에 보이는 상태가 잠시 어긋난 UI."
+        },
+        {
+          "term": "cursor pagination",
+          "korean": "커서 페이지네이션",
+          "explanation": "페이지 번호 대신 마지막으로 본 항목의 cursor를 기준으로 다음 목록을 가져오는 방식."
+        },
+        {
+          "term": "read-after-write",
+          "korean": "쓰기 직후 읽기",
+          "explanation": "사용자가 방금 쓴 데이터를 바로 다시 읽었을 때 최신 값이 보여야 한다는 일관성 기대."
+        }
+      ],
+      "devNote": "지금 단계에서 가져갈 한 문장은 이것이다. `프론트는 저장소를 직접 운영하지 않아도, 저장소 확장 전략이 만들어내는 지연, 최신성, 페이지네이션, 오류 복구, 캐시 UX를 사용자 경험으로 번역하는 사람이다.`",
+      "recallQuestion": "프론트엔드 개발자가 DB 샤딩 절에서 가져갈 실전 관점은 무엇인가?",
+      "recallAnswer": "샤딩 자체를 구현하는 것보다, shard key와 API 조회 패턴이 맞지 않으면 필터·정렬·무한 스크롤이 느려질 수 있고, replica lag나 비정규화 갱신 지연은 stale UI로 보일 수 있다는 점을 가져가야 한다. 그래서 API 계약을 볼 때 pagination, 정렬 기준, cache invalidation, optimistic update, retry, error state를 함께 봐야 한다.",
+      "speakingTransferPrompt": "이직 면접에서 `프론트엔드가 시스템 설계를 왜 공부했는가`라는 질문을 받으면 어떻게 답할지 말해 보자.",
+      "speakingTransferAnswer": "이직 면접에서는 `저는 화면만 만들었습니다`보다 `목록 API에서 cursor pagination을 쓴 이유, 필터 조건이 백엔드 인덱스/샤딩 키와 맞아야 하는 이유, 저장 후 바로 조회할 때 stale UI가 생길 수 있어 optimistic update와 revalidation을 같이 설계했다`처럼 말하는 것이 좋다.",
+      "interviewHighlight": "프론트 면접에서 기가 막히게 어필할 부분은 `시스템 설계 개념을 UI 품질 언어로 번역하는 능력`이다. 예: `DB read replica lag를 고려해 저장 직후에는 로컬 optimistic state를 먼저 보여 주고, 이후 서버 응답으로 reconcile한다`."
+    }
+  ]
+}

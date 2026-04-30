@@ -1,0 +1,61 @@
+{
+  "pageSlug": "ch02-pp46-51-scale-estimation",
+  "pageTitle": "2장 · 46~51p 개략적인 규모 추정",
+  "lastStructuredAt": "2026-04-30",
+  "segments": [
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-001",
+      "order": 1,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 1,
+        "endLine": 5
+      }
+    },
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-002",
+      "order": 2,
+      "kind": "table",
+      "source": {
+        "startLine": 7,
+        "endLine": 19
+      }
+    },
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-003",
+      "order": 3,
+      "kind": "table",
+      "source": {
+        "startLine": 21,
+        "endLine": 81
+      }
+    },
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-004",
+      "order": 4,
+      "kind": "table",
+      "source": {
+        "startLine": 83,
+        "endLine": 97
+      }
+    },
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-005",
+      "order": 5,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 99,
+        "endLine": 126
+      }
+    },
+    {
+      "id": "ch02-pp46-51-scale-estimation-seg-006",
+      "order": 6,
+      "kind": "paragraph",
+      "source": {
+        "startLine": 128,
+        "endLine": 151
+      }
+    }
+  ]
+}
